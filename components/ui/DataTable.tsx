@@ -65,7 +65,7 @@ export function DataTable<T>(
       {/* ---------- Desktop / tablet table ---------- */}
       <div class="hidden overflow-x-auto md:block">
         <table
-          class="w-full border-collapse text-sm"
+          class="table table-sm w-full text-sm"
           style={{ minWidth: `${minWidth}px` }}
         >
           <thead>

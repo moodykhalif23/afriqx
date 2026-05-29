@@ -7,14 +7,14 @@ export interface TabsProps {
   children: ComponentChildren[];
   /** Index of the initially active tab. */
   initial?: number;
-  /** "segment" = pill group (Trade) · "underline" = text + underline (Markets). */
+  /** "segment" = boxed pill group (Trade) · "underline" = bordered tabs (Markets). */
   variant?: "segment" | "underline";
   class?: string;
 }
 
 /**
- * Touch-friendly tab switcher. All panels are server-rendered; the active one
- * is shown client-side, so it works as a single small interactive island.
+ * Touch-friendly DaisyUI tab switcher. All panels are server-rendered; the
+ * active one is shown client-side, so it works as one small interactive island.
  */
 export default function Tabs(
   { tabs, children, initial = 0, variant = "underline", class: className = "" }:
@@ -23,52 +23,40 @@ export default function Tabs(
   const active = useSignal(initial);
   const panels = Array.isArray(children) ? children : [children];
 
+  const listClass = variant === "segment"
+    ? "tabs tabs-box w-full"
+    : "tabs tabs-border overflow-x-auto";
+
   return (
     <div class={className}>
-      {variant === "segment"
-        ? (
-          <div class="flex gap-1 rounded-xl bg-obsidian-800 p-1">
-            {tabs.map((t, i) => (
-              <button
-                key={t}
-                type="button"
-                onClick={() => (active.value = i)}
-                class={`h-10 flex-1 rounded-lg text-sm font-semibold transition-colors ${
-                  active.value === i
-                    ? "bg-emerald-500 text-obsidian-950"
-                    : "text-platinum-300 active:bg-obsidian-700"
-                }`}
-              >
-                {t}
-              </button>
-            ))}
-          </div>
-        )
-        : (
-          <div class="flex gap-1 overflow-x-auto border-b border-obsidian-500/60">
-            {tabs.map((t, i) => (
-              <button
-                key={t}
-                type="button"
-                onClick={() => (active.value = i)}
-                class={`relative h-11 shrink-0 whitespace-nowrap px-4 text-sm font-medium transition-colors ${
-                  active.value === i
-                    ? "text-emerald-300"
-                    : "text-platinum-400 hover:text-ivory"
-                }`}
-              >
-                {t}
-                {active.value === i && (
-                  <span class="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-emerald-400" />
-                )}
-              </button>
-            ))}
-          </div>
-        )}
+      <div role="tablist" class={listClass}>
+        {tabs.map((t, i) => (
+          <button
+            key={t}
+            type="button"
+            role="tab"
+            aria-selected={active.value === i}
+            onClick={() => (active.value = i)}
+            class={`tab h-11 whitespace-nowrap font-medium ${
+              variant === "segment" ? "flex-1" : ""
+            } ${
+              active.value === i
+                ? "tab-active text-accent"
+                : "text-base-content/60"
+            }`}
+          >
+            {t}
+          </button>
+        ))}
+      </div>
 
       <div class="mt-4">
         {panels.map((panel, i) => (
-          <div key={i} class={active.value === i ? "" : "hidden"}>
+          <div
+            key={i}
+            role="tabpanel"
+            class={active.value === i ? "" : "hidden"}
+          >
             {panel}
           </div>
         ))}

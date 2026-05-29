@@ -1,4 +1,45 @@
 @import "tailwindcss";
+@plugin "daisyui";
+
+/* AFRIQX — custom DaisyUI theme mapping the brand to semantic tokens. */
+@plugin "daisyui/theme" {
+  name: "afriqx";
+  default: true;
+  prefersdark: true;
+  color-scheme: dark;
+
+  --color-base-100: #0a0e0c; /* app background (obsidian-900) */
+  --color-base-200: #111815; /* panels (obsidian-800) */
+  --color-base-300: #16201b; /* raised (obsidian-700) */
+  --color-base-content: #f4efe4; /* ivory */
+
+  --color-primary: #1fae5f; /* deep emerald */
+  --color-primary-content: #06120b;
+  --color-secondary: #c79b3f; /* muted gold */
+  --color-secondary-content: #06120b;
+  --color-accent: #34d27b; /* bright emerald */
+  --color-accent-content: #06120b;
+  --color-neutral: #16201b;
+  --color-neutral-content: #b9c1c2; /* platinum */
+
+  --color-info: #b9c1c2;
+  --color-info-content: #06120b;
+  --color-success: #34d27b;
+  --color-success-content: #06120b;
+  --color-warning: #c79b3f;
+  --color-warning-content: #06120b;
+  --color-error: #e5565b;
+  --color-error-content: #06120b;
+
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
 
 /*
   AFRIQX Design System

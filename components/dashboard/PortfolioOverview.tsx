@@ -14,7 +14,7 @@ export function PortfolioOverview() {
       title="Portfolio Overview"
       action={<a href="#">View full portfolio</a>}
     >
-      <div class="flex items-center gap-6">
+      <div class="flex items-center gap-4">
         {/* Donut */}
         <div class="relative shrink-0">
           <svg
@@ -61,18 +61,26 @@ export function PortfolioOverview() {
         </div>
 
         {/* Legend */}
-        <ul class="flex-1 space-y-2.5">
+        <ul class="min-w-0 flex-1 space-y-2.5">
           {PORTFOLIO.allocations.map((a) => (
-            <li class="flex items-center gap-2.5">
+            <li class="flex items-start gap-2">
               <span
-                class="h-2.5 w-2.5 rounded-sm"
+                class="mt-1 h-2.5 w-2.5 shrink-0 rounded-sm"
                 style={{ backgroundColor: a.color }}
               />
-              <span class="flex-1 text-sm text-platinum-200">{a.label}</span>
-              <span class="text-xs text-platinum-400">{a.pct}%</span>
-              <span class="nums w-24 text-right text-sm font-medium text-ivory">
-                {a.value}
-              </span>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="truncate text-sm text-platinum-200">
+                    {a.label}
+                  </span>
+                  <span class="nums shrink-0 text-xs text-platinum-400">
+                    {a.pct}%
+                  </span>
+                </div>
+                <div class="nums truncate text-xs font-medium text-ivory">
+                  {a.value}
+                </div>
+              </div>
             </li>
           ))}
         </ul>

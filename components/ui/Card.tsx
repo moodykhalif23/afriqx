@@ -12,27 +12,27 @@ export interface CardProps {
 }
 
 /**
- * The base surface for every panel in the AFRIQX terminal:
- * an obsidian card with a hairline border and a soft inner glow.
+ * Base surface for every panel — a DaisyUI `card` on the AFRIQX theme
+ * (base-200 surface, hairline base-300 border) with an optional header.
  */
 export function Card(
   { title, action, flush = false, class: className = "", children }: CardProps,
 ) {
   return (
     <section
-      class={`rounded-2xl border border-obsidian-500/70 bg-obsidian-800/80 backdrop-blur-sm shadow-xl shadow-black/30 ${className}`}
+      class={`card border border-base-300 bg-base-200/80 shadow-xl shadow-black/30 ${className}`}
     >
       {(title || action) && (
-        <header class="flex items-center justify-between gap-4 px-5 pt-4 pb-3 border-b border-obsidian-500/50">
+        <header class="flex items-center justify-between gap-4 border-b border-base-300/70 px-5 pt-4 pb-3">
           {typeof title === "string"
             ? (
-              <h3 class="font-display font-semibold text-sm text-ivory tracking-wide">
+              <h3 class="font-display text-sm font-semibold tracking-wide text-base-content">
                 {title}
               </h3>
             )
             : title}
           {action && (
-            <div class="text-xs text-emerald-400 hover:text-emerald-300 transition-colors">
+            <div class="text-xs text-accent transition-colors hover:text-emerald-300">
               {action}
             </div>
           )}
