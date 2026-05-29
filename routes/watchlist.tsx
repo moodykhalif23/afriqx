@@ -52,7 +52,7 @@ export default define.page(function Watchlist() {
         <title>Watchlist · AFRIQX</title>
       </Head>
       <AppShell active="Watchlist" title="Watchlist">
-        <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div>
             <h1 class="font-display text-xl font-bold text-base-content sm:text-2xl">
               Watchlist

@@ -23,7 +23,7 @@ export function Card(
       class={`card border border-base-300 bg-base-200/80 shadow-xl shadow-black/30 ${className}`}
     >
       {(title || action) && (
-        <header class="flex items-center justify-between gap-4 border-b border-base-300/70 px-5 pt-4 pb-3">
+        <header class="flex items-center justify-between gap-4 border-b border-base-300/70 px-6 pt-5 pb-4">
           {typeof title === "string"
             ? (
               <h3 class="font-display text-sm font-semibold tracking-wide text-base-content">
@@ -38,7 +38,7 @@ export function Card(
           )}
         </header>
       )}
-      <div class={flush ? "" : "p-5"}>{children}</div>
+      <div class={flush ? "" : "p-6"}>{children}</div>
     </section>
   );
 }

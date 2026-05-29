@@ -94,7 +94,7 @@ export default define.page(function Orders() {
         <title>Orders · AFRIQX</title>
       </Head>
       <AppShell active="Orders" title="Orders">
-        <div class="mb-4">
+        <div class="mb-6">
           <h1 class="font-display text-xl font-bold text-base-content sm:text-2xl">
             Orders
           </h1>

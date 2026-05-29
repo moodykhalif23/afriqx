@@ -20,19 +20,19 @@ export default define.page(function Dashboard() {
         <IndexStrip />
 
         {/* Main grid: chart + right rail */}
-        <div class="mt-3 grid grid-cols-1 gap-3 sm:mt-5 sm:gap-5 xl:grid-cols-[1fr_360px]">
-          <div class="min-w-0 space-y-3 sm:space-y-5">
+        <div class="mt-5 grid grid-cols-1 gap-3 sm:mt-7 sm:gap-5 xl:grid-cols-[1fr_360px]">
+          <div class="min-w-0 space-y-5 sm:space-y-7">
             <ChartPanel />
 
             {/* Lower trio */}
-            <div class="grid grid-cols-1 gap-3 sm:gap-5 lg:grid-cols-3">
+            <div class="grid grid-cols-1 gap-5 sm:gap-7 lg:grid-cols-3">
               <MarketMovers />
               <NewsPanel />
               <PortfolioOverview />
             </div>
           </div>
 
-          <div class="space-y-3 sm:space-y-5">
+          <div class="space-y-5 sm:space-y-7">
             <WatchlistPanel />
             <FxHeatmap />
             <RecentOrders />

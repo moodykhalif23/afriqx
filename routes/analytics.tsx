@@ -18,7 +18,7 @@ export default define.page(function Analytics() {
         <title>Analytics · AFRIQX</title>
       </Head>
       <AppShell active="Analytics" title="Analytics">
-        <div class="mb-4">
+        <div class="mb-6">
           <h1 class="font-display text-xl font-bold text-base-content sm:text-2xl">
             Analytics
           </h1>
@@ -46,7 +46,7 @@ export default define.page(function Analytics() {
           ))}
         </div>
 
-        <div class="mt-3 grid grid-cols-1 gap-3 sm:mt-5 sm:gap-5 lg:grid-cols-[1fr_360px]">
+        <div class="mt-5 grid grid-cols-1 gap-3 sm:mt-7 sm:gap-5 lg:grid-cols-[1fr_360px]">
           {/* Performance */}
           <Card
             title="Portfolio Performance"
@@ -103,7 +103,7 @@ export default define.page(function Analytics() {
           </Card>
         </div>
 
-        <div class="mt-3 grid grid-cols-1 gap-3 sm:mt-5 sm:gap-5 lg:grid-cols-2">
+        <div class="mt-5 grid grid-cols-1 gap-3 sm:mt-7 sm:gap-5 lg:grid-cols-2">
           <FxHeatmap />
           <Card title="Continental Intelligence">
             <div class="grid grid-cols-2 gap-3">
@@ -114,7 +114,7 @@ export default define.page(function Analytics() {
                 { k: "Liquidity depth", v: "Strong", d: "AFXI 98.65" },
               ].map((x) => (
                 <div
-                  class="rounded-xl border border-base-300 bg-base-100 p-3 hover-lift"
+                  class="rounded-xl border border-base-300 bg-base-100 p-3"
                   key={x.k}
                 >
                   <div class="text-[10px] uppercase tracking-wider text-base-content/50">

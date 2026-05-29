@@ -34,9 +34,9 @@ export default define.page(function Trade() {
         <title>Trade · AFRIQX</title>
       </Head>
       <AppShell active="Trade" title="Trade">
-        <div class="mx-auto grid max-w-5xl grid-cols-1 gap-3 sm:gap-5 lg:grid-cols-[1fr_400px]">
+        <div class="mx-auto grid max-w-5xl grid-cols-1 gap-5 sm:gap-7 lg:grid-cols-[1fr_400px]">
           {/* Market info */}
-          <div class="order-2 space-y-3 sm:space-y-5 lg:order-1">
+          <div class="order-2 space-y-5 sm:space-y-7 lg:order-1">
             <Card>
               <div class="flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">

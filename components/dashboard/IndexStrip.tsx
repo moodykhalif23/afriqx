@@ -22,7 +22,7 @@ export function IndexStrip() {
     <div class="grid grid-cols-2 overflow-hidden rounded-xl border border-obsidian-500/60 bg-obsidian-800/80 sm:grid-cols-3 lg:grid-cols-6">
       {items.map((it, idx) => (
         <div
-          class={`flex items-center justify-between gap-2 px-4 py-3 ${
+          class={`flex items-center justify-between gap-2 px-5 py-4 ${
             idx % 2 === 0 ? "border-r border-obsidian-500/40" : ""
           } ${
             idx < items.length - 2

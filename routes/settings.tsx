@@ -51,7 +51,7 @@ export default define.page(function Settings() {
       </Head>
       <AppShell active="Settings" title="Settings">
         <div class="mx-auto max-w-3xl">
-          <div class="mb-4">
+          <div class="mb-6">
             <h1 class="font-display text-xl font-bold text-base-content sm:text-2xl">
               Settings
             </h1>

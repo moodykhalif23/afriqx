@@ -221,7 +221,7 @@ export default define.page(function Markets() {
       </Head>
       <AppShell active="Markets" title="Markets">
         {/* Header */}
-        <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
+        <div class="mb-6 flex flex-wrap items-end justify-between gap-3">
           <div>
             <h1 class="font-display text-xl font-bold text-ivory sm:text-2xl">
               Markets

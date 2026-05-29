@@ -19,7 +19,7 @@ export default define.page(function News() {
         <title>News & Insights · AFRIQX</title>
       </Head>
       <AppShell active="News & Insights" title="News">
-        <div class="mb-4">
+        <div class="mb-6">
           <h1 class="font-display text-xl font-bold text-base-content sm:text-2xl">
             News &amp; Insights
           </h1>
@@ -62,7 +62,7 @@ export default define.page(function News() {
         {/* Feed */}
         <div class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
           {NEWS_FEED.map((item) => (
-            <Card key={item.title} class="hover-lift">
+            <Card key={item.title}>
               <div class="flex gap-3">
                 <div class="grid h-14 w-14 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-base-300 to-base-100 text-base-content/40">
                   <svg

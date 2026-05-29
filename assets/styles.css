@@ -31,9 +31,9 @@
   --color-error: #e5565b;
   --color-error-content: #06120b;
 
-  --radius-selector: 0.5rem;
-  --radius-field: 0.5rem;
-  --radius-box: 1rem;
+  --radius-selector: 0.375rem;
+  --radius-field: 0.375rem;
+  --radius-box: 0.5rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
@@ -94,9 +94,10 @@
   --font-display: "Satoshi", "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
 
-  /* ---- Radii ---- */
-  --radius-xl: 0.875rem;
-  --radius-2xl: 1.125rem;
+  /* ---- Radii (crisp, slightly-sharp corners) ---- */
+  --radius-lg: 0.375rem;
+  --radius-xl: 0.4375rem;
+  --radius-2xl: 0.5rem;
 
   /* ---- Extra breakpoint for small phones ---- */
   --breakpoint-xs: 30rem;
@@ -169,23 +170,6 @@
       transparent 70%
     ),
       var(--color-obsidian-900);
-  }
-
-  /* Lift-on-hover for interactive cards */
-  .hover-lift {
-    transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease,
-      border-color 0.2s ease;
-  }
-  .hover-lift:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.6);
-    border-color: color-mix(
-      in oklab,
-      var(--color-emerald-500) 40%,
-      transparent
-    );
   }
 
   /* Subtle 3D tilt on hover (CSS-only, no JS) */

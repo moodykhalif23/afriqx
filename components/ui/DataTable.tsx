@@ -65,7 +65,7 @@ export function DataTable<T>(
       {/* ---------- Desktop / tablet table ---------- */}
       <div class="hidden overflow-x-auto md:block">
         <table
-          class="table table-sm w-full text-sm"
+          class="table w-full text-sm"
           style={{ minWidth: `${minWidth}px` }}
         >
           <thead>
@@ -73,7 +73,7 @@ export function DataTable<T>(
               {columns.map((c) => (
                 <th
                   key={c.id}
-                  class={`sticky top-0 z-10 bg-obsidian-800 px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-platinum-400 ${
+                  class={`sticky top-0 z-10 bg-obsidian-800 px-5 py-4 text-[11px] font-semibold uppercase tracking-wider text-platinum-400 ${
                     alignText[c.align ?? "left"]
                   } ${c.showFrom ? showFromClass[c.showFrom] : ""}`}
                 >
@@ -91,7 +91,7 @@ export function DataTable<T>(
                 {columns.map((c) => (
                   <td
                     key={c.id}
-                    class={`px-4 py-3.5 ${alignText[c.align ?? "left"]} ${
+                    class={`px-5 py-4 ${alignText[c.align ?? "left"]} ${
                       c.showFrom ? showFromClass[c.showFrom] : ""
                     } ${c.cellClass ?? ""}`}
                   >
@@ -105,7 +105,7 @@ export function DataTable<T>(
       </div>
 
       {/* ---------- Mobile stacked cards ---------- */}
-      <ul class="space-y-2.5 md:hidden">
+      <ul class="space-y-3 md:hidden">
         {rows.map((row) => {
           const inner = (
             <>
@@ -144,7 +144,7 @@ export function DataTable<T>(
           );
 
           const cardClass =
-            "block rounded-xl border border-obsidian-500/50 bg-obsidian-800/80 p-3.5 active:bg-obsidian-700/70";
+            "block rounded-md border border-obsidian-500/50 bg-obsidian-800/80 p-4 active:bg-obsidian-700/70";
 
           return (
             <li key={rowKey(row)}>

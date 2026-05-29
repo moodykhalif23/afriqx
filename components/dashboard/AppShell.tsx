@@ -25,7 +25,7 @@ export function AppShell({ active, title, children }: AppShellProps) {
       <div class="flex min-w-0 flex-1 flex-col">
         <Topbar title={title} />
 
-        <main class="flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-5">
+        <main class="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8">
           {children}
         </main>
 

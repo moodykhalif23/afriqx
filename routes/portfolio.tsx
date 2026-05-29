@@ -82,7 +82,7 @@ export default define.page(function Portfolio() {
         <title>Portfolio · AFRIQX</title>
       </Head>
       <AppShell active="Portfolio" title="Portfolio">
-        <div class="mb-4">
+        <div class="mb-6">
           <h1 class="font-display text-xl font-bold text-ivory sm:text-2xl">
             Portfolio
           </h1>
@@ -92,7 +92,7 @@ export default define.page(function Portfolio() {
         </div>
 
         {/* Summary cards */}
-        <div class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+        <div class="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
           <SummaryCard label="Total Value" value={s.totalValue}>
             <PriceChange value={s.dayChange} percent class="text-xs" />
             <span class="ml-1 text-xs text-platinum-400">today</span>
@@ -105,7 +105,7 @@ export default define.page(function Portfolio() {
         </div>
 
         {/* Allocation + holdings */}
-        <div class="mt-3 grid grid-cols-1 gap-3 sm:mt-5 sm:gap-5 xl:grid-cols-[360px_1fr]">
+        <div class="mt-5 grid grid-cols-1 gap-3 sm:mt-7 sm:gap-5 xl:grid-cols-[360px_1fr]">
           <PortfolioOverview />
 
           <Card title="Holdings" action={<a href="#">Export</a>} flush>
@@ -132,7 +132,7 @@ function SummaryCard(
   },
 ) {
   return (
-    <div class="stats w-full rounded-2xl border border-base-300 bg-base-200/80 hover-lift">
+    <div class="stats w-full rounded-2xl border border-base-300 bg-base-200/80">
       <div class="stat p-4">
         <div class="stat-title text-[11px] uppercase tracking-wider text-base-content/50">
           {label}
