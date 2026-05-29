@@ -120,10 +120,10 @@
         transparent 70%
       ),
       radial-gradient(
-        55% 45% at 92% 8%,
-        color-mix(in oklab, var(--color-gold-600) 18%, transparent),
-        transparent 70%
-      ),
+      55% 45% at 92% 8%,
+      color-mix(in oklab, var(--color-gold-600) 18%, transparent),
+      transparent 70%
+    ),
       var(--color-obsidian-900);
   }
 
@@ -135,10 +135,10 @@
         transparent 1px
       ),
       linear-gradient(
-        90deg,
-        color-mix(in oklab, var(--color-obsidian-500) 45%, transparent) 1px,
-        transparent 1px
-      );
+      90deg,
+      color-mix(in oklab, var(--color-obsidian-500) 45%, transparent) 1px,
+      transparent 1px
+    );
     background-size: 28px 28px;
   }
 }

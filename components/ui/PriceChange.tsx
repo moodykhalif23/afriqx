@@ -26,7 +26,9 @@ export function PriceChange(
   const magnitude = Math.abs(value).toFixed(decimals);
 
   return (
-    <span class={`nums inline-flex items-center gap-1 font-medium ${color} ${className}`}>
+    <span
+      class={`nums inline-flex items-center gap-1 font-medium ${color} ${className}`}
+    >
       {arrow && <span class="text-[0.7em] leading-none">{up ? "▲" : "▼"}</span>}
       {sign}
       {magnitude}

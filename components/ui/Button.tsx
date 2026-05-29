@@ -4,7 +4,7 @@ type Variant = "primary" | "gold" | "secondary" | "ghost" | "danger";
 type Size = "sm" | "md" | "lg";
 
 export interface ButtonProps
-  extends Omit<JSX.HTMLAttributes<HTMLButtonElement>, "size" | "class"> {
+  extends Omit<JSX.IntrinsicElements["button"], "size" | "class"> {
   variant?: Variant;
   size?: Size;
   block?: boolean;
