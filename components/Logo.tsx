@@ -10,7 +10,6 @@ export interface LogoProps {
   class?: string;
 }
 
-
 export function Logo(
   { variant = "full", size = 32, tagline = false, class: className = "" }:
     LogoProps,

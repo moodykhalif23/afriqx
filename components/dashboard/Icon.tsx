@@ -140,12 +140,15 @@ const PATHS: Record<IconName, JSX.Element> = {
   ),
 };
 
-export interface IconProps extends Omit<JSX.SVGAttributes<SVGSVGElement>, "size"> {
+export interface IconProps
+  extends Omit<JSX.SVGAttributes<SVGSVGElement>, "size"> {
   name: IconName;
   size?: number;
 }
 
-export function Icon({ name, size = 20, class: className = "", ...rest }: IconProps) {
+export function Icon(
+  { name, size = 20, class: className = "", ...rest }: IconProps,
+) {
   return (
     <svg
       width={size}

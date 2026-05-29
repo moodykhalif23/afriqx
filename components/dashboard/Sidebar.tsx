@@ -37,7 +37,9 @@ export function Sidebar() {
         <p class="font-display text-sm font-bold text-ivory">
           The Home of<br />African Markets
         </p>
-        <p class="mt-1 text-xs text-platinum-400">Trade. Invest. Build Africa.</p>
+        <p class="mt-1 text-xs text-platinum-400">
+          Trade. Invest. Build Africa.
+        </p>
         <Button variant="gold" size="sm" block class="mt-3">
           Upgrade to Pro
         </Button>
@@ -51,7 +53,9 @@ export function Sidebar() {
             All Systems Operational
           </span>
         </div>
-        <p class="mt-1 nums text-[10px] text-platinum-400">Connected · EAT 09:45:32</p>
+        <p class="mt-1 nums text-[10px] text-platinum-400">
+          Connected · EAT 09:45:32
+        </p>
       </div>
     </aside>
   );

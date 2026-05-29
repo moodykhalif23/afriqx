@@ -240,11 +240,41 @@ export interface Mover {
 }
 
 export const MARKET_MOVERS: Mover[] = [
-  { symbol: "DANGCEM", name: "Dangote Cement", price: "NGN 682.50", change: 7.21, series: [636, 642, 650, 648, 661, 670, 682] },
-  { symbol: "NBL", name: "Nile Breweries", price: "KES 4.35", change: 6.18, series: [4.05, 4.1, 4.08, 4.18, 4.25, 4.3, 4.35] },
-  { symbol: "JUMIA", name: "Jumia Technologies", price: "EGP 18.75", change: 5.32, series: [17.6, 17.9, 17.8, 18.1, 18.4, 18.6, 18.75] },
-  { symbol: "EQTY", name: "Equity Group Holdings", price: "KES 44.10", change: 4.89, series: [41.8, 42.3, 42.1, 43.0, 43.6, 43.9, 44.1] },
-  { symbol: "MTNN", name: "MTN Nigeria", price: "NGN 432.50", change: 4.35, series: [412, 416, 414, 422, 428, 430, 432.5] },
+  {
+    symbol: "DANGCEM",
+    name: "Dangote Cement",
+    price: "NGN 682.50",
+    change: 7.21,
+    series: [636, 642, 650, 648, 661, 670, 682],
+  },
+  {
+    symbol: "NBL",
+    name: "Nile Breweries",
+    price: "KES 4.35",
+    change: 6.18,
+    series: [4.05, 4.1, 4.08, 4.18, 4.25, 4.3, 4.35],
+  },
+  {
+    symbol: "JUMIA",
+    name: "Jumia Technologies",
+    price: "EGP 18.75",
+    change: 5.32,
+    series: [17.6, 17.9, 17.8, 18.1, 18.4, 18.6, 18.75],
+  },
+  {
+    symbol: "EQTY",
+    name: "Equity Group Holdings",
+    price: "KES 44.10",
+    change: 4.89,
+    series: [41.8, 42.3, 42.1, 43.0, 43.6, 43.9, 44.1],
+  },
+  {
+    symbol: "MTNN",
+    name: "MTN Nigeria",
+    price: "NGN 432.50",
+    change: 4.35,
+    series: [412, 416, 414, 422, 428, 430, 432.5],
+  },
 ];
 
 /** News & Insights feed. */
@@ -255,9 +285,21 @@ export interface NewsItem {
 }
 
 export const NEWS: NewsItem[] = [
-  { title: "Afriqx Launches Intra-African Currency Trading Pairs", category: "Markets", time: "2h ago" },
-  { title: "African Markets Extend Gains as Investor Confidence Rises", category: "Equities", time: "4h ago" },
-  { title: "PAPSS Boosts Cross-Border Settlements Across 15 African Countries", category: "Economy", time: "6h ago" },
+  {
+    title: "Afriqx Launches Intra-African Currency Trading Pairs",
+    category: "Markets",
+    time: "2h ago",
+  },
+  {
+    title: "African Markets Extend Gains as Investor Confidence Rises",
+    category: "Equities",
+    time: "4h ago",
+  },
+  {
+    title: "PAPSS Boosts Cross-Border Settlements Across 15 African Countries",
+    category: "Economy",
+    time: "6h ago",
+  },
 ];
 
 /** Portfolio allocation donut. */
@@ -290,11 +332,41 @@ export interface Order {
 }
 
 export const RECENT_ORDERS: Order[] = [
-  { type: "Market", symbol: "AIRTEL AFRIQX", side: "Buy", status: "Filled", price: "123.45" },
-  { type: "Limit", symbol: "MTN GROUP", side: "Buy", status: "Filled", price: "1,764.00" },
-  { type: "Limit", symbol: "SAFARICOM", side: "Sell", status: "Pending", price: "19.50" },
-  { type: "Market", symbol: "DANGCEM", side: "Buy", status: "Filled", price: "682.50" },
-  { type: "Limit", symbol: "NILE BREWERIES", side: "Buy", status: "Filled", price: "4.35" },
+  {
+    type: "Market",
+    symbol: "AIRTEL AFRIQX",
+    side: "Buy",
+    status: "Filled",
+    price: "123.45",
+  },
+  {
+    type: "Limit",
+    symbol: "MTN GROUP",
+    side: "Buy",
+    status: "Filled",
+    price: "1,764.00",
+  },
+  {
+    type: "Limit",
+    symbol: "SAFARICOM",
+    side: "Sell",
+    status: "Pending",
+    price: "19.50",
+  },
+  {
+    type: "Market",
+    symbol: "DANGCEM",
+    side: "Buy",
+    status: "Filled",
+    price: "682.50",
+  },
+  {
+    type: "Limit",
+    symbol: "NILE BREWERIES",
+    side: "Buy",
+    status: "Filled",
+    price: "4.35",
+  },
 ];
 
 /** African FX Heatmap — currency strength buckets. */

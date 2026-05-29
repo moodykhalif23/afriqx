@@ -1,6 +1,7 @@
 {
   "deno.enable": true,
   "deno.lint": true,
+  "deno.path": "/home/sozuri/.deno/bin/deno",
   "editor.defaultFormatter": "denoland.vscode-deno",
   "[typescriptreact]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
