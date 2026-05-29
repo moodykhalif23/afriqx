@@ -209,25 +209,27 @@ export const CANDLES: Candle[] = generateCandles(120, 0.1402, 0x4f51a3);
 
 export const TIMEFRAMES = ["1m", "5m", "15m", "1H", "4H", "1D", "1W"] as const;
 
-/** Left-hand navigation. */
+/** Left-hand navigation. `href` "#" = section not built yet. */
 export interface NavItem {
   label: string;
-  icon: string; // inline svg path key (see Sidebar)
-  active?: boolean;
+  icon: string; // inline svg path key (see Icon)
+  href: string;
   badge?: string;
+  /** Show in the mobile bottom-nav bar. */
+  mobile?: boolean;
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: "Dashboard", icon: "dashboard", active: true },
-  { label: "Markets", icon: "markets" },
-  { label: "Watchlist", icon: "watchlist" },
-  { label: "Trade", icon: "trade" },
-  { label: "Portfolio", icon: "portfolio" },
-  { label: "Orders", icon: "orders" },
-  { label: "Analytics", icon: "analytics" },
-  { label: "News & Insights", icon: "news" },
-  { label: "AFX Explore", icon: "explore", badge: "NEW" },
-  { label: "Settings", icon: "settings" },
+  { label: "Dashboard", icon: "dashboard", href: "/", mobile: true },
+  { label: "Markets", icon: "markets", href: "/markets", mobile: true },
+  { label: "Watchlist", icon: "watchlist", href: "#" },
+  { label: "Trade", icon: "trade", href: "/trade", mobile: true },
+  { label: "Portfolio", icon: "portfolio", href: "/portfolio", mobile: true },
+  { label: "Orders", icon: "orders", href: "#" },
+  { label: "Analytics", icon: "analytics", href: "#" },
+  { label: "News & Insights", icon: "news", href: "#" },
+  { label: "AFX Explore", icon: "explore", href: "#", badge: "NEW" },
+  { label: "Settings", icon: "settings", href: "#" },
 ];
 
 /** Market Movers (Top Gainers tab). */
@@ -407,3 +409,303 @@ export const TICKER: { label: string; value: string; change: number }[] = [
 
 /** Signed-in user (top bar). */
 export const USER = { name: "Amara Okafor", tier: "Pro Trader" };
+
+/* ------------------------------------------------------------------ *
+ *  Markets section
+ * ------------------------------------------------------------------ */
+
+export interface Equity {
+  symbol: string;
+  name: string;
+  exchange: string; // e.g. NGX, JSE, NSE
+  sector: string;
+  last: string; // formatted with currency
+  change: number; // percent
+  marketCap: string;
+  volume: string;
+  series: number[];
+}
+
+export const EQUITIES: Equity[] = [
+  {
+    symbol: "DANGCEM",
+    name: "Dangote Cement",
+    exchange: "NGX",
+    sector: "Materials",
+    last: "NGN 682.50",
+    change: 7.21,
+    marketCap: "₦11.6T",
+    volume: "4.2M",
+    series: [636, 642, 650, 648, 661, 670, 682],
+  },
+  {
+    symbol: "MTNN",
+    name: "MTN Nigeria",
+    exchange: "NGX",
+    sector: "Telecom",
+    last: "NGN 432.50",
+    change: 4.35,
+    marketCap: "₦9.0T",
+    volume: "8.1M",
+    series: [412, 416, 414, 422, 428, 430, 432],
+  },
+  {
+    symbol: "SAFCOM",
+    name: "Safaricom PLC",
+    exchange: "NSE",
+    sector: "Telecom",
+    last: "KES 19.35",
+    change: 3.18,
+    marketCap: "KES 775B",
+    volume: "12.4M",
+    series: [18.6, 18.8, 18.7, 19.0, 19.2, 19.3, 19.35],
+  },
+  {
+    symbol: "MTNG",
+    name: "MTN Group",
+    exchange: "JSE",
+    sector: "Telecom",
+    last: "ZAR 1,764.00",
+    change: 4.21,
+    marketCap: "R332B",
+    volume: "2.1M",
+    series: [1690, 1705, 1698, 1722, 1748, 1755, 1764],
+  },
+  {
+    symbol: "NPN",
+    name: "Naspers Ltd",
+    exchange: "JSE",
+    sector: "Technology",
+    last: "ZAR 3,214.50",
+    change: 3.18,
+    marketCap: "R1.4T",
+    volume: "1.3M",
+    series: [3105, 3130, 3120, 3170, 3190, 3205, 3214],
+  },
+  {
+    symbol: "EQTY",
+    name: "Equity Group Holdings",
+    exchange: "NSE",
+    sector: "Banking",
+    last: "KES 44.10",
+    change: 4.89,
+    marketCap: "KES 166B",
+    volume: "5.6M",
+    series: [41.8, 42.3, 42.1, 43.0, 43.6, 43.9, 44.1],
+  },
+  {
+    symbol: "ABG",
+    name: "Absa Group",
+    exchange: "JSE",
+    sector: "Banking",
+    last: "ZAR 186.20",
+    change: 1.89,
+    marketCap: "R157B",
+    volume: "3.4M",
+    series: [182, 183, 182.5, 184, 185, 185.8, 186.2],
+  },
+  {
+    symbol: "JMIA",
+    name: "Jumia Technologies",
+    exchange: "EGX",
+    sector: "Technology",
+    last: "EGP 18.75",
+    change: 5.32,
+    marketCap: "$1.9B",
+    volume: "9.8M",
+    series: [17.6, 17.9, 17.8, 18.1, 18.4, 18.6, 18.75],
+  },
+  {
+    symbol: "COMI",
+    name: "Commercial Intl Bank",
+    exchange: "EGX",
+    sector: "Banking",
+    last: "EGP 84.20",
+    change: -0.62,
+    marketCap: "EGP 252B",
+    volume: "6.1M",
+    series: [85.1, 84.9, 85.0, 84.6, 84.4, 84.3, 84.2],
+  },
+  {
+    symbol: "GCB",
+    name: "GCB Bank",
+    exchange: "GSE",
+    sector: "Banking",
+    last: "GHS 6.45",
+    change: 2.05,
+    marketCap: "GHS 1.7B",
+    volume: "1.1M",
+    series: [6.28, 6.31, 6.3, 6.37, 6.41, 6.43, 6.45],
+  },
+];
+
+export interface Commodity {
+  symbol: string;
+  name: string;
+  last: string;
+  change: number;
+  unit: string;
+  series: number[];
+}
+
+export const COMMODITIES: Commodity[] = [
+  {
+    symbol: "COCOA",
+    name: "Cocoa",
+    last: "$9,240",
+    change: 2.84,
+    unit: "/ tonne",
+    series: [8900, 8980, 8950, 9080, 9150, 9200, 9240],
+  },
+  {
+    symbol: "GOLD",
+    name: "Gold",
+    last: "$2,348.50",
+    change: 0.92,
+    unit: "/ oz",
+    series: [2320, 2330, 2325, 2338, 2342, 2345, 2348],
+  },
+  {
+    symbol: "CRUDE",
+    name: "Brent Crude",
+    last: "$82.15",
+    change: -1.24,
+    unit: "/ bbl",
+    series: [83.6, 83.2, 83.4, 82.8, 82.5, 82.3, 82.1],
+  },
+  {
+    symbol: "COFFEE",
+    name: "Coffee (Arabica)",
+    last: "$2.41",
+    change: 3.10,
+    unit: "/ lb",
+    series: [2.31, 2.34, 2.33, 2.37, 2.39, 2.4, 2.41],
+  },
+  {
+    symbol: "PLAT",
+    name: "Platinum",
+    last: "$978.40",
+    change: 1.45,
+    unit: "/ oz",
+    series: [958, 963, 960, 969, 973, 976, 978],
+  },
+  {
+    symbol: "COPPER",
+    name: "Copper",
+    last: "$4.28",
+    change: -0.55,
+    unit: "/ lb",
+    series: [4.32, 4.3, 4.31, 4.29, 4.28, 4.28, 4.28],
+  },
+];
+
+export type MarketCategory = "Indices" | "Equities" | "FX" | "Commodities";
+
+/* ------------------------------------------------------------------ *
+ *  Trade section
+ * ------------------------------------------------------------------ */
+
+export const TRADE_PAIRS = [
+  { code: "NGN", name: "Nigerian Naira" },
+  { code: "KES", name: "Kenyan Shilling" },
+  { code: "ZAR", name: "South African Rand" },
+  { code: "GHS", name: "Ghanaian Cedi" },
+  { code: "EGP", name: "Egyptian Pound" },
+];
+
+export const TRADE_TABS = ["Buy", "Sell", "FX", "Convert"] as const;
+
+/* ------------------------------------------------------------------ *
+ *  Portfolio section
+ * ------------------------------------------------------------------ */
+
+export interface Position {
+  symbol: string;
+  name: string;
+  qty: string;
+  avgCost: string;
+  last: string;
+  value: string;
+  pnl: number; // percent
+  pnlAbs: string;
+  weight: number; // percent of portfolio
+}
+
+export const POSITIONS: Position[] = [
+  {
+    symbol: "DANGCEM",
+    name: "Dangote Cement",
+    qty: "12,500",
+    avgCost: "NGN 612.00",
+    last: "NGN 682.50",
+    value: "$26,180.20",
+    pnl: 11.52,
+    pnlAbs: "+$2,704.10",
+    weight: 21.0,
+  },
+  {
+    symbol: "MTNG",
+    name: "MTN Group",
+    qty: "1,800",
+    avgCost: "ZAR 1,540.00",
+    last: "ZAR 1,764.00",
+    value: "$18,742.50",
+    pnl: 14.55,
+    pnlAbs: "+$2,381.20",
+    weight: 15.0,
+  },
+  {
+    symbol: "SAFCOM",
+    name: "Safaricom PLC",
+    qty: "84,000",
+    avgCost: "KES 17.80",
+    last: "KES 19.35",
+    value: "$15,640.75",
+    pnl: 8.71,
+    pnlAbs: "+$1,253.40",
+    weight: 12.6,
+  },
+  {
+    symbol: "NPN",
+    name: "Naspers Ltd",
+    qty: "640",
+    avgCost: "ZAR 2,980.00",
+    last: "ZAR 3,214.50",
+    value: "$13,420.00",
+    pnl: 7.87,
+    pnlAbs: "+$979.60",
+    weight: 10.8,
+  },
+  {
+    symbol: "EQTY",
+    name: "Equity Group",
+    qty: "210,000",
+    avgCost: "KES 41.20",
+    last: "KES 44.10",
+    value: "$11,890.30",
+    pnl: 7.04,
+    pnlAbs: "+$782.10",
+    weight: 9.5,
+  },
+  {
+    symbol: "JMIA",
+    name: "Jumia Technologies",
+    qty: "9,400",
+    avgCost: "EGP 19.90",
+    last: "EGP 18.75",
+    value: "$3,620.40",
+    pnl: -5.78,
+    pnlAbs: "-$222.10",
+    weight: 2.9,
+  },
+];
+
+export const PORTFOLIO_SUMMARY = {
+  totalValue: "$124,568.75",
+  dayChange: 6.26,
+  dayChangeAbs: "+$7,345.60",
+  totalPnl: 18.42,
+  totalPnlAbs: "+$19,378.30",
+  buyingPower: "$12,456.87",
+  invested: "$105,190.45",
+};

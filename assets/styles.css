@@ -56,6 +56,9 @@
   /* ---- Radii ---- */
   --radius-xl: 0.875rem;
   --radius-2xl: 1.125rem;
+
+  /* ---- Extra breakpoint for small phones ---- */
+  --breakpoint-xs: 30rem;
 }
 
 @layer base {

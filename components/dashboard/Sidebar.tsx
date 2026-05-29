@@ -3,32 +3,37 @@ import { Button } from "../ui/Button.tsx";
 import { Icon, type IconName } from "./Icon.tsx";
 import { NAV_ITEMS } from "../../data/mock.ts";
 
-export function Sidebar() {
+/** Desktop left navigation. Hidden below `lg` — the mobile bottom-nav takes over. */
+export function Sidebar({ active }: { active: string }) {
   return (
-    <aside class="flex h-full w-60 shrink-0 flex-col border-r border-obsidian-500/60 bg-obsidian-850">
+    <aside class="hidden h-full w-60 shrink-0 flex-col border-r border-obsidian-500/60 bg-obsidian-850 lg:flex">
       <div class="flex h-16 items-center px-5">
         <Logo variant="full" size={26} />
       </div>
 
       <nav class="flex-1 space-y-1 overflow-y-auto px-3 py-2">
-        {NAV_ITEMS.map((item) => (
-          <a
-            href="#"
-            class={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-              item.active
-                ? "bg-emerald-500/15 text-emerald-300 ring-1 ring-inset ring-emerald-500/25"
-                : "text-platinum-300 hover:bg-obsidian-700/70 hover:text-ivory"
-            }`}
-          >
-            <Icon name={item.icon as IconName} size={18} />
-            <span class="flex-1">{item.label}</span>
-            {item.badge && (
-              <span class="rounded bg-gold-500/20 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-gold-300">
-                {item.badge}
-              </span>
-            )}
-          </a>
-        ))}
+        {NAV_ITEMS.map((item) => {
+          const isActive = item.label === active;
+          return (
+            <a
+              href={item.href}
+              aria-current={isActive ? "page" : undefined}
+              class={`group flex min-h-11 items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                isActive
+                  ? "bg-emerald-500/15 text-emerald-300 ring-1 ring-inset ring-emerald-500/25"
+                  : "text-platinum-300 hover:bg-obsidian-700/70 hover:text-ivory"
+              }`}
+            >
+              <Icon name={item.icon as IconName} size={18} />
+              <span class="flex-1 truncate">{item.label}</span>
+              {item.badge && (
+                <span class="rounded bg-gold-500/20 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-gold-300">
+                  {item.badge}
+                </span>
+              )}
+            </a>
+          );
+        })}
       </nav>
 
       {/* Promo card */}
