@@ -2,23 +2,24 @@ import { Icon, type IconName } from "./Icon.tsx";
 
 /**
  * Mobile bottom navigation (shown below `lg`). Mirrors the app mock:
- * Home · Markets · centre Trade FAB · Portfolio · More.
+ * Home · Markets · centre Trade FAB · Portfolio · More (dropdown).
  * All targets are ≥56px tall for comfortable thumb reach.
  */
 export function BottomNav({ active }: { active: string }) {
-  const items: { label: string; icon: IconName; href: string }[] = [
-    { label: "Home", icon: "dashboard", href: "/" },
-    { label: "Markets", icon: "markets", href: "/markets" },
-    { label: "Portfolio", icon: "portfolio", href: "/portfolio" },
-    { label: "More", icon: "orders", href: "#" },
+  const more: { label: string; icon: IconName; href: string }[] = [
+    { label: "Watchlist", icon: "watchlist", href: "/watchlist" },
+    { label: "Orders", icon: "orders", href: "/orders" },
+    { label: "Analytics", icon: "analytics", href: "/analytics" },
+    { label: "News & Insights", icon: "news", href: "/news" },
+    { label: "AFX Explore", icon: "explore", href: "/explore" },
+    { label: "Settings", icon: "settings", href: "/settings" },
   ];
-  // Split around the centre FAB (Trade).
-  const left = items.slice(0, 2);
-  const right = items.slice(2);
+  const moreActive = more.some((m) => m.label === active);
 
   return (
-    <nav class="relative z-20 flex h-16 shrink-0 items-stretch border-t border-obsidian-500/60 bg-obsidian-850 pb-[env(safe-area-inset-bottom)] lg:hidden">
-      {left.map((it) => <Tab key={it.label} {...it} active={active} />)}
+    <nav class="relative z-20 flex h-16 shrink-0 items-stretch border-t border-base-300/70 bg-base-200 pb-[env(safe-area-inset-bottom)] lg:hidden">
+      <Tab label="Home" icon="dashboard" href="/" active={active} />
+      <Tab label="Markets" icon="markets" href="/markets" active={active} />
 
       {/* Centre Trade FAB */}
       <div class="relative flex w-1/5 items-start justify-center">
@@ -26,16 +27,51 @@ export function BottomNav({ active }: { active: string }) {
           href="/trade"
           aria-label="Trade"
           aria-current={active === "Trade" ? "page" : undefined}
-          class="absolute -top-5 grid h-14 w-14 place-items-center rounded-full bg-emerald-500 text-obsidian-950 shadow-lg shadow-emerald-900/50 ring-4 ring-obsidian-850 active:bg-emerald-400"
+          class="absolute -top-5 grid h-14 w-14 place-items-center rounded-full bg-primary text-primary-content shadow-lg shadow-emerald-900/50 ring-4 ring-base-200 active:bg-accent"
         >
           <Icon name="trade" size={24} />
         </a>
-        <span class="mt-9 text-[10px] font-medium text-platinum-400">
+        <span class="mt-9 text-[10px] font-medium text-base-content/50">
           Trade
         </span>
       </div>
 
-      {right.map((it) => <Tab key={it.label} {...it} active={active} />)}
+      <Tab
+        label="Portfolio"
+        icon="portfolio"
+        href="/portfolio"
+        active={active}
+      />
+
+      {/* More — dropdown opening upward */}
+      <div class="dropdown dropdown-top dropdown-end w-1/5">
+        <div
+          tabindex={0}
+          role="button"
+          class={`flex h-full w-full flex-col items-center justify-center gap-1 text-[10px] font-medium ${
+            moreActive ? "text-accent" : "text-base-content/50"
+          }`}
+        >
+          <Icon name="orders" size={22} />
+          <span>More</span>
+        </div>
+        <ul
+          tabindex={0}
+          class="dropdown-content menu z-30 mb-2 w-52 rounded-xl border border-base-300 bg-base-200 p-2 shadow-2xl"
+        >
+          {more.map((m) => (
+            <li key={m.label}>
+              <a
+                href={m.href}
+                class={m.label === active ? "menu-active text-accent" : ""}
+              >
+                <Icon name={m.icon} size={16} />
+                {m.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </nav>
   );
 }
@@ -55,7 +91,9 @@ function Tab(
       href={href}
       aria-current={isActive ? "page" : undefined}
       class={`flex w-1/5 flex-col items-center justify-center gap-1 text-[10px] font-medium transition-colors ${
-        isActive ? "text-emerald-300" : "text-platinum-400 active:text-ivory"
+        isActive
+          ? "text-accent"
+          : "text-base-content/50 active:text-base-content"
       }`}
     >
       <Icon name={icon} size={22} />

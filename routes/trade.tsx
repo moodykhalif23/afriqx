@@ -7,6 +7,25 @@ import { Sparkline } from "../components/ui/Sparkline.tsx";
 import TradeTicket from "../islands/TradeTicket.tsx";
 import { ACTIVE_PAIR, CANDLES } from "../data/mock.ts";
 
+const FAQ = [
+  {
+    q: "Direct African conversion",
+    a: "Convert NGN → KES directly without routing through the US Dollar, removing a layer of cost and delay.",
+  },
+  {
+    q: "Faster settlement",
+    a: "Fewer intermediaries means trades clear faster and you lose less to the spread on every conversion.",
+  },
+  {
+    q: "Improved regional liquidity",
+    a: "African-denominated order flow deepens local liquidity, tightening prices across connected markets.",
+  },
+  {
+    q: "Lower cross-border costs",
+    a: "Reduced FX friction lowers the cost of doing business across the continent for traders and institutions.",
+  },
+];
+
 export default define.page(function Trade() {
   const closes = CANDLES.map((c) => c.close);
   return (
@@ -71,14 +90,26 @@ export default define.page(function Trade() {
             </Card>
 
             <Card title="Why African pairs?">
-              <ul class="grid gap-3 text-sm text-platinum-300 sm:grid-cols-2">
-                <Bullet>
-                  Direct conversion — no routing through the US Dollar.
-                </Bullet>
-                <Bullet>Faster settlement and reduced spread loss.</Bullet>
-                <Bullet>Improved regional liquidity across markets.</Bullet>
-                <Bullet>Lower FX costs for cross-border African trade.</Bullet>
-              </ul>
+              <div class="join join-vertical w-full">
+                {FAQ.map((f, i) => (
+                  <div
+                    key={f.q}
+                    class="collapse-arrow join-item collapse border border-base-300 bg-base-100"
+                  >
+                    <input
+                      type="radio"
+                      name="why-afriqx"
+                      checked={i === 0}
+                    />
+                    <div class="collapse-title text-sm font-semibold text-base-content">
+                      {f.q}
+                    </div>
+                    <div class="collapse-content text-sm text-base-content/70">
+                      {f.a}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </Card>
           </div>
 
@@ -106,14 +137,5 @@ function MiniStat(
         {value}
       </div>
     </div>
-  );
-}
-
-function Bullet({ children }: { children: string }) {
-  return (
-    <li class="flex items-start gap-2">
-      <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />
-      <span>{children}</span>
-    </li>
   );
 }

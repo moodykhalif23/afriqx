@@ -208,7 +208,7 @@ function CurrencySelect({ signal }: { signal: { value: string } }) {
     <select
       value={signal.value}
       onChange={(e) => (signal.value = (e.target as HTMLSelectElement).value)}
-      class="h-12 rounded-lg border border-obsidian-500/70 bg-obsidian-800 px-3 text-sm font-semibold text-ivory outline-none focus:border-emerald-500/60"
+      class="select h-12 border-base-300 bg-base-200 text-sm font-semibold text-base-content focus:border-primary"
     >
       {TRADE_PAIRS.map((p) => (
         <option key={p.code} value={p.code}>{p.code}</option>
@@ -226,10 +226,10 @@ function AmountInput(
       inputMode="decimal"
       value={signal.value}
       onInput={(e) => (signal.value = (e.target as HTMLInputElement).value)}
-      class={`h-12 w-full text-right nums text-lg font-semibold text-ivory outline-none ${
+      class={`h-12 w-full text-right nums text-lg font-semibold text-base-content ${
         boxed
-          ? "rounded-lg border border-obsidian-500/70 bg-obsidian-900 px-3 focus:border-emerald-500/60"
-          : "bg-transparent px-3"
+          ? "input border-base-300 bg-base-100 focus:border-primary"
+          : "bg-transparent px-3 outline-none"
       }`}
     />
   );

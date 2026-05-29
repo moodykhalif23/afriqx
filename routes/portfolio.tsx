@@ -132,18 +132,22 @@ function SummaryCard(
   },
 ) {
   return (
-    <div class="rounded-2xl border border-obsidian-500/60 bg-obsidian-800/80 p-4">
-      <div class="text-[11px] uppercase tracking-wider text-platinum-400">
-        {label}
+    <div class="stats w-full rounded-2xl border border-base-300 bg-base-200/80 hover-lift">
+      <div class="stat p-4">
+        <div class="stat-title text-[11px] uppercase tracking-wider text-base-content/50">
+          {label}
+        </div>
+        <div
+          class={`stat-value nums text-lg font-bold sm:text-xl ${
+            accent ? "text-accent" : "text-base-content"
+          }`}
+        >
+          {value}
+        </div>
+        {children && (
+          <div class="stat-desc mt-1 flex items-center">{children}</div>
+        )}
       </div>
-      <div
-        class={`mt-1 nums text-lg font-bold sm:text-xl ${
-          accent ? "text-emerald-300" : "text-ivory"
-        }`}
-      >
-        {value}
-      </div>
-      {children && <div class="mt-1 flex items-center">{children}</div>}
     </div>
   );
 }

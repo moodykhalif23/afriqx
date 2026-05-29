@@ -11,30 +11,32 @@ export function Sidebar({ active }: { active: string }) {
         <Logo variant="full" size={26} />
       </div>
 
-      <nav class="flex-1 space-y-1 overflow-y-auto px-3 py-2">
+      <ul class="menu w-full flex-1 flex-nowrap gap-1 overflow-y-auto px-3 py-2">
         {NAV_ITEMS.map((item) => {
           const isActive = item.label === active;
           return (
-            <a
-              href={item.href}
-              aria-current={isActive ? "page" : undefined}
-              class={`group flex min-h-11 items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                isActive
-                  ? "bg-emerald-500/15 text-emerald-300 ring-1 ring-inset ring-emerald-500/25"
-                  : "text-platinum-300 hover:bg-obsidian-700/70 hover:text-ivory"
-              }`}
-            >
-              <Icon name={item.icon as IconName} size={18} />
-              <span class="flex-1 truncate">{item.label}</span>
-              {item.badge && (
-                <span class="rounded bg-gold-500/20 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-gold-300">
-                  {item.badge}
-                </span>
-              )}
-            </a>
+            <li key={item.label}>
+              <a
+                href={item.href}
+                aria-current={isActive ? "page" : undefined}
+                class={`min-h-11 gap-3 text-sm font-medium ${
+                  isActive
+                    ? "menu-active bg-emerald-500/15 text-emerald-300 ring-1 ring-inset ring-emerald-500/25"
+                    : "text-platinum-300"
+                }`}
+              >
+                <Icon name={item.icon as IconName} size={18} />
+                <span class="flex-1 truncate">{item.label}</span>
+                {item.badge && (
+                  <span class="badge badge-xs badge-soft badge-warning font-bold">
+                    {item.badge}
+                  </span>
+                )}
+              </a>
+            </li>
           );
         })}
-      </nav>
+      </ul>
 
       {/* Promo card */}
       <div class="mx-3 mb-3 rounded-xl border border-obsidian-500/60 bg-obsidian-800 p-4">

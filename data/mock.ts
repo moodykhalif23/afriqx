@@ -222,14 +222,14 @@ export interface NavItem {
 export const NAV_ITEMS: NavItem[] = [
   { label: "Dashboard", icon: "dashboard", href: "/", mobile: true },
   { label: "Markets", icon: "markets", href: "/markets", mobile: true },
-  { label: "Watchlist", icon: "watchlist", href: "#" },
+  { label: "Watchlist", icon: "watchlist", href: "/watchlist" },
   { label: "Trade", icon: "trade", href: "/trade", mobile: true },
   { label: "Portfolio", icon: "portfolio", href: "/portfolio", mobile: true },
-  { label: "Orders", icon: "orders", href: "#" },
-  { label: "Analytics", icon: "analytics", href: "#" },
-  { label: "News & Insights", icon: "news", href: "#" },
-  { label: "AFX Explore", icon: "explore", href: "#", badge: "NEW" },
-  { label: "Settings", icon: "settings", href: "#" },
+  { label: "Orders", icon: "orders", href: "/orders" },
+  { label: "Analytics", icon: "analytics", href: "/analytics" },
+  { label: "News & Insights", icon: "news", href: "/news" },
+  { label: "AFX Explore", icon: "explore", href: "/explore", badge: "NEW" },
+  { label: "Settings", icon: "settings", href: "/settings" },
 ];
 
 /** Market Movers (Top Gainers tab). */
@@ -709,3 +709,283 @@ export const PORTFOLIO_SUMMARY = {
   buyingPower: "$12,456.87",
   invested: "$105,190.45",
 };
+
+/* ------------------------------------------------------------------ *
+ *  Orders section
+ * ------------------------------------------------------------------ */
+
+export interface OrderRow {
+  date: string;
+  symbol: string;
+  type: "Market" | "Limit" | "Stop";
+  side: "Buy" | "Sell";
+  qty: string;
+  price: string;
+  status: "Filled" | "Pending" | "Cancelled";
+}
+
+export const ORDERS: OrderRow[] = [
+  {
+    date: "2026-05-29 09:42",
+    symbol: "AIRTEL AFRIQX",
+    type: "Market",
+    side: "Buy",
+    qty: "5,000",
+    price: "KES 123.45",
+    status: "Filled",
+  },
+  {
+    date: "2026-05-29 09:31",
+    symbol: "MTN GROUP",
+    type: "Limit",
+    side: "Buy",
+    qty: "1,200",
+    price: "ZAR 1,764.00",
+    status: "Filled",
+  },
+  {
+    date: "2026-05-29 09:18",
+    symbol: "SAFARICOM",
+    type: "Limit",
+    side: "Sell",
+    qty: "30,000",
+    price: "KES 19.50",
+    status: "Pending",
+  },
+  {
+    date: "2026-05-28 15:54",
+    symbol: "DANGCEM",
+    type: "Market",
+    side: "Buy",
+    qty: "2,500",
+    price: "NGN 682.50",
+    status: "Filled",
+  },
+  {
+    date: "2026-05-28 14:07",
+    symbol: "NILE BREWERIES",
+    type: "Limit",
+    side: "Buy",
+    qty: "8,000",
+    price: "KES 4.35",
+    status: "Filled",
+  },
+  {
+    date: "2026-05-28 11:22",
+    symbol: "JUMIA",
+    type: "Stop",
+    side: "Sell",
+    qty: "4,000",
+    price: "EGP 18.20",
+    status: "Cancelled",
+  },
+  {
+    date: "2026-05-27 16:40",
+    symbol: "EQUITY GROUP",
+    type: "Market",
+    side: "Buy",
+    qty: "15,000",
+    price: "KES 44.10",
+    status: "Filled",
+  },
+  {
+    date: "2026-05-27 10:05",
+    symbol: "NASPERS",
+    type: "Limit",
+    side: "Buy",
+    qty: "300",
+    price: "ZAR 3,180.00",
+    status: "Filled",
+  },
+];
+
+/* ------------------------------------------------------------------ *
+ *  Analytics section
+ * ------------------------------------------------------------------ */
+
+/** 12-month portfolio performance index (rebased to 100). */
+export const PERFORMANCE: number[] = [
+  100,
+  103.2,
+  101.8,
+  106.5,
+  109.1,
+  107.4,
+  112.8,
+  115.3,
+  113.9,
+  119.2,
+  122.6,
+  124.6,
+];
+
+export const ANALYTICS_STATS = [
+  { label: "Total Return", value: "+24.57%", change: 24.57 },
+  { label: "Best Sector", value: "Telecom", sub: "+12.4%" },
+  { label: "Volatility", value: "11.8%", sub: "30-day" },
+  { label: "Sharpe Ratio", value: "1.84", sub: "annualised" },
+];
+
+export const SECTOR_ALLOCATION = [
+  { label: "Telecom", pct: 34, color: "#1fae5f" },
+  { label: "Banking", pct: 28, color: "#34d27b" },
+  { label: "Materials", pct: 18, color: "#c79b3f" },
+  { label: "Technology", pct: 12, color: "#d9b769" },
+  { label: "Consumer", pct: 8, color: "#8b9694" },
+];
+
+/* ------------------------------------------------------------------ *
+ *  News & Insights section
+ * ------------------------------------------------------------------ */
+
+export interface FeatureNews {
+  title: string;
+  excerpt: string;
+  category: string;
+  time: string;
+  accent: string; // gradient tint
+}
+
+export const NEWS_FEATURED: FeatureNews[] = [
+  {
+    title: "Afriqx Launches Intra-African Currency Trading Pairs",
+    excerpt:
+      "Direct NGN/KES, ZAR/NGN and more — settling African trade without routing through the US Dollar.",
+    category: "Markets",
+    time: "2h ago",
+    accent: "from-emerald-600/40",
+  },
+  {
+    title: "PAPSS Boosts Cross-Border Settlements Across 15 Countries",
+    excerpt:
+      "The Pan-African Payment and Settlement System reports record continental clearing volumes this quarter.",
+    category: "Economy",
+    time: "6h ago",
+    accent: "from-gold-600/40",
+  },
+  {
+    title: "AFQX 50 Hits Record High as Investor Confidence Climbs",
+    excerpt:
+      "The pan-African composite gained 3.45% on the back of strong telecom and banking earnings.",
+    category: "Equities",
+    time: "8h ago",
+    accent: "from-emerald-700/40",
+  },
+];
+
+export const NEWS_FEED: NewsItem[] = [
+  {
+    title: "African Markets Extend Gains as Investor Confidence Rises",
+    category: "Equities",
+    time: "4h ago",
+  },
+  {
+    title: "Dangote Cement Leads Gainers on Strong Q2 Output",
+    category: "Markets",
+    time: "5h ago",
+  },
+  {
+    title: "Naira Strengthens Against Regional Peers on AFXI",
+    category: "FX",
+    time: "7h ago",
+  },
+  {
+    title: "Safaricom Expands M-Pesa Rails Into Three New Markets",
+    category: "Technology",
+    time: "9h ago",
+  },
+  {
+    title: "Continental Reserve Index Signals Improving Stability",
+    category: "Economy",
+    time: "11h ago",
+  },
+  {
+    title: "NILE TECH Index Rallies on African Fintech Momentum",
+    category: "Markets",
+    time: "13h ago",
+  },
+];
+
+/* ------------------------------------------------------------------ *
+ *  AFX Explore section
+ * ------------------------------------------------------------------ */
+
+export interface ExploreProduct {
+  name: string;
+  tagline: string;
+  icon: string; // Icon name
+  badge?: string;
+}
+
+export const EXPLORE_PRODUCTS: ExploreProduct[] = [
+  {
+    name: "Afriqx Exchange",
+    tagline: "Primary trading & market infrastructure.",
+    icon: "markets",
+  },
+  {
+    name: "Afriqx FX",
+    tagline: "Direct African currency exchange — no USD routing.",
+    icon: "trade",
+  },
+  {
+    name: "Afriqx Intelligence",
+    tagline: "Data analytics & institutional insights.",
+    icon: "analytics",
+    badge: "NEW",
+  },
+  {
+    name: "Afriqx Terminal",
+    tagline: "Professional institutional trading workspace.",
+    icon: "dashboard",
+  },
+  {
+    name: "Afriqx Markets",
+    tagline: "Live market data & trading environment.",
+    icon: "watchlist",
+  },
+  {
+    name: "Afriqx API",
+    tagline: "Developer-focused financial infrastructure APIs.",
+    icon: "explore",
+  },
+];
+
+export interface ExploreLayer {
+  n: string;
+  title: string;
+  desc: string;
+}
+
+export const EXPLORE_LAYERS: ExploreLayer[] = [
+  {
+    n: "01",
+    title: "Market Exchange Core",
+    desc:
+      "Ultra-low-latency engine for equities, ETFs, debt, commodities and tokenized assets.",
+  },
+  {
+    n: "02",
+    title: "African FX Engine",
+    desc:
+      "Direct African currency conversion without routing through the US Dollar.",
+  },
+  {
+    n: "03",
+    title: "Pan-African Liquidity Network",
+    desc:
+      "Connecting banks, fintechs, mobile money, brokers and regional exchanges.",
+  },
+  {
+    n: "04",
+    title: "Data & Intelligence Layer",
+    desc:
+      "Bloomberg-scale African market analytics, FX heatmaps and capital-flow monitoring.",
+  },
+  {
+    n: "05",
+    title: "AI Market Layer",
+    desc:
+      "Predictive liquidity modeling, currency-stress detection and automated reporting.",
+  },
+];

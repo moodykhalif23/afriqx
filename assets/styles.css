@@ -171,6 +171,35 @@
       var(--color-obsidian-900);
   }
 
+  /* Lift-on-hover for interactive cards */
+  .hover-lift {
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      border-color 0.2s ease;
+  }
+  .hover-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.6);
+    border-color: color-mix(
+      in oklab,
+      var(--color-emerald-500) 40%,
+      transparent
+    );
+  }
+
+  /* Subtle 3D tilt on hover (CSS-only, no JS) */
+  .card-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    will-change: transform;
+  }
+  .card-3d:hover {
+    transform: perspective(900px) rotateX(3deg) rotateY(-4deg) translateY(-4px)
+      scale(1.015);
+    box-shadow: -12px 18px 44px -14px rgba(0, 0, 0, 0.7);
+  }
+
   /* Hairline grid backdrop (terminal / data surfaces) */
   .afriqx-grid {
     background-image:
