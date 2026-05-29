@@ -1,10 +1,144 @@
 @import "tailwindcss";
-.fresh-gradient {
-  background-color: rgb(134, 239, 172);
-  background-image: linear-gradient(
-    to right bottom,
-    rgb(219, 234, 254),
-    rgb(187, 247, 208),
-    rgb(254, 249, 195)
-  );
+
+/*
+  AFRIQX Design System
+  "The Operating System for African Capital Markets"
+
+  Palette  : Obsidian Black · Deep Emerald · Muted Gold · Platinum Silver · Warm Ivory
+  Type     : Satoshi (display) · Inter (body) · JetBrains Mono (tabular market data)
+*/
+
+@theme {
+  /* ---- Obsidian (backgrounds, surfaces, borders) ---- */
+  --color-obsidian-950: #060908;
+  --color-obsidian-900: #0a0e0c; /* app background */
+  --color-obsidian-850: #0d1310;
+  --color-obsidian-800: #111815; /* panels */
+  --color-obsidian-700: #16201b; /* cards / surfaces */
+  --color-obsidian-600: #1d2a23; /* raised surfaces */
+  --color-obsidian-500: #28382f; /* strong borders */
+  --color-obsidian-400: #3a4d42; /* muted borders */
+
+  /* ---- Deep Emerald (brand primary, growth, positive) ---- */
+  --color-emerald-300: #5fd99a;
+  --color-emerald-400: #34d27b; /* bright / up moves */
+  --color-emerald-500: #1fae5f; /* primary */
+  --color-emerald-600: #15833f; /* deep emerald */
+  --color-emerald-700: #0f6531;
+  --color-emerald-800: #0a4a25;
+  --color-emerald-900: #073018;
+
+  /* ---- Muted Gold (premium accent, CTAs, value) ---- */
+  --color-gold-300: #e8cf94;
+  --color-gold-400: #d9b769;
+  --color-gold-500: #c79b3f; /* primary gold */
+  --color-gold-600: #a87f2c;
+  --color-gold-700: #856222;
+
+  /* ---- Platinum Silver (secondary text, technology) ---- */
+  --color-platinum-100: #eef1f2;
+  --color-platinum-200: #d7dcde;
+  --color-platinum-300: #b9c1c2; /* secondary text */
+  --color-platinum-400: #8b9694; /* muted text */
+
+  /* ---- Warm Ivory (primary text, clarity) ---- */
+  --color-ivory: #f4efe4;
+
+  /* ---- Semantic market direction ---- */
+  --color-up: #34d27b;
+  --color-down: #e5565b;
+
+  /* ---- Typography ---- */
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "Satoshi", "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  /* ---- Radii ---- */
+  --radius-xl: 0.875rem;
+  --radius-2xl: 1.125rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-obsidian-900);
+    color: var(--color-ivory);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-emerald-600);
+    color: var(--color-ivory);
+  }
+
+  /* Refined, low-contrast scrollbars to match the institutional feel */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-obsidian-500) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--color-obsidian-500);
+    border-radius: 9999px;
+  }
+}
+
+@layer utilities {
+  /* Numeric data: tabular figures so ticker prices don't jitter */
+  .nums {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Emerald → gold brand gradient text (wordmarks, headlines) */
+  .text-gradient-brand {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-emerald-400),
+      var(--color-emerald-500) 45%,
+      var(--color-gold-400)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Ambient continental glow for hero / empty backgrounds */
+  .afriqx-aurora {
+    background:
+      radial-gradient(
+        60% 50% at 18% 0%,
+        color-mix(in oklab, var(--color-emerald-600) 26%, transparent),
+        transparent 70%
+      ),
+      radial-gradient(
+        55% 45% at 92% 8%,
+        color-mix(in oklab, var(--color-gold-600) 18%, transparent),
+        transparent 70%
+      ),
+      var(--color-obsidian-900);
+  }
+
+  /* Hairline grid backdrop (terminal / data surfaces) */
+  .afriqx-grid {
+    background-image:
+      linear-gradient(
+        color-mix(in oklab, var(--color-obsidian-500) 45%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        90deg,
+        color-mix(in oklab, var(--color-obsidian-500) 45%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 28px 28px;
+  }
 }
