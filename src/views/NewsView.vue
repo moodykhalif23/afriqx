@@ -27,7 +27,7 @@ const responsive = [
     <Carousel :value="featured" :numVisible="3" :numScroll="1" :responsiveOptions="responsive" :showIndicators="false">
       <template #item="{ data }">
         <div class="mr-4">
-          <article class="card-3d flex h-48 flex-col justify-end overflow-hidden rounded-2xl border border-obsidian-500/60 bg-linear-to-br from-emerald-700/30 to-obsidian-800 p-5">
+          <article class="flex h-48 flex-col justify-end overflow-hidden rounded-2xl border border-obsidian-500/60 bg-linear-to-br from-emerald-700/30 to-obsidian-800 p-5">
             <Tag :value="data.category" :severity="sev(data.category)" class="mb-2 w-fit" />
             <h3 class="font-display text-lg font-bold leading-snug text-ivory">{{ data.title }}</h3>
             <p class="mt-1 line-clamp-2 text-sm text-platinum-300">{{ data.excerpt }}</p>
