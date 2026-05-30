@@ -9,7 +9,6 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
-// CreateUser inserts a new user. Returns ErrDuplicate if the email is taken.
 func (s *Store) CreateUser(ctx context.Context, u *models.User) error {
 	_, err := s.pool.Exec(ctx, `
 		INSERT INTO users (id, email, name, tier, password_hash)

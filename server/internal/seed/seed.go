@@ -1,5 +1,3 @@
-// Package seed populates the database. Global market data is seeded once at
-// startup; per-user starter data is provisioned when an account is created.
 package seed
 
 import (
@@ -9,8 +7,6 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-// EnsureMarketData upserts all global (ownerless) market data. It is idempotent
-// and safe to run on every startup; existing rows are refreshed.
 func EnsureMarketData(ctx context.Context, pool *pgxpool.Pool) error {
 	b := &pgx.Batch{}
 

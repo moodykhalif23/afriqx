@@ -1,6 +1,3 @@
-// Package market runs a simulated live-price engine. It seeds in-memory state
-// from the database, applies a small random walk on each tick, and broadcasts
-// snapshots over the WebSocket hub. The database is not written on every tick.
 package market
 
 import (
@@ -47,7 +44,6 @@ type Engine struct {
 	pair   pairState
 }
 
-// New builds an engine. interval is the tick period; rngSeed seeds the walk.
 func New(hub Broadcaster, interval time.Duration, rngSeed int64) *Engine {
 	return &Engine{
 		hub:      hub,

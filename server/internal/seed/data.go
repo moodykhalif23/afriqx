@@ -2,9 +2,6 @@ package seed
 
 import "math"
 
-// This file ports the static dataset from the frontend's src/data/mock.ts so
-// the database is seeded with identical values.
-
 type indexRow struct {
 	symbol string
 	name   string
