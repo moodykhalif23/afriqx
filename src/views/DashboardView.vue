@@ -1,0 +1,172 @@
+<script setup lang="ts">
+import AppShell from "@/components/shell/AppShell.vue";
+import Card from "@/components/ui/Card.vue";
+import PriceChange from "@/components/ui/PriceChange.vue";
+import Sparkline from "@/components/charts/Sparkline.vue";
+import CandleChart from "@/components/charts/CandleChart.vue";
+import DonutChart from "@/components/charts/DonutChart.vue";
+import FxHeatmap from "@/components/charts/FxHeatmap.vue";
+import Button from "primevue/button";
+import Tag from "primevue/tag";
+import {
+  ACTIVE_PAIR,
+  AFXI,
+  CANDLES,
+  INDEXES,
+  MARKET_MOVERS,
+  NEWS,
+  PORTFOLIO,
+  RECENT_ORDERS,
+  TIMEFRAMES,
+  WATCHLIST,
+} from "@/data/mock";
+
+const strip = [
+  ...INDEXES.slice(0, 5).map((ix) => ({
+    label: ix.symbol,
+    value: ix.value.toLocaleString("en-US", { minimumFractionDigits: 2 }),
+    change: ix.change,
+    series: ix.series,
+  })),
+  {
+    label: `${AFXI.symbol} (African FX Index)`,
+    value: AFXI.value.toFixed(2),
+    change: AFXI.change,
+    series: [97.1, 97.6, 97.3, 98, 98.2, 97.9, 98.4, 98.65],
+  },
+];
+</script>
+
+<template>
+  <AppShell title="Dashboard">
+    <!-- Index strip -->
+    <div class="grid grid-cols-2 overflow-hidden rounded-xl border border-obsidian-500/60 bg-obsidian-800/80 sm:grid-cols-3 lg:grid-cols-6">
+      <div v-for="it in strip" :key="it.label"
+        class="flex items-center justify-between gap-2 border-b border-obsidian-500/40 px-5 py-4 lg:border-b-0 lg:border-r lg:last:border-r-0">
+        <div class="min-w-0">
+          <div class="truncate text-[10px] font-semibold uppercase tracking-wider text-platinum-400">{{ it.label }}</div>
+          <div class="mt-0.5 nums text-sm font-semibold text-ivory">{{ it.value }}</div>
+          <PriceChange :value="it.change" percent :arrow="false" class="text-[11px]" />
+        </div>
+        <div class="w-14"><Sparkline :data="it.series" :height="26" /></div>
+      </div>
+    </div>
+
+    <div class="mt-5 grid grid-cols-1 gap-5 sm:mt-7 sm:gap-7 xl:grid-cols-[1fr_360px]">
+      <div class="min-w-0 space-y-5 sm:space-y-7">
+        <!-- Chart panel -->
+        <Card flush>
+          <div class="flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-obsidian-500/50 px-5 py-4">
+            <div class="flex items-center gap-3">
+              <span class="grid h-9 w-9 place-items-center rounded-full bg-obsidian-700 text-lg">{{ ACTIVE_PAIR.flag }}</span>
+              <div class="leading-tight">
+                <div class="font-display text-base font-bold text-ivory">{{ ACTIVE_PAIR.pair }}</div>
+                <div class="text-[11px] text-platinum-400">{{ ACTIVE_PAIR.name }}</div>
+              </div>
+            </div>
+            <div class="leading-tight">
+              <div class="nums text-2xl font-bold text-ivory">{{ ACTIVE_PAIR.price.toFixed(4) }}</div>
+              <PriceChange :value="ACTIVE_PAIR.changeAbs" :decimals="4" class="text-xs" />
+              <span class="ml-1 text-xs text-emerald-400">({{ ACTIVE_PAIR.change }}%)</span>
+            </div>
+            <div class="hidden items-center gap-6 sm:flex">
+              <div class="leading-tight"><div class="text-[10px] uppercase tracking-wider text-platinum-400">24h High</div><div class="nums text-sm text-ivory">{{ ACTIVE_PAIR.high24h.toFixed(4) }}</div></div>
+              <div class="leading-tight"><div class="text-[10px] uppercase tracking-wider text-platinum-400">24h Low</div><div class="nums text-sm text-ivory">{{ ACTIVE_PAIR.low24h.toFixed(4) }}</div></div>
+              <div class="leading-tight"><div class="text-[10px] uppercase tracking-wider text-platinum-400">24h Vol</div><div class="nums text-sm text-ivory">{{ ACTIVE_PAIR.volume24h }}</div></div>
+            </div>
+            <div class="ml-auto flex items-center gap-2">
+              <Button v-tooltip.bottom="'Add to watchlist'" icon="pi pi-star" text rounded severity="warn" />
+              <Button label="Add to Watchlist" size="small" severity="secondary" outlined />
+            </div>
+          </div>
+          <div class="flex items-center gap-1 border-b border-obsidian-500/50 px-3 py-2">
+            <button v-for="tf in TIMEFRAMES" :key="tf"
+              class="nums rounded-md px-2.5 py-1 text-xs font-medium"
+              :class="tf === '1D' ? 'bg-emerald-500/20 text-emerald-300' : 'text-platinum-400 hover:bg-obsidian-700 hover:text-ivory'">{{ tf }}</button>
+            <span class="ml-auto"><Tag value="ECharts" severity="contrast" /></span>
+          </div>
+          <div class="afriqx-grid bg-obsidian-900/40 px-2 py-3">
+            <CandleChart :candles="CANDLES" :last-price="ACTIVE_PAIR.price" :height="400" />
+          </div>
+        </Card>
+
+        <!-- Lower trio -->
+        <div class="grid grid-cols-1 gap-5 sm:gap-7 lg:grid-cols-3">
+          <Card title="Market Movers">
+            <template #action><span class="text-emerald-300">Top Gainers</span></template>
+            <ul class="space-y-3">
+              <li v-for="(m, i) in MARKET_MOVERS" :key="m.symbol" class="flex items-center gap-3">
+                <span class="grid h-7 w-7 shrink-0 place-items-center rounded-md bg-obsidian-600 text-[10px] font-bold text-platinum-200">{{ i + 1 }}</span>
+                <div class="min-w-0 flex-1"><div class="truncate text-sm font-medium text-ivory">{{ m.name }}</div><div class="nums text-[11px] text-platinum-400">{{ m.price }}</div></div>
+                <div class="w-14"><Sparkline :data="m.series" tone="up" :height="24" /></div>
+                <PriceChange :value="m.change" percent :arrow="false" class="w-14 justify-end text-xs" />
+              </li>
+            </ul>
+          </Card>
+
+          <Card title="News & Insights">
+            <template #action><a href="#">View all</a></template>
+            <ul class="space-y-4">
+              <li v-for="n in NEWS" :key="n.title" class="flex gap-3">
+                <div class="grid h-12 w-12 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-obsidian-600 to-obsidian-700 text-platinum-400"><i class="pi pi-image" /></div>
+                <div class="min-w-0">
+                  <p class="line-clamp-2 text-sm font-medium leading-snug text-ivory">{{ n.title }}</p>
+                  <div class="mt-1 flex items-center gap-2"><Tag :value="n.category" severity="success" /><span class="text-[11px] text-platinum-400">{{ n.time }}</span></div>
+                </div>
+              </li>
+            </ul>
+          </Card>
+
+          <Card title="Portfolio Overview">
+            <template #action><a href="#">View full portfolio</a></template>
+            <DonutChart :data="PORTFOLIO.allocations" :height="150" center-label="Total Value" :center-value="PORTFOLIO.total">
+              <template #sub><PriceChange :value="PORTFOLIO.change" percent class="text-[11px]" /></template>
+            </DonutChart>
+            <ul class="mt-3 space-y-2">
+              <li v-for="a in PORTFOLIO.allocations" :key="a.label" class="flex items-center gap-2 text-xs">
+                <span class="h-2.5 w-2.5 rounded-sm" :style="{ backgroundColor: a.color }" />
+                <span class="flex-1 text-platinum-200">{{ a.label }}</span>
+                <span class="text-platinum-400">{{ a.pct }}%</span>
+                <span class="nums w-20 text-right text-ivory">{{ a.value }}</span>
+              </li>
+            </ul>
+          </Card>
+        </div>
+      </div>
+
+      <!-- Right rail -->
+      <div class="space-y-5 sm:space-y-7">
+        <Card title="Watchlist">
+          <template #action><a href="#">View all</a></template>
+          <ul class="space-y-2.5">
+            <li v-for="h in WATCHLIST.slice(0, 6)" :key="h.symbol" class="flex items-center gap-3">
+              <div class="min-w-0 flex-1"><div class="truncate text-sm font-medium text-ivory">{{ h.name }}</div></div>
+              <span class="nums text-sm text-platinum-200">{{ h.price }}</span>
+              <PriceChange :value="h.change" percent :arrow="false" class="w-16 justify-end text-xs" />
+            </li>
+          </ul>
+        </Card>
+
+        <FxHeatmap />
+
+        <Card title="Recent Orders" flush>
+          <template #action><a href="#">View all</a></template>
+          <div class="px-5 pb-4">
+            <table class="w-full text-left text-xs">
+              <thead><tr class="text-[10px] uppercase tracking-wider text-platinum-400">
+                <th class="pb-2 font-medium">Symbol</th><th class="pb-2 font-medium">Side</th><th class="pb-2 text-right font-medium">Price</th>
+              </tr></thead>
+              <tbody class="divide-y divide-obsidian-500/40">
+                <tr v-for="o in RECENT_ORDERS" :key="o.symbol">
+                  <td class="py-2 font-medium text-ivory">{{ o.symbol }}</td>
+                  <td class="py-2 font-semibold" :class="o.side === 'Buy' ? 'text-emerald-400' : 'text-[var(--color-down)]'">{{ o.side }}</td>
+                  <td class="nums py-2 text-right text-platinum-200">{{ o.price }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </Card>
+      </div>
+    </div>
+  </AppShell>
+</template>
