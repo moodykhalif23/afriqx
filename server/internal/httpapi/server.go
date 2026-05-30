@@ -1,4 +1,3 @@
-// Package httpapi wires the chi router, middleware and all HTTP handlers.
 package httpapi
 
 import (
@@ -24,7 +23,6 @@ type Server struct {
 	provision func(context.Context, string) error
 }
 
-// NewServer constructs a Server. provision seeds starter data for a new user.
 func NewServer(
 	st *store.Store,
 	a *auth.Authenticator,
