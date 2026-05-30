@@ -21,36 +21,12 @@ import {
   WATCHLIST,
 } from "@/data/mock";
 
-const strip = [
-  ...INDEXES.slice(0, 5).map((ix) => ({
-    label: ix.symbol,
-    value: ix.value.toLocaleString("en-US", { minimumFractionDigits: 2 }),
-    change: ix.change,
-    series: ix.series,
-  })),
-  {
-    label: `${AFXI.symbol} (African FX Index)`,
-    value: AFXI.value.toFixed(2),
-    change: AFXI.change,
-    series: [97.1, 97.6, 97.3, 98, 98.2, 97.9, 98.4, 98.65],
-  },
-];
+
 </script>
 
 <template>
   <AppShell title="Dashboard">
     <!-- Index strip -->
-    <div class="grid grid-cols-2 overflow-hidden rounded-xl border border-obsidian-500/60 bg-obsidian-800/80 sm:grid-cols-3 lg:grid-cols-6">
-      <div v-for="it in strip" :key="it.label"
-        class="flex items-center justify-between gap-2 border-b border-obsidian-500/40 px-5 py-4 lg:border-b-0 lg:border-r lg:last:border-r-0">
-        <div class="min-w-0">
-          <div class="truncate text-[10px] font-semibold uppercase tracking-wider text-platinum-400">{{ it.label }}</div>
-          <div class="mt-0.5 nums text-sm font-semibold text-ivory">{{ it.value }}</div>
-          <PriceChange :value="it.change" percent :arrow="false" class="text-[11px]" />
-        </div>
-        <div class="w-14"><Sparkline :data="it.series" :height="26" /></div>
-      </div>
-    </div>
 
     <div class="mt-5 grid grid-cols-1 gap-5 sm:mt-7 sm:gap-7 xl:grid-cols-[1fr_360px]">
       <div class="min-w-0 space-y-5 sm:space-y-7">
