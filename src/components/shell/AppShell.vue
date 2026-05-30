@@ -8,7 +8,7 @@ defineProps<{ title?: string }>();
 </script>
 
 <template>
-  <div class="flex h-dhv overflow-hidden bg-obsidian-900 text-ivory">
+  <div class="flex h-dvh overflow-hidden bg-obsidian-900 text-ivory">
     <AppSidebar />
     <div class="flex min-w-0 flex-1 flex-col">
       <AppTopbar :title="title" />
