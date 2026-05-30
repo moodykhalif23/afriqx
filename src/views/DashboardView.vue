@@ -83,7 +83,11 @@ const strip = [
             <button v-for="tf in TIMEFRAMES" :key="tf"
               class="nums rounded-md px-2.5 py-1 text-xs font-medium"
               :class="tf === '1D' ? 'bg-emerald-500/20 text-emerald-300' : 'text-platinum-400 hover:bg-obsidian-700 hover:text-ivory'">{{ tf }}</button>
-            <span class="ml-auto"><Tag value="ECharts" severity="contrast" /></span>
+            <div class="ml-auto flex items-center gap-1 text-platinum-400">
+              <i class="pi pi-chart-bar text-xs" />
+              <i class="pi pi-window-maximize text-xs" />
+              <i class="pi pi-camera text-xs" />
+            </div>
           </div>
           <div class="afriqx-grid bg-obsidian-900/40 px-2 py-3">
             <CandleChart :candles="CANDLES" :last-price="ACTIVE_PAIR.price" :height="400" />
@@ -119,15 +123,14 @@ const strip = [
 
           <Card title="Portfolio Overview">
             <template #action><a href="#">View full portfolio</a></template>
-            <DonutChart :data="PORTFOLIO.allocations" :height="150" center-label="Total Value" :center-value="PORTFOLIO.total">
+            <DonutChart :data="PORTFOLIO.allocations" :height="160" center-label="Total Value" :center-value="PORTFOLIO.total">
               <template #sub><PriceChange :value="PORTFOLIO.change" percent class="text-[11px]" /></template>
             </DonutChart>
-            <ul class="mt-3 space-y-2">
-              <li v-for="a in PORTFOLIO.allocations" :key="a.label" class="flex items-center gap-2 text-xs">
-                <span class="h-2.5 w-2.5 rounded-sm" :style="{ backgroundColor: a.color }" />
-                <span class="flex-1 text-platinum-200">{{ a.label }}</span>
-                <span class="text-platinum-400">{{ a.pct }}%</span>
-                <span class="nums w-20 text-right text-ivory">{{ a.value }}</span>
+            <ul class="mt-4 space-y-3">
+              <li v-for="a in PORTFOLIO.allocations" :key="a.label" class="flex items-center gap-3">
+                <span class="h-2.5 w-2.5 shrink-0 rounded-full" :style="{ backgroundColor: a.color }" />
+                <span class="flex-1 text-sm text-platinum-200">{{ a.label }}</span>
+                <span class="nums text-sm font-medium text-ivory">{{ a.value }}</span>
               </li>
             </ul>
           </Card>

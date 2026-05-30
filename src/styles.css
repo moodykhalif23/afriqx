@@ -132,4 +132,21 @@
       scale(1.015);
     box-shadow: -12px 18px 44px -14px rgba(0, 0, 0, 0.7);
   }
+
+  /* Auto-scrolling ticker (pauses on hover) */
+  .ticker-track {
+    animation: afriqx-ticker 36s linear infinite;
+  }
+  .ticker-track:hover {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes afriqx-ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }

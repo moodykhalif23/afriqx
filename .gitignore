@@ -12,3 +12,4 @@ _fresh/
 node_modules/
 vendor/
 .vscode
+dist/

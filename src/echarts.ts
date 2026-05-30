@@ -5,6 +5,7 @@ import {
   BarChart,
   CandlestickChart,
   LineChart,
+  MapChart,
   PieChart,
 } from "echarts/charts";
 import {
@@ -21,6 +22,7 @@ use([
   BarChart,
   CandlestickChart,
   PieChart,
+  MapChart,
   GridComponent,
   TooltipComponent,
   LegendComponent,

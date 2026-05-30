@@ -40,7 +40,9 @@ const items = [
     </IconField>
 
     <div class="ml-auto flex items-center gap-1 sm:ml-0">
-      <Button v-tooltip.bottom="'Search'" icon="pi pi-search" text rounded severity="secondary" class="sm:hidden" />
+      <span class="sm:hidden">
+        <Button v-tooltip.bottom="'Search'" icon="pi pi-search" text rounded severity="secondary" />
+      </span>
       <div class="mr-2 hidden items-center gap-2 lg:flex">
         <span class="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px] shadow-emerald-400/70" />
         <div class="leading-tight">
@@ -49,7 +51,9 @@ const items = [
         </div>
       </div>
       <Button v-tooltip.bottom="'Notifications'" icon="pi pi-bell" text rounded severity="secondary" />
-      <Button v-tooltip.bottom="'Messages'" icon="pi pi-envelope" text rounded severity="secondary" class="hidden sm:inline-flex" />
+      <span class="hidden sm:inline-flex">
+        <Button v-tooltip.bottom="'Messages'" icon="pi pi-envelope" text rounded severity="secondary" />
+      </span>
 
       <button
         type="button"

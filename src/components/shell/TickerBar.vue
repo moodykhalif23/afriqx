@@ -2,6 +2,9 @@
 import Logo from "@/components/ui/Logo.vue";
 import PriceChange from "@/components/ui/PriceChange.vue";
 import { TICKER } from "@/data/mock";
+
+// Duplicate the list so the marquee loops seamlessly (−50% translate).
+const doubled = [...TICKER, ...TICKER];
 </script>
 
 <template>
@@ -14,11 +17,17 @@ import { TICKER } from "@/data/mock";
         African Markets. African Value. <span class="text-emerald-400">African Future.</span>
       </span>
     </div>
-    <div class="flex flex-1 items-center gap-6 overflow-x-auto">
-      <div v-for="t in TICKER" :key="t.label" class="flex shrink-0 items-center gap-2 text-xs">
-        <span class="font-semibold text-platinum-300">{{ t.label }}</span>
-        <span class="nums text-ivory">{{ t.value }}</span>
-        <PriceChange :value="t.change" percent class="text-[11px]" />
+    <div class="flex flex-1 items-center overflow-hidden">
+      <div class="ticker-track flex shrink-0 items-center">
+        <div
+          v-for="(t, i) in doubled"
+          :key="i"
+          class="flex shrink-0 items-center gap-2 pr-8 text-xs"
+        >
+          <span class="font-semibold text-platinum-300">{{ t.label }}</span>
+          <span class="nums text-ivory">{{ t.value }}</span>
+          <PriceChange :value="t.change" percent class="text-[11px]" />
+        </div>
       </div>
     </div>
     <button type="button"
