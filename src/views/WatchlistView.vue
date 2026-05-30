@@ -18,7 +18,7 @@ import { WATCHLIST } from "@/data/mock";
     </div>
 
     <DataTable :value="WATCHLIST" dataKey="symbol" scrollable stripedRows
-      class="rounded-2xl border border-obsidian-500/60 bg-obsidian-800/80 p-2 sm:p-3">
+      class="">
       <Column field="symbol" header="Symbol"><template #body="{ data }"><span class="font-semibold text-ivory">{{ data.symbol }}</span></template></Column>
       <Column field="name" header="Name"><template #body="{ data }"><span class="text-platinum-300">{{ data.name }}</span></template></Column>
       <Column header="Last Price"><template #body="{ data }"><span class="nums text-ivory">{{ data.price }}</span></template></Column>
