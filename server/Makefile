@@ -1,10 +1,13 @@
-.PHONY: run build test vet tidy db-up db-down db-logs fmt
+.PHONY: run build test vet tidy db-up db-down db-logs fmt docs
 
 run:
 	go run ./cmd/api
 
 build:
 	go build -o bin/api ./cmd/api
+
+docs:
+	go run ./cmd/docgen
 
 vet:
 	go vet ./...

@@ -1,0 +1,298 @@
+[
+  {
+    "method": "GET",
+    "path": "/healthz",
+    "group": "System",
+    "auth": false,
+    "summary": "Liveness probe + database ping",
+    "response": "{status}"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "group": "Auth",
+    "auth": false,
+    "summary": "Authenticate and receive a JWT",
+    "request": "{email,password}",
+    "response": "AuthResponse"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/register",
+    "group": "Auth",
+    "auth": false,
+    "summary": "Create an account and provision starter data",
+    "request": "{email,password,name}",
+    "response": "AuthResponse"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/markets/active-pair",
+    "group": "Markets",
+    "auth": false,
+    "summary": "Headline dashboard instrument",
+    "response": "ActivePair"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/markets/afxi",
+    "group": "Markets",
+    "auth": false,
+    "summary": "AFXI benchmark",
+    "response": "Benchmark"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/markets/candles",
+    "group": "Markets",
+    "auth": false,
+    "summary": "OHLC candle series",
+    "request": "?pair",
+    "response": "Candle[]"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/markets/commodities",
+    "group": "Markets",
+    "auth": false,
+    "summary": "Tracked commodity contracts",
+    "response": "Commodity[]"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/markets/equities",
+    "group": "Markets",
+    "auth": false,
+    "summary": "Listed African equities",
+    "response": "Equity[]"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/markets/fx",
+    "group": "Markets",
+    "auth": false,
+    "summary": "Direct African FX pairs",
+    "response": "FxPair[]"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/markets/fx/currencies",
+    "group": "Markets",
+    "auth": false,
+    "summary": "Tradable currencies for conversion",
+    "response": "Currency[]"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/markets/fx/heatmap",
+    "group": "Markets",
+    "auth": false,
+    "summary": "Currency-strength buckets",
+    "response": "FxHeatmap"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/markets/fx/quote",
+    "group": "Markets",
+    "auth": false,
+    "summary": "Direct conversion quote (no USD routing)",
+    "request": "?from\u0026to\u0026amount",
+    "response": "FxQuote"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/markets/indices",
+    "group": "Markets",
+    "auth": false,
+    "summary": "Proprietary AFQX indices",
+    "response": "MarketIndex[]"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/markets/movers",
+    "group": "Markets",
+    "auth": false,
+    "summary": "Top gainers",
+    "response": "Mover[]"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/markets/ticker",
+    "group": "Markets",
+    "auth": false,
+    "summary": "Ticker-bar items",
+    "response": "TickerItem[]"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/conversions",
+    "group": "FX Conversion",
+    "auth": true,
+    "summary": "Conversion ledger (newest first)",
+    "response": "Conversion[]"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/convert",
+    "group": "FX Conversion",
+    "auth": true,
+    "summary": "Execute \u0026 record a direct FX conversion",
+    "request": "{from,to,amount}",
+    "response": "Conversion"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/news",
+    "group": "News",
+    "auth": false,
+    "summary": "News feed",
+    "response": "NewsItem[]"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/news/featured",
+    "group": "News",
+    "auth": false,
+    "summary": "Featured stories",
+    "response": "FeatureNews[]"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/explore/layers",
+    "group": "Explore",
+    "auth": false,
+    "summary": "Exchange-architecture layers",
+    "response": "ExploreLayer[]"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/explore/products",
+    "group": "Explore",
+    "auth": false,
+    "summary": "AFX Explore product cards",
+    "response": "ExploreProduct[]"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/ws",
+    "group": "Live Feed",
+    "auth": false,
+    "summary": "WebSocket live price feed (origin-checked)",
+    "response": "stream\u003cLiveTick\u003e"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/me",
+    "group": "Account",
+    "auth": true,
+    "summary": "Current account",
+    "response": "PublicUser"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/settings",
+    "group": "Account",
+    "auth": true,
+    "summary": "Read preferences",
+    "response": "Settings"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/settings",
+    "group": "Account",
+    "auth": true,
+    "summary": "Update preferences",
+    "request": "Settings",
+    "response": "Settings"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/watchlist",
+    "group": "Watchlist",
+    "auth": true,
+    "summary": "User's tracked instruments",
+    "response": "Holding[]"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/watchlist",
+    "group": "Watchlist",
+    "auth": true,
+    "summary": "Add an instrument",
+    "request": "{symbol}",
+    "response": "Holding[]"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/watchlist/catalog",
+    "group": "Watchlist",
+    "auth": true,
+    "summary": "All addable instruments",
+    "response": "Holding[]"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/watchlist/{symbol}",
+    "group": "Watchlist",
+    "auth": true,
+    "summary": "Remove an instrument",
+    "response": "204"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/portfolio",
+    "group": "Portfolio",
+    "auth": true,
+    "summary": "Portfolio overview (donut + totals)",
+    "response": "Portfolio"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/portfolio/positions",
+    "group": "Portfolio",
+    "auth": true,
+    "summary": "Holdings table",
+    "response": "Position[]"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/portfolio/summary",
+    "group": "Portfolio",
+    "auth": true,
+    "summary": "Headline portfolio stat cards",
+    "response": "PortfolioSummary"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/orders",
+    "group": "Orders",
+    "auth": true,
+    "summary": "Order ledger (newest first)",
+    "response": "Order[]"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/orders",
+    "group": "Orders",
+    "auth": true,
+    "summary": "Place an order (Market fills, Limit/Stop rest)",
+    "request": "PlaceOrderInput",
+    "response": "Order"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/orders/{id}",
+    "group": "Orders",
+    "auth": true,
+    "summary": "Cancel a pending order",
+    "response": "Order"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/analytics",
+    "group": "Analytics",
+    "auth": true,
+    "summary": "Performance, KPI stats, sector allocation",
+    "response": "Analytics"
+  }
+]
