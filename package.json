@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "typecheck": "vue-tsc --noEmit"
+    "typecheck": "vue-tsc --noEmit",
+    "crop-logo": "node scripts/crop-logo.mjs"
   },
   "dependencies": {
     "@primevue/themes": "^4.2.5",
@@ -21,6 +22,7 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.12",
     "@vitejs/plugin-vue": "^5.2.1",
+    "svg-path-bbox": "^2.1.0",
     "tailwindcss": "^4.1.12",
     "typescript": "^5.7.2",
     "vite": "^6.0.5",

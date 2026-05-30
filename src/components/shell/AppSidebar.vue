@@ -13,7 +13,7 @@ const route = useRoute();
     class="hidden h-full w-60 shrink-0 flex-col border-r border-obsidian-500/60 bg-obsidian-850 lg:flex"
   >
     <div class="flex h-16 items-center px-5">
-      <Logo variant="full" :size="26" />
+      <Logo variant="full" :size="40" />
     </div>
 
     <nav class="flex-1 space-y-1 overflow-y-auto px-3 py-2">
@@ -36,7 +36,7 @@ const route = useRoute();
     </nav>
 
     <div class="mx-3 mb-3 rounded-xl border border-obsidian-500/60 bg-obsidian-800 p-4">
-      <Logo variant="full" :size="20" class="mb-3" />
+      <Logo variant="full" :size="30" class="mb-3" />
       <p class="font-display text-sm font-bold text-ivory">The Home of<br />African Markets</p>
       <p class="mt-1 text-xs text-platinum-400">Trade. Invest. Build Africa.</p>
       <Button label="Upgrade to Pro" size="small" severity="warn"

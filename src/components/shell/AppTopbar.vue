@@ -29,7 +29,7 @@ const items = [
   <header
     class="flex h-14 shrink-0 items-center gap-3 border-b border-obsidian-500/60 bg-obsidian-900/80 px-3 backdrop-blur-md sm:h-16 sm:px-5"
   >
-    <div class="lg:hidden"><Logo variant="mark" :size="26" /></div>
+    <div class="lg:hidden"><Logo variant="mark" :size="32" /></div>
     <h1 v-if="title" class="truncate font-display text-base font-bold text-ivory sm:hidden">
       {{ title }}
     </h1>

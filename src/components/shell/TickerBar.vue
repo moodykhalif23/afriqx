@@ -12,7 +12,7 @@ const doubled = [...TICKER, ...TICKER];
     class="hidden h-12 shrink-0 items-center gap-5 border-t border-obsidian-500/60 bg-obsidian-850 px-5 lg:flex"
   >
     <div class="flex shrink-0 items-center gap-2">
-      <Logo variant="mark" :size="20" />
+      <Logo variant="mark" :size="24" />
       <span class="hidden text-[10px] font-medium uppercase tracking-[0.18em] text-platinum-400 xl:inline">
         African Markets. African Value. <span class="text-emerald-400">African Future.</span>
       </span>
