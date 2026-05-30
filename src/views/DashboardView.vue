@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { RouterLink } from "vue-router";
 import AppShell from "@/components/shell/AppShell.vue";
 import Card from "@/components/ui/Card.vue";
@@ -10,7 +10,6 @@ import DonutChart from "@/components/charts/DonutChart.vue";
 import FxHeatmap from "@/components/charts/FxHeatmap.vue";
 import Button from "primevue/button";
 import Tag from "primevue/tag";
-import { computed } from "vue";
 import { TIMEFRAMES } from "@/data/mock";
 import { marketsApi, newsApi, portfolioApi, ordersApi, watchlistApi, type ActivePair, type Portfolio } from "@/api";
 import { useApi } from "@/composables/useApi";
@@ -114,11 +113,11 @@ const topWatchlist = computed(() => watchlist.value.slice(0, 6));
 
           <Card title="Portfolio Overview">
             <template #action><RouterLink to="/portfolio">View full portfolio</RouterLink></template>
-            <DonutChart :data="PORTFOLIO.allocations" :height="160" center-label="Total Value" :center-value="PORTFOLIO.total">
-              <template #sub><PriceChange :value="PORTFOLIO.change" percent class="text-[11px]" /></template>
+            <DonutChart :data="portfolio.allocations" :height="160" center-label="Total Value" :center-value="portfolio.total">
+              <template #sub><PriceChange :value="portfolio.change" percent class="text-[11px]" /></template>
             </DonutChart>
             <ul class="mt-4 space-y-3">
-              <li v-for="a in PORTFOLIO.allocations" :key="a.label" class="flex items-center gap-3">
+              <li v-for="a in portfolio.allocations" :key="a.label" class="flex items-center gap-3">
                 <span class="h-2.5 w-2.5 shrink-0 rounded-full" :style="{ backgroundColor: a.color }" />
                 <span class="flex-1 text-sm text-platinum-200">{{ a.label }}</span>
                 <span class="nums text-sm font-medium text-ivory">{{ a.value }}</span>
