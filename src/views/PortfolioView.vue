@@ -5,7 +5,13 @@ import PriceChange from "@/components/ui/PriceChange.vue";
 import DonutChart from "@/components/charts/DonutChart.vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import { computed } from "vue";
+import Button from "primevue/button";
+import IconField from "primevue/iconfield";
+import InputIcon from "primevue/inputicon";
+import InputText from "primevue/inputtext";
+import InputNumber from "primevue/inputnumber";
+import { computed, ref } from "vue";
+import { FilterMatchMode, FilterOperator } from "@primevue/core/api";
 import { portfolioApi, type Portfolio, type Position } from "@/api";
 import { useApi } from "@/composables/useApi";
 import { useStub } from "@/composables/useStub";
@@ -15,7 +21,20 @@ const stub = useStub();
 const emptyPortfolio: Portfolio = { total: "—", change: 0, changeAbs: "", allocations: [] };
 const { data: portfolio } = useApi(() => portfolioApi.overview(), emptyPortfolio);
 const { data: summaryData } = useApi(() => portfolioApi.summary(), null);
-const { data: positions } = useApi(() => portfolioApi.positions(), [] as Position[]);
+const { data: positions, loading } = useApi(() => portfolioApi.positions(), [] as Position[]);
+
+const filters = ref();
+function initFilters() {
+  filters.value = {
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    symbol: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+    name: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }] },
+    weight: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO }] },
+    pnl: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO }] },
+  };
+}
+initFilters();
+const clearFilter = () => initFilters();
 
 const summary = computed(() => {
   const s = summaryData.value;
@@ -62,19 +81,45 @@ const summary = computed(() => {
 
       <Card title="Holdings" flush>
         <template #action><button type="button" class="hover:underline" @click="stub('Export', 'Exporting holdings to CSV — coming soon.')">Export</button></template>
-        <DataTable :value="positions" dataKey="symbol" scrollable size="small" stripedRows class="p-2 sm:p-3">
-          <Column field="symbol" header="Symbol"><template #body="{ data }"><span class="font-semibold text-ivory">{{ data.symbol }}</span></template></Column>
-          <Column field="name" header="Name"><template #body="{ data }"><span class="text-platinum-300">{{ data.name }}</span></template></Column>
+        <DataTable
+          v-model:filters="filters" :value="positions" :loading="loading" dataKey="symbol"
+          paginator showGridlines :rows="10" filterDisplay="menu"
+          :globalFilterFields="['symbol', 'name']" stripedRows scrollable size="small" class="p-2 sm:p-3"
+        >
+          <template #header>
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined size="small" @click="clearFilter" />
+              <IconField>
+                <InputIcon class="pi pi-search" />
+                <InputText v-model="filters['global'].value" placeholder="Keyword search" />
+              </IconField>
+            </div>
+          </template>
+          <template #empty>No holdings found.</template>
+          <template #loading>Loading holdings…</template>
+
+          <Column field="symbol" header="Symbol" style="min-width: 11rem">
+            <template #body="{ data }"><span class="font-semibold text-ivory">{{ data.symbol }}</span></template>
+            <template #filter="{ filterModel }"><InputText v-model="filterModel.value" type="text" placeholder="Search by symbol" /></template>
+          </Column>
+          <Column field="name" header="Name" style="min-width: 12rem">
+            <template #body="{ data }"><span class="text-platinum-300">{{ data.name }}</span></template>
+            <template #filter="{ filterModel }"><InputText v-model="filterModel.value" type="text" placeholder="Search by name" /></template>
+          </Column>
           <Column header="Qty"><template #body="{ data }"><span class="nums text-platinum-200">{{ data.qty }}</span></template></Column>
           <Column header="Avg Cost"><template #body="{ data }"><span class="nums text-platinum-200">{{ data.avgCost }}</span></template></Column>
           <Column header="Last"><template #body="{ data }"><span class="nums text-platinum-200">{{ data.last }}</span></template></Column>
           <Column header="Value"><template #body="{ data }"><span class="nums font-medium text-ivory">{{ data.value }}</span></template></Column>
-          <Column header="Weight"><template #body="{ data }"><span class="nums text-platinum-300">{{ data.weight }}%</span></template></Column>
-          <Column header="P&L">
+          <Column field="weight" header="Weight" dataType="numeric" style="min-width: 10rem">
+            <template #body="{ data }"><span class="nums text-platinum-300">{{ data.weight }}%</span></template>
+            <template #filter="{ filterModel }"><InputNumber v-model="filterModel.value" suffix="%" placeholder="≥ weight" /></template>
+          </Column>
+          <Column field="pnl" header="P&L" dataType="numeric" style="min-width: 10rem">
             <template #body="{ data }">
               <PriceChange :value="data.pnl" percent :arrow="false" />
               <div class="nums text-[11px] text-platinum-400">{{ data.pnlAbs }}</div>
             </template>
+            <template #filter="{ filterModel }"><InputNumber v-model="filterModel.value" suffix="%" placeholder="≥ P&L" /></template>
           </Column>
         </DataTable>
       </Card>
