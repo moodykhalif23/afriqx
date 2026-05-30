@@ -13,6 +13,8 @@ import Tag from "primevue/tag";
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import InputText from "primevue/inputtext";
+import { computed, ref, watch } from "vue";
+import { useRoute } from "vue-router";
 import { marketsApi } from "@/api";
 import { useApi } from "@/composables/useApi";
 
@@ -20,6 +22,27 @@ const { data: indices } = useApi(() => marketsApi.indices(), []);
 const { data: equities } = useApi(() => marketsApi.equities(), []);
 const { data: fxPairs } = useApi(() => marketsApi.fx(), []);
 const { data: commodities } = useApi(() => marketsApi.commodities(), []);
+
+// Search box — seeded from a ?q= query (e.g. when arriving from the top-bar search).
+const route = useRoute();
+const query = ref(typeof route.query.q === "string" ? route.query.q : "");
+// Keep in sync when the ?q= changes while already on this page (e.g. top-bar search).
+watch(() => route.query.q, (q) => { query.value = typeof q === "string" ? q : ""; });
+
+function matches(...fields: string[]) {
+  const q = query.value.trim().toLowerCase();
+  if (!q) return true;
+  return fields.some((f) => f.toLowerCase().includes(q));
+}
+
+const filteredIndices = computed(() => indices.value.filter((i) => matches(i.symbol, i.name)));
+const filteredEquities = computed(() =>
+  equities.value.filter((e) => matches(e.symbol, e.name, e.exchange, e.sector)),
+);
+const filteredFx = computed(() => fxPairs.value.filter((p) => matches(p.pair, p.name)));
+const filteredCommodities = computed(() =>
+  commodities.value.filter((c) => matches(c.symbol, c.name)),
+);
 
 const fmt = (n: number) => n.toLocaleString("en-US", { minimumFractionDigits: 2 });
 </script>
@@ -33,7 +56,7 @@ const fmt = (n: number) => n.toLocaleString("en-US", { minimumFractionDigits: 2 
       </div>
       <IconField class="w-full sm:w-72">
         <InputIcon class="pi pi-search" />
-        <InputText placeholder="Search instruments..." class="w-full" />
+        <InputText v-model="query" placeholder="Search instruments..." class="w-full" />
       </IconField>
     </div>
 
@@ -47,7 +70,7 @@ const fmt = (n: number) => n.toLocaleString("en-US", { minimumFractionDigits: 2 
       <TabPanels>
         <!-- Indices -->
         <TabPanel value="0">
-          <DataTable :value="indices" dataKey="symbol" scrollable size="small" stripedRows>
+          <DataTable :value="filteredIndices" dataKey="symbol" scrollable size="small" stripedRows>
             <Column field="symbol" header="Index">
               <template #body="{ data }"><span class="font-semibold text-ivory">{{ data.symbol }}</span></template>
             </Column>
@@ -59,7 +82,7 @@ const fmt = (n: number) => n.toLocaleString("en-US", { minimumFractionDigits: 2 
         </TabPanel>
         <!-- Equities -->
         <TabPanel value="1">
-          <DataTable :value="equities" dataKey="symbol" scrollable size="small" stripedRows>
+          <DataTable :value="filteredEquities" dataKey="symbol" scrollable size="small" stripedRows>
             <Column field="symbol" header="Symbol"><template #body="{ data }"><span class="font-semibold text-ivory">{{ data.symbol }}</span></template></Column>
             <Column field="name" header="Name"><template #body="{ data }"><span class="text-platinum-300">{{ data.name }}</span></template></Column>
             <Column header="Exch."><template #body="{ data }"><Tag :value="data.exchange" severity="secondary" /></template></Column>
@@ -73,7 +96,7 @@ const fmt = (n: number) => n.toLocaleString("en-US", { minimumFractionDigits: 2 
         </TabPanel>
         <!-- FX -->
         <TabPanel value="2">
-          <DataTable :value="fxPairs" dataKey="pair" scrollable size="small" stripedRows>
+          <DataTable :value="filteredFx" dataKey="pair" scrollable size="small" stripedRows>
             <Column field="pair" header="Pair"><template #body="{ data }"><span class="font-semibold text-ivory">{{ data.pair }}</span></template></Column>
             <Column field="name" header="Name"><template #body="{ data }"><span class="text-platinum-300">{{ data.name }}</span></template></Column>
             <Column header="Rate"><template #body="{ data }"><span class="nums text-ivory">{{ data.rate }}</span></template></Column>
@@ -82,7 +105,7 @@ const fmt = (n: number) => n.toLocaleString("en-US", { minimumFractionDigits: 2 
         </TabPanel>
         <!-- Commodities -->
         <TabPanel value="3">
-          <DataTable :value="commodities" dataKey="symbol" scrollable size="small" stripedRows>
+          <DataTable :value="filteredCommodities" dataKey="symbol" scrollable size="small" stripedRows>
             <Column field="name" header="Commodity"><template #body="{ data }"><span class="font-semibold text-ivory">{{ data.name }}</span></template></Column>
             <Column field="unit" header="Unit"><template #body="{ data }"><span class="text-platinum-400">{{ data.unit }}</span></template></Column>
             <Column header="Price"><template #body="{ data }"><span class="nums text-ivory">{{ data.last }}</span></template></Column>

@@ -15,6 +15,13 @@ defineProps<{ title?: string }>();
 const router = useRouter();
 const stub = useStub();
 const menu = ref();
+const search = ref("");
+
+// Global search routes to the Markets page, which filters on the ?q= term.
+function runSearch() {
+  const q = search.value.trim();
+  router.push({ name: "Markets", query: q ? { q } : {} });
+}
 
 const user = computed(() => auth.state.user);
 const displayName = computed(() => user.value?.name ?? "Guest");
@@ -50,13 +57,14 @@ const items = computed(() => [
 
     <IconField class="mx-auto hidden w-full max-w-md sm:block">
       <InputIcon class="pi pi-search" />
-      <InputText placeholder="Search markets, stocks, ETFs, currencies..." class="w-full" size="small" />
+      <InputText v-model="search" @keyup.enter="runSearch"
+        placeholder="Search markets, stocks, ETFs, currencies..." class="w-full" size="small" />
     </IconField>
 
     <div class="ml-auto flex items-center gap-1 sm:ml-0">
       <span class="sm:hidden">
         <Button v-tooltip.bottom="'Search'" icon="pi pi-search" text rounded severity="secondary"
-          @click="stub('Search', 'Search isn\'t wired up in the preview yet.')" />
+          @click="router.push({ name: 'Markets' })" />
       </span>
       <div class="mr-2 hidden items-center gap-2 lg:flex">
         <span class="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px] shadow-emerald-400/70" />
