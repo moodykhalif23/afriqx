@@ -45,7 +45,7 @@ const fmt = (n: number) => n.toLocaleString("en-US", { minimumFractionDigits: 2 
     <Carousel :value="indices" :numVisible="4" :numScroll="1" :responsiveOptions="idxResponsive" :showIndicators="false">
       <template #item="{ data }">
         <div class="mr-4">
-          <div class="card-3d rounded-2xl border border-obsidian-500/60 bg-obsidian-800 p-4">
+          <div class="afriqx-aurora rounded-2xl border border-obsidian-500/60 p-4">
             <div class="flex items-center justify-between">
               <span class="font-display text-sm font-bold text-ivory">{{ data.symbol }}</span>
               <PriceChange :value="data.change" percent :arrow="false" class="text-xs" />
