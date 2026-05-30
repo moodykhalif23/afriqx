@@ -123,7 +123,7 @@ async function review() {
               <PriceChange :value="ACTIVE_PAIR.change" percent class="text-xs" />
             </div>
           </div>
-          <LineChart :data="closes" :height="160" tone="up" class="mt-4" />
+          <LineChart :data="closes" :height="360" tone="up" class="mt-4" />
         </Card>
       </div>
 
@@ -143,8 +143,8 @@ async function review() {
                   </button>
                 </div>
                 <div class="flex gap-2">
-                  <Select v-model="from" :options="ccyOptions" class="w-28" />
-                  <InputNumber v-model="amount" class="flex-1" inputClass="text-right nums" :minFractionDigits="0" />
+                  <Select v-model="from" :options="ccyOptions" class="w-28 shrink-0" />
+                  <InputNumber v-model="amount" class="min-w-0 flex-1" inputClass="w-full text-right nums" :minFractionDigits="0" />
                 </div>
               </div>
               <div class="flex justify-center">
@@ -153,8 +153,8 @@ async function review() {
               <div class="rounded-xl border border-obsidian-500/70 bg-obsidian-900 p-3">
                 <div class="mb-1.5 text-xs font-medium uppercase tracking-wider text-platinum-400">To (estimated)</div>
                 <div class="flex items-center gap-2">
-                  <Select v-model="to" :options="ccyOptions" class="w-28" />
-                  <div class="flex-1 text-right nums text-lg font-semibold text-ivory">{{ fmt(converted) }}</div>
+                  <Select v-model="to" :options="ccyOptions" class="w-28 shrink-0" />
+                  <div class="min-w-0 flex-1 truncate text-right nums text-lg font-semibold text-ivory">{{ fmt(converted) }}</div>
                 </div>
               </div>
               <div class="flex items-center justify-center gap-2 text-[11px] text-platinum-400">
