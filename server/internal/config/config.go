@@ -1,4 +1,3 @@
-// Package config loads runtime configuration from the environment.
 package config
 
 import (
@@ -24,10 +23,7 @@ type Config struct {
 	SeedUserName     string
 }
 
-// Load reads configuration from a local .env file (if present) and the
-// process environment, applying sensible defaults for local development.
 func Load() (*Config, error) {
-	// Best-effort: a missing .env is not an error.
 	_ = godotenv.Load()
 
 	jwtTTL, err := time.ParseDuration(getenv("JWT_TTL", "24h"))

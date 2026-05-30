@@ -1,4 +1,3 @@
-// Package database manages the Postgres connection pool and schema migrations.
 package database
 
 import (
@@ -12,10 +11,8 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-//go:embed migrations/*.sql
 var migrationsFS embed.FS
 
-// Connect opens a pooled connection to Postgres and verifies it with a ping.
 func Connect(ctx context.Context, url string) (*pgxpool.Pool, error) {
 	cfg, err := pgxpool.ParseConfig(url)
 	if err != nil {

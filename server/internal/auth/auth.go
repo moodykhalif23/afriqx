@@ -1,5 +1,3 @@
-// Package auth provides password hashing, JWT issuing/verification and the
-// HTTP middleware that protects authenticated routes.
 package auth
 
 import (
@@ -17,32 +15,26 @@ type ctxKey int
 
 const userIDKey ctxKey = iota
 
-// ErrUnauthorized indicates a missing or invalid token.
 var ErrUnauthorized = errors.New("unauthorized")
 
-// Authenticator issues and verifies JWTs and hashes passwords.
 type Authenticator struct {
 	secret []byte
 	ttl    time.Duration
 }
 
-// New creates an Authenticator with the given signing secret and token TTL.
 func New(secret string, ttl time.Duration) *Authenticator {
 	return &Authenticator{secret: []byte(secret), ttl: ttl}
 }
 
-// HashPassword returns a bcrypt hash of the plaintext password.
 func (a *Authenticator) HashPassword(plain string) (string, error) {
 	h, err := bcrypt.GenerateFromPassword([]byte(plain), bcrypt.DefaultCost)
 	return string(h), err
 }
 
-// CheckPassword reports whether plain matches the stored bcrypt hash.
 func (a *Authenticator) CheckPassword(hash, plain string) bool {
 	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(plain)) == nil
 }
 
-// Issue creates a signed JWT for the given user id.
 func (a *Authenticator) Issue(userID string) (string, time.Time, error) {
 	exp := time.Now().Add(a.ttl)
 	claims := jwt.RegisteredClaims{
