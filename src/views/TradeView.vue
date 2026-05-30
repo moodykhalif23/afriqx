@@ -13,6 +13,9 @@ import AccordionPanel from "primevue/accordionpanel";
 import AccordionHeader from "primevue/accordionheader";
 import AccordionContent from "primevue/accordioncontent";
 import { ACTIVE_PAIR, CANDLES, TRADE_PAIRS } from "@/data/mock";
+import { useStub } from "@/composables/useStub";
+
+const stub = useStub();
 
 const RATE_IN_KES: Record<string, number> = { KES: 1, NGN: 0.1524, ZAR: 6.95, GHS: 8.6, EGP: 2.6 };
 const tabs = ["Buy", "Sell", "FX", "Convert"];
@@ -40,6 +43,7 @@ function swap() { const f = from.value; from.value = to.value; to.value = f; }
 
 <template>
   <AppShell title="Trade">
+    <div class="grid grid-cols-1 gap-5 sm:gap-7 lg:grid-cols-[1fr_380px]">
       <!-- Market info -->
       <div class="order-2 space-y-5 sm:space-y-7 lg:order-1">
         <Card>
@@ -58,7 +62,7 @@ function swap() { const f = from.value; from.value = to.value; to.value = f; }
           </div>
           <LineChart :data="closes" :height="160" tone="up" class="mt-4" />
         </Card>
-
+      </div>
 
       <!-- Order ticket -->
       <div class="order-1 lg:order-2">
@@ -117,7 +121,8 @@ function swap() { const f = from.value; from.value = to.value; to.value = f; }
             <Button
               :label="isExchange ? 'Review Conversion' : `Review ${tab} Order`"
               :severity="tab === 'Sell' ? 'danger' : 'primary'"
-              class="mt-5 w-full font-display font-semibold" size="large" />
+              class="mt-5 w-full font-display font-semibold" size="large"
+              @click="stub(isExchange ? 'Review Conversion' : `Review ${tab} Order`, 'Order routing isn\'t enabled in this preview.')" />
             <p class="mt-2 text-center text-[11px] text-platinum-400">Settled in African value · Pan-African Liquidity Network</p>
           </Card>
         </div>

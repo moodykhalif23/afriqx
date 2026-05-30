@@ -8,20 +8,22 @@ import Button from "primevue/button";
 import Menu from "primevue/menu";
 import Logo from "@/components/ui/Logo.vue";
 import { USER } from "@/data/mock";
+import { useStub } from "@/composables/useStub";
 
 defineProps<{ title?: string }>();
 const router = useRouter();
+const stub = useStub();
 const menu = ref();
 const initials = USER.name.split(" ").map((n) => n[0]).join("");
 
 const items = [
   { label: `Signed in as ${USER.name}`, disabled: true },
   { separator: true },
-  { label: "Profile", icon: "pi pi-user" },
+  { label: "Profile", icon: "pi pi-user", command: () => router.push("/settings") },
   { label: "Settings", icon: "pi pi-cog", command: () => router.push("/settings") },
-  { label: "Upgrade plan", icon: "pi pi-star" },
+  { label: "Upgrade plan", icon: "pi pi-star", command: () => stub("AFRIQX Pro", "Pro plans launch soon — you'll be the first to know.", "warn") },
   { separator: true },
-  { label: "Sign out", icon: "pi pi-sign-out" },
+  { label: "Sign out", icon: "pi pi-sign-out", command: () => stub("Sign out", "Authentication isn't part of this preview.") },
 ];
 </script>
 
@@ -41,7 +43,8 @@ const items = [
 
     <div class="ml-auto flex items-center gap-1 sm:ml-0">
       <span class="sm:hidden">
-        <Button v-tooltip.bottom="'Search'" icon="pi pi-search" text rounded severity="secondary" />
+        <Button v-tooltip.bottom="'Search'" icon="pi pi-search" text rounded severity="secondary"
+          @click="stub('Search', 'Search isn\'t wired up in the preview yet.')" />
       </span>
       <div class="mr-2 hidden items-center gap-2 lg:flex">
         <span class="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px] shadow-emerald-400/70" />
@@ -50,9 +53,11 @@ const items = [
           <div class="nums text-[10px] text-platinum-400">09:45:32 EAT</div>
         </div>
       </div>
-      <Button v-tooltip.bottom="'Notifications'" icon="pi pi-bell" text rounded severity="secondary" />
+      <Button v-tooltip.bottom="'Notifications'" icon="pi pi-bell" text rounded severity="secondary"
+        @click="stub('Notifications', 'No new notifications.')" />
       <span class="hidden sm:inline-flex">
-        <Button v-tooltip.bottom="'Messages'" icon="pi pi-envelope" text rounded severity="secondary" />
+        <Button v-tooltip.bottom="'Messages'" icon="pi pi-envelope" text rounded severity="secondary"
+          @click="stub('Messages', 'You\'re all caught up.')" />
       </span>
 
       <button

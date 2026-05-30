@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from "vue";
+import { RouterLink } from "vue-router";
 import AppShell from "@/components/shell/AppShell.vue";
 import Card from "@/components/ui/Card.vue";
 import PriceChange from "@/components/ui/PriceChange.vue";
@@ -21,7 +23,7 @@ import {
   WATCHLIST,
 } from "@/data/mock";
 
-
+const activeTf = ref("1D");
 </script>
 
 <template>
@@ -51,14 +53,17 @@ import {
               <div class="leading-tight"><div class="text-[10px] uppercase tracking-wider text-platinum-400">24h Vol</div><div class="nums text-sm text-ivory">{{ ACTIVE_PAIR.volume24h }}</div></div>
             </div>
             <div class="ml-auto flex items-center gap-2">
-              <Button v-tooltip.bottom="'Add to watchlist'" icon="pi pi-star" text rounded severity="warn" />
-              <Button label="Add to Watchlist" size="small" severity="secondary" outlined />
+              <Button v-tooltip.bottom="'Add to watchlist'" icon="pi pi-star" text rounded severity="warn"
+                @click="$router.push('/watchlist')" />
+              <Button label="Add to Watchlist" size="small" severity="secondary" outlined
+                @click="$router.push('/watchlist')" />
             </div>
           </div>
           <div class="flex items-center gap-1 border-b border-obsidian-500/50 px-3 py-2">
-            <button v-for="tf in TIMEFRAMES" :key="tf"
+            <button v-for="tf in TIMEFRAMES" :key="tf" type="button"
               class="nums rounded-md px-2.5 py-1 text-xs font-medium"
-              :class="tf === '1D' ? 'bg-emerald-500/20 text-emerald-300' : 'text-platinum-400 hover:bg-obsidian-700 hover:text-ivory'">{{ tf }}</button>
+              :class="tf === activeTf ? 'bg-emerald-500/20 text-emerald-300' : 'text-platinum-400 hover:bg-obsidian-700 hover:text-ivory'"
+              @click="activeTf = tf">{{ tf }}</button>
             <div class="ml-auto flex items-center gap-1 text-platinum-400">
               <i class="pi pi-chart-bar text-xs" />
               <i class="pi pi-window-maximize text-xs" />
@@ -85,7 +90,7 @@ import {
           </Card>
 
           <Card title="News & Insights">
-            <template #action><a href="#">View all</a></template>
+            <template #action><RouterLink to="/news">View all</RouterLink></template>
             <ul class="space-y-4">
               <li v-for="n in NEWS" :key="n.title" class="flex gap-3">
                 <div class="grid h-12 w-12 shrink-0 place-items-center rounded-lg bg-linear-to-br from-obsidian-600 to-obsidian-700 text-platinum-400"><i class="pi pi-image" /></div>
@@ -98,7 +103,7 @@ import {
           </Card>
 
           <Card title="Portfolio Overview">
-            <template #action><a href="#">View full portfolio</a></template>
+            <template #action><RouterLink to="/portfolio">View full portfolio</RouterLink></template>
             <DonutChart :data="PORTFOLIO.allocations" :height="160" center-label="Total Value" :center-value="PORTFOLIO.total">
               <template #sub><PriceChange :value="PORTFOLIO.change" percent class="text-[11px]" /></template>
             </DonutChart>
@@ -116,7 +121,7 @@ import {
       <!-- Right rail -->
       <div class="space-y-5 sm:space-y-7">
         <Card title="Watchlist">
-          <template #action><a href="#">View all</a></template>
+          <template #action><RouterLink to="/watchlist">View all</RouterLink></template>
           <ul class="space-y-2.5">
             <li v-for="h in WATCHLIST.slice(0, 6)" :key="h.symbol" class="flex items-center gap-3">
               <div class="min-w-0 flex-1"><div class="truncate text-sm font-medium text-ivory">{{ h.name }}</div></div>
@@ -129,7 +134,7 @@ import {
         <FxHeatmap />
 
         <Card title="Recent Orders" flush>
-          <template #action><a href="#">View all</a></template>
+          <template #action><RouterLink to="/orders">View all</RouterLink></template>
           <div class="px-5 pb-4">
             <table class="w-full text-left text-xs">
               <thead><tr class="text-[10px] uppercase tracking-wider text-platinum-400">

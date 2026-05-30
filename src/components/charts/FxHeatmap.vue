@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
+import { RouterLink } from "vue-router";
 import { registerMap } from "echarts/core";
 import Card from "@/components/ui/Card.vue";
 import PriceChange from "@/components/ui/PriceChange.vue";
@@ -68,7 +69,7 @@ const groups = [
 
 <template>
   <Card title="African FX Heatmap">
-    <template #action><a href="#">View full map</a></template>
+    <template #action><RouterLink to="/markets">View full map</RouterLink></template>
     <div class="flex gap-3">
       <div class="min-w-0 flex-1">
         <VChart :option="option" style="height: 200px; width: 100%" autoresize />

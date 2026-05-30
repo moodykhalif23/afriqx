@@ -10,6 +10,9 @@ import Select from "primevue/select";
 import ToggleSwitch from "primevue/toggleswitch";
 import Button from "primevue/button";
 import { USER } from "@/data/mock";
+import { useStub } from "@/composables/useStub";
+
+const stub = useStub();
 
 const name = ref(USER.name);
 const email = ref("amara@afriqx.africa");
@@ -64,7 +67,8 @@ const flags = ref({
               </div>
               <div class="flex items-center justify-between gap-4">
                 <span class="text-sm font-medium text-ivory">Change password</span>
-                <Button label="Update" size="small" severity="secondary" outlined />
+                <Button label="Update" size="small" severity="secondary" outlined
+                  @click="stub('Change password', 'Password management is coming soon.')" />
               </div>
             </div>
           </AccordionContent>
@@ -95,8 +99,10 @@ const flags = ref({
       </Accordion>
 
       <div class="mt-5 flex justify-end gap-3">
-        <Button label="Cancel" text severity="secondary" />
-        <Button label="Save changes" class="font-display font-semibold" />
+        <Button label="Cancel" text severity="secondary"
+          @click="stub('Cancelled', 'No changes were saved.')" />
+        <Button label="Save changes" class="font-display font-semibold"
+          @click="stub('Settings saved', 'Your preferences have been updated.', 'success')" />
       </div>
     </div>
   </AppShell>

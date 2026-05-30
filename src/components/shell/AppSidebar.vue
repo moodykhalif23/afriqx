@@ -4,8 +4,10 @@ import Button from "primevue/button";
 import Logo from "@/components/ui/Logo.vue";
 import { NAV_ITEMS } from "@/data/mock";
 import { NAV_ICON } from "@/icons";
+import { useStub } from "@/composables/useStub";
 
 const route = useRoute();
+const stub = useStub();
 </script>
 
 <template>
@@ -40,7 +42,8 @@ const route = useRoute();
       <p class="font-display text-sm font-bold text-ivory">The Home of<br />African Markets</p>
       <p class="mt-1 text-xs text-platinum-400">Trade. Invest. Build Africa.</p>
       <Button label="Upgrade to Pro" size="small" severity="warn"
-        class="mt-3 w-full font-display font-semibold" />
+        class="mt-3 w-full font-display font-semibold"
+        @click="stub('AFRIQX Pro', 'Pro plans launch soon — you\'ll be the first to know.', 'warn')" />
     </div>
   </aside>
 </template>

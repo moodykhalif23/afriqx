@@ -6,8 +6,12 @@ import Sparkline from "@/components/charts/Sparkline.vue";
 import Button from "primevue/button";
 import Carousel from "primevue/carousel";
 import Tag from "primevue/tag";
-import { EXPLORE_LAYERS, EXPLORE_PRODUCTS, INDEXES } from "@/data/mock";
-import { NAV_ICON } from "@/icons";
+import { useRouter } from "vue-router";
+import { EXPLORE_LAYERS, INDEXES } from "@/data/mock";
+import { useStub } from "@/composables/useStub";
+
+const router = useRouter();
+const stub = useStub();
 
 const idxResponsive = [
   { breakpoint: "1024px", numVisible: 3, numScroll: 1 },
@@ -27,11 +31,14 @@ const fmt = (n: number) => n.toLocaleString("en-US", { minimumFractionDigits: 2 
         One platform across trading, FX, liquidity, intelligence and AI — pricing Africa in African value.
       </p>
       <div class="mt-5 flex flex-wrap gap-3">
-        <Button label="Open Terminal" class="font-display font-semibold" />
-        <Button label="Upgrade to Pro" severity="warn" class="font-display font-semibold" />
+        <Button label="Open Terminal" class="font-display font-semibold" @click="router.push('/trade')" />
+        <Button label="Upgrade to Pro" severity="warn" class="font-display font-semibold"
+          @click="stub('AFRIQX Pro', 'Pro plans launch soon — you\'ll be the first to know.', 'warn')" />
       </div>
     </section>
 
+    <h2 class="mb-3 mt-8 font-display text-lg font-bold text-ivory">African Indices</h2>
+    <Carousel :value="INDEXES" :numVisible="4" :numScroll="1" :responsiveOptions="idxResponsive" :showIndicators="false">
       <template #item="{ data }">
         <div class="mr-4">
           <div class="card-3d rounded-2xl border border-obsidian-500/60 bg-obsidian-800 p-4">
@@ -44,6 +51,7 @@ const fmt = (n: number) => n.toLocaleString("en-US", { minimumFractionDigits: 2 
           </div>
         </div>
       </template>
+    </Carousel>
 
     <h2 class="mb-3 mt-8 font-display text-lg font-bold text-ivory">Exchange Architecture</h2>
     <Card flush>

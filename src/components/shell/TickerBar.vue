@@ -2,6 +2,9 @@
 import Logo from "@/components/ui/Logo.vue";
 import PriceChange from "@/components/ui/PriceChange.vue";
 import { TICKER } from "@/data/mock";
+import { useStub } from "@/composables/useStub";
+
+const stub = useStub();
 
 // Duplicate the list so the marquee loops seamlessly (−50% translate).
 const doubled = [...TICKER, ...TICKER];
@@ -30,7 +33,8 @@ const doubled = [...TICKER, ...TICKER];
       </div>
     </div>
     <button type="button"
-      class="flex shrink-0 items-center gap-1.5 rounded-lg border border-obsidian-500/60 px-3 py-1.5 text-xs text-platinum-300 hover:border-obsidian-400 hover:text-ivory">
+      class="flex shrink-0 items-center gap-1.5 rounded-lg border border-obsidian-500/60 px-3 py-1.5 text-xs text-platinum-300 hover:border-obsidian-400 hover:text-ivory"
+      @click="stub('Customize Dashboard', 'Dashboard customization is coming soon.')">
       <i class="pi pi-cog" /> Customize Dashboard
     </button>
   </footer>

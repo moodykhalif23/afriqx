@@ -6,7 +6,9 @@ import DonutChart from "@/components/charts/DonutChart.vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { PORTFOLIO, PORTFOLIO_SUMMARY, POSITIONS } from "@/data/mock";
+import { useStub } from "@/composables/useStub";
 
+const stub = useStub();
 const s = PORTFOLIO_SUMMARY;
 const summary = [
   { label: "Total Value", value: s.totalValue, change: s.dayChange, suffix: "today" },
@@ -48,7 +50,7 @@ const summary = [
       </Card>
 
       <Card title="Holdings" flush>
-        <template #action><a href="#">Export</a></template>
+        <template #action><button type="button" class="hover:underline" @click="stub('Export', 'Exporting holdings to CSV — coming soon.')">Export</button></template>
         <DataTable :value="POSITIONS" dataKey="symbol" scrollable size="small" stripedRows class="p-2 sm:p-3">
           <Column field="symbol" header="Symbol"><template #body="{ data }"><span class="font-semibold text-ivory">{{ data.symbol }}</span></template></Column>
           <Column field="name" header="Name"><template #body="{ data }"><span class="text-platinum-300">{{ data.name }}</span></template></Column>
