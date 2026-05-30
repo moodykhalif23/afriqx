@@ -61,6 +61,11 @@ const estCost = computed(() => (qty.value || 0) * (orderType.value === "Market" 
 const closes = computed(() => candles.value.map((c) => c.close));
 const fmt = (n: number) => n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
+// Cash balances drive the conversion: the source currency is debited on convert.
+const { data: balances, refresh: refreshBalances } = useApi(() => fxApi.balances(), []);
+const fromBalance = computed(() => balances.value.find((b) => b.currency === from.value)?.amount ?? 0);
+const insufficient = computed(() => isExchange.value && (amount.value || 0) > fromBalance.value);
+
 const submitting = ref(false);
 
 function swap() { const f = from.value; from.value = to.value; to.value = f; }
@@ -71,6 +76,7 @@ async function review() {
     try {
       const c = await fxApi.convert(from.value, to.value, amount.value || 0);
       stub("Conversion executed", `${fmt(c.amount)} ${c.from} → ${fmt(c.converted)} ${c.to} @ ${c.rate}.`, "success");
+      await refreshBalances();
     } catch (e) {
       stub("Conversion failed", e instanceof ApiError ? e.message : "Try again.", "warn");
     } finally {
@@ -129,7 +135,13 @@ async function review() {
 
             <div v-if="isExchange" class="mt-5 space-y-3">
               <div class="rounded-xl border border-obsidian-500/70 bg-obsidian-900 p-3">
-                <div class="mb-1.5 text-xs font-medium uppercase tracking-wider text-platinum-400">From</div>
+                <div class="mb-1.5 flex items-center justify-between text-xs font-medium uppercase tracking-wider text-platinum-400">
+                  <span>From</span>
+                  <button type="button" class="normal-case text-emerald-400 hover:underline"
+                    @click="amount = Math.floor(fromBalance)">
+                    Avail: <span class="nums">{{ fmt(fromBalance) }}</span> {{ from }}
+                  </button>
+                </div>
                 <div class="flex gap-2">
                   <Select v-model="from" :options="ccyOptions" class="w-28" />
                   <InputNumber v-model="amount" class="flex-1" inputClass="text-right nums" :minFractionDigits="0" />
@@ -149,6 +161,9 @@ async function review() {
                 <span class="h-1.5 w-1.5 rounded-full bg-emerald-400" />
                 1 {{ from }} = {{ rate.toFixed(4) }} {{ to }} · No USD routing
               </div>
+              <p v-if="insufficient" class="text-center text-[11px] font-medium text-down">
+                Insufficient {{ from }} balance.
+              </p>
             </div>
 
             <div v-else class="mt-5 space-y-4">
@@ -179,6 +194,7 @@ async function review() {
               :label="isExchange ? 'Review Conversion' : `Review ${tab} Order`"
               :severity="tab === 'Sell' ? 'danger' : 'primary'"
               :loading="submitting"
+              :disabled="insufficient"
               class="mt-5 w-full font-display font-semibold" size="large"
               @click="review" />
             <p class="mt-2 text-center text-[11px] text-platinum-400">Settled in African value · Pan-African Liquidity Network</p>

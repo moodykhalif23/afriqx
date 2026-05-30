@@ -229,6 +229,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "Analytics", icon: "analytics", href: "/analytics" },
   { label: "News & Insights", icon: "news", href: "/news" },
   { label: "AFX Explore", icon: "explore", href: "/explore", badge: "NEW" },
+  { label: "API Docs", icon: "docs", href: "/docs" },
   { label: "Settings", icon: "settings", href: "/settings" },
 ];
 

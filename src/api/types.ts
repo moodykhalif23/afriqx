@@ -249,6 +249,23 @@ export interface Conversion {
   converted: number;
 }
 
+export interface Balance {
+  currency: string;
+  name: string;
+  amount: number;
+}
+
+/** One documented endpoint, served by GET /docs and rendered in the API Docs page. */
+export interface ApiRoute {
+  method: string;
+  path: string;
+  group: string;
+  auth: boolean;
+  summary: string;
+  request?: string;
+  response?: string;
+}
+
 /** Live-feed tick pushed over the WebSocket. */
 export interface LiveTick {
   type: "tick";

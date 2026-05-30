@@ -3,7 +3,9 @@
 import { http } from "./http";
 import type {
   Analytics,
+  ApiRoute,
   AuthResponse,
+  Balance,
   Benchmark,
   Candle,
   Commodity,
@@ -67,6 +69,11 @@ export const fxApi = {
   convert: (from: string, to: string, amount: number) =>
     http.post<Conversion>("/convert", { from, to, amount }),
   conversions: () => http.get<Conversion[]>("/conversions"),
+  balances: () => http.get<Balance[]>("/balances"),
+};
+
+export const docsApi = {
+  routes: () => http.get<ApiRoute[]>("/docs"),
 };
 
 export const newsApi = {

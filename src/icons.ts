@@ -9,5 +9,6 @@ export const NAV_ICON: Record<string, string> = {
   analytics: "pi pi-chart-bar",
   news: "pi pi-megaphone",
   explore: "pi pi-compass",
+  docs: "pi pi-book",
   settings: "pi pi-cog",
 };

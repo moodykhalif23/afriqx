@@ -19,6 +19,7 @@ export const router = createRouter({
     { path: "/analytics", name: "Analytics", component: () => import("@/views/AnalyticsView.vue") },
     { path: "/news", name: "News & Insights", component: () => import("@/views/NewsView.vue") },
     { path: "/explore", name: "AFX Explore", component: () => import("@/views/ExploreView.vue") },
+    { path: "/docs", name: "API Docs", component: () => import("@/views/DocsView.vue") },
     { path: "/settings", name: "Settings", component: () => import("@/views/SettingsView.vue") },
   ],
 });
