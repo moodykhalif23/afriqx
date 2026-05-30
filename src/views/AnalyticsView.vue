@@ -23,7 +23,7 @@ const intel = [
     </div>
 
     <div class="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4">
-      <div v-for="st in ANALYTICS_STATS" :key="st.label" class="rounded-2xl border border-obsidian-500/60 bg-obsidian-800/80 p-4">
+      <div v-for="st in ANALYTICS_STATS" :key="st.label" class="rounded-3xl border border-obsidian-500/60 bg-obsidian-800/80 p-4">
         <div class="text-[11px] uppercase tracking-wider text-platinum-400">{{ st.label }}</div>
         <div class="mt-1 nums text-xl font-bold text-ivory sm:text-2xl">{{ st.value }}</div>
         <div class="mt-1">

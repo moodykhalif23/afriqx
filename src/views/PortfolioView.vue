@@ -24,7 +24,7 @@ const summary = [
     </div>
 
     <div class="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4">
-      <div v-for="c in summary" :key="c.label" class="rounded-2xl border border-obsidian-500/60 bg-obsidian-800/80 p-4">
+      <div v-for="c in summary" :key="c.label" class="rounded-3xl border border-obsidian-500/60 bg-obsidian-800/80 p-4">
         <div class="text-[11px] uppercase tracking-wider text-platinum-400">{{ c.label }}</div>
         <div class="mt-1 nums text-lg font-bold sm:text-xl" :class="c.accent ? 'text-emerald-300' : 'text-ivory'">{{ c.value }}</div>
         <div v-if="c.change !== undefined" class="mt-1 flex items-center gap-1">
