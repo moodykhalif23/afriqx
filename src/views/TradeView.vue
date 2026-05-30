@@ -34,19 +34,12 @@ const closes = CANDLES.map((c) => c.close);
 const ccyOptions = TRADE_PAIRS.map((p) => p.code);
 const fmt = (n: number) => n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-const faq = [
-  { q: "Direct African conversion", a: "Convert NGN → KES directly without routing through the US Dollar, removing a layer of cost and delay." },
-  { q: "Faster settlement", a: "Fewer intermediaries means trades clear faster and you lose less to the spread on every conversion." },
-  { q: "Improved regional liquidity", a: "African-denominated order flow deepens local liquidity, tightening prices across connected markets." },
-  { q: "Lower cross-border costs", a: "Reduced FX friction lowers the cost of doing business across the continent." },
-];
 
 function swap() { const f = from.value; from.value = to.value; to.value = f; }
 </script>
 
 <template>
   <AppShell title="Trade">
-    <div class="mx-auto grid max-w-5xl grid-cols-1 gap-5 sm:gap-7 lg:grid-cols-[1fr_400px]">
       <!-- Market info -->
       <div class="order-2 space-y-5 sm:space-y-7 lg:order-1">
         <Card>
@@ -66,15 +59,6 @@ function swap() { const f = from.value; from.value = to.value; to.value = f; }
           <LineChart :data="closes" :height="160" tone="up" class="mt-4" />
         </Card>
 
-        <Card title="Why African pairs?">
-          <Accordion value="0">
-            <AccordionPanel v-for="(f, i) in faq" :key="f.q" :value="String(i)">
-              <AccordionHeader>{{ f.q }}</AccordionHeader>
-              <AccordionContent><p class="text-sm text-platinum-300">{{ f.a }}</p></AccordionContent>
-            </AccordionPanel>
-          </Accordion>
-        </Card>
-      </div>
 
       <!-- Order ticket -->
       <div class="order-1 lg:order-2">
