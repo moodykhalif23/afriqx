@@ -1,7 +1,13 @@
 import { defineConfig } from "vite";
-import { fresh } from "@fresh/plugin-vite";
+import vue from "@vitejs/plugin-vue";
 import tailwindcss from "@tailwindcss/vite";
+import { fileURLToPath, URL } from "node:url";
 
 export default defineConfig({
-  plugins: [fresh(), tailwindcss()],
+  plugins: [vue(), tailwindcss()],
+  resolve: {
+    alias: {
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+    },
+  },
 });
