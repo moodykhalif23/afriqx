@@ -22,20 +22,3 @@ npm run build    # production build
 npm run preview  # preview the build
 ```
 
-## Structure
-
-```
-src/
-  main.ts            app bootstrap (PrimeVue, router, ECharts)
-  router.ts          routes for all sections
-  styles.css         Tailwind + AFRIQX brand tokens
-  theme/preset.ts    custom PrimeVue Aura preset
-  echarts.ts         tree-shaken ECharts registration
-  data/mock.ts       static mock market data
-  components/
-    ui/              Logo, Card, PriceChange
-    shell/           AppShell, AppSidebar, AppTopbar, BottomNav, TickerBar
-    charts/          CandleChart, Sparkline, DonutChart, LineChart, FxHeatmap
-  views/             Dashboard, Markets, Trade, Portfolio, Watchlist,
-                     Orders, Analytics, News, Explore, Settings
-```
