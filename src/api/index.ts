@@ -55,6 +55,18 @@ export const marketsApi = {
   ticker: () => http.get<TickerItem[]>("/markets/ticker"),
   activePair: () => http.get<ActivePair>("/markets/active-pair"),
   candles: (pair?: string) => http.get<Candle[]>(pair ? `/markets/candles?pair=${enc(pair)}` : "/markets/candles"),
+  currencies: () => http.get<Currency[]>("/markets/fx/currencies"),
+  quote: (from: string, to: string, amount: number) =>
+    http.get<FxQuote>(`/markets/fx/quote?from=${enc(from)}&to=${enc(to)}&amount=${amount}`),
+};
+
+export const fxApi = {
+  currencies: () => http.get<Currency[]>("/markets/fx/currencies"),
+  quote: (from: string, to: string, amount: number) =>
+    http.get<FxQuote>(`/markets/fx/quote?from=${enc(from)}&to=${enc(to)}&amount=${amount}`),
+  convert: (from: string, to: string, amount: number) =>
+    http.post<Conversion>("/convert", { from, to, amount }),
+  conversions: () => http.get<Conversion[]>("/conversions"),
 };
 
 export const newsApi = {

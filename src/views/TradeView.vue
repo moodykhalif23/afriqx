@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import AppShell from "@/components/shell/AppShell.vue";
 import Card from "@/components/ui/Card.vue";
 import PriceChange from "@/components/ui/PriceChange.vue";
@@ -13,8 +13,7 @@ import AccordionPanel from "primevue/accordionpanel";
 import AccordionHeader from "primevue/accordionheader";
 import AccordionContent from "primevue/accordioncontent";
 import { useRouter } from "vue-router";
-import { TRADE_PAIRS } from "@/data/mock";
-import { marketsApi, ordersApi, ApiError, type ActivePair } from "@/api";
+import { marketsApi, ordersApi, fxApi, ApiError, type ActivePair } from "@/api";
 import { useApi } from "@/composables/useApi";
 import { useStub } from "@/composables/useStub";
 
@@ -28,16 +27,31 @@ const emptyPair: ActivePair = {
 const { data: ACTIVE_PAIR } = useApi(() => marketsApi.activePair(), emptyPair);
 const { data: candles } = useApi(() => marketsApi.candles(), []);
 
-const RATE_IN_KES: Record<string, number> = { KES: 1, NGN: 0.1524, ZAR: 6.95, GHS: 8.6, EGP: 2.6 };
 const tabs = ["Buy", "Sell", "FX", "Convert"];
 const tab = ref("Buy");
 const isExchange = computed(() => tab.value === "FX" || tab.value === "Convert");
 
+// Currency list + live rate are sourced from the backend FX engine (no USD routing).
+const { data: currencies } = useApi(() => fxApi.currencies(), []);
+const ccyOptions = computed(() => currencies.value.map((c) => c.code));
+
 const from = ref("NGN");
 const to = ref("KES");
 const amount = ref(1_000_000);
-const rate = computed(() => (RATE_IN_KES[from.value] ?? 1) / (RATE_IN_KES[to.value] ?? 1));
+const rate = ref(1);
 const converted = computed(() => (amount.value || 0) * rate.value);
+
+// Rate depends only on the pair, so refetch when from/to change (amount scales locally).
+async function refreshRate() {
+  if (from.value === to.value) { rate.value = 1; return; }
+  try {
+    const q = await fxApi.quote(from.value, to.value, 1);
+    rate.value = q.rate;
+  } catch {
+    rate.value = 0;
+  }
+}
+watch([from, to], refreshRate, { immediate: true });
 
 const orderType = ref("Market");
 const qty = ref(100);
@@ -45,7 +59,6 @@ const limitPrice = ref(682.5);
 const estCost = computed(() => (qty.value || 0) * (orderType.value === "Market" ? 682.5 : (limitPrice.value || 0)));
 
 const closes = computed(() => candles.value.map((c) => c.close));
-const ccyOptions = TRADE_PAIRS.map((p) => p.code);
 const fmt = (n: number) => n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 const submitting = ref(false);
@@ -53,9 +66,16 @@ const submitting = ref(false);
 function swap() { const f = from.value; from.value = to.value; to.value = f; }
 
 async function review() {
-  // FX/Convert tabs are a quote preview only — no order endpoint for conversions.
   if (isExchange.value) {
-    stub("Conversion preview", "FX conversion settlement isn't enabled in this preview.");
+    submitting.value = true;
+    try {
+      const c = await fxApi.convert(from.value, to.value, amount.value || 0);
+      stub("Conversion executed", `${fmt(c.amount)} ${c.from} → ${fmt(c.converted)} ${c.to} @ ${c.rate}.`, "success");
+    } catch (e) {
+      stub("Conversion failed", e instanceof ApiError ? e.message : "Try again.", "warn");
+    } finally {
+      submitting.value = false;
+    }
     return;
   }
   submitting.value = true;
