@@ -6,10 +6,12 @@
 .env.local
 
 
-# Fresh build directory
-_fresh/
-# npm + other dependencies
+# Vite build output
+dist/
+
+# dependencies
 node_modules/
 vendor/
+
+# editor
 .vscode
-dist/
