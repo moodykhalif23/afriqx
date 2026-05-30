@@ -4,7 +4,13 @@ import Card from "@/components/ui/Card.vue";
 import PriceChange from "@/components/ui/PriceChange.vue";
 import LineChart from "@/components/charts/LineChart.vue";
 import FxHeatmap from "@/components/charts/FxHeatmap.vue";
-import { ANALYTICS_STATS, PERFORMANCE, SECTOR_ALLOCATION } from "@/data/mock";
+import { computed } from "vue";
+import { analyticsApi, type Analytics } from "@/api";
+import { useApi } from "@/composables/useApi";
+
+const empty: Analytics = { performance: [], stats: [], sectors: [] };
+const { data: analytics } = useApi(() => analyticsApi.get(), empty);
+const lastPerf = computed(() => analytics.value.performance.at(-1) ?? 100);
 
 const perfLabels = ["Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May"];
 const intel = [
@@ -23,7 +29,7 @@ const intel = [
     </div>
 
     <div class="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4">
-      <div v-for="st in ANALYTICS_STATS" :key="st.label" class="rounded-3xl border border-obsidian-500/60 bg-obsidian-800/80 p-4">
+      <div v-for="st in analytics.stats" :key="st.label" class="rounded-3xl border border-obsidian-500/60 bg-obsidian-800/80 p-4">
         <div class="text-[11px] uppercase tracking-wider text-platinum-400">{{ st.label }}</div>
         <div class="mt-1 nums text-xl font-bold text-ivory sm:text-2xl">{{ st.value }}</div>
         <div class="mt-1">
@@ -37,15 +43,15 @@ const intel = [
       <Card title="Portfolio Performance">
         <template #action><span>12M · rebased 100</span></template>
         <div class="mb-3 flex items-end gap-3">
-          <span class="nums text-3xl font-bold text-ivory">{{ PERFORMANCE[PERFORMANCE.length - 1].toFixed(1) }}</span>
-          <PriceChange :value="PERFORMANCE[PERFORMANCE.length - 1] - 100" percent class="pb-1 text-sm" />
+          <span class="nums text-3xl font-bold text-ivory">{{ lastPerf.toFixed(1) }}</span>
+          <PriceChange :value="lastPerf - 100" percent class="pb-1 text-sm" />
         </div>
-        <LineChart :data="PERFORMANCE" :labels="perfLabels" :height="240" tone="up" />
+        <LineChart :data="analytics.performance" :labels="perfLabels" :height="240" tone="up" />
       </Card>
 
       <Card title="Sector Allocation">
         <ul class="space-y-4">
-          <li v-for="s in SECTOR_ALLOCATION" :key="s.label">
+          <li v-for="s in analytics.sectors" :key="s.label">
             <div class="mb-1.5 flex items-center justify-between text-sm">
               <span class="text-platinum-200">{{ s.label }}</span>
               <span class="nums font-medium text-ivory">{{ s.pct }}%</span>

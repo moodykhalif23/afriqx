@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import AppShell from "@/components/shell/AppShell.vue";
 import Accordion from "primevue/accordion";
 import AccordionPanel from "primevue/accordionpanel";
@@ -9,19 +9,62 @@ import InputText from "primevue/inputtext";
 import Select from "primevue/select";
 import ToggleSwitch from "primevue/toggleswitch";
 import Button from "primevue/button";
-import { USER } from "@/data/mock";
+import { settingsApi, ApiError, type Settings } from "@/api";
+import { auth } from "@/stores/auth";
 import { useStub } from "@/composables/useStub";
 
 const stub = useStub();
 
-const name = ref(USER.name);
-const email = ref("amara@afriqx.africa");
+const name = ref(auth.state.user?.name ?? "");
+const email = ref(auth.state.user?.email ?? "");
 const baseCcy = ref("KES");
 const theme = ref("AFRIQX Dark");
 const flags = ref({
   twoFa: true, biometric: true, priceAlerts: true, orderFills: true,
   newsDigest: false, aiSummary: true, compactTables: true, ticker: true,
 });
+const saving = ref(false);
+
+onMounted(async () => {
+  try {
+    const s = await settingsApi.get();
+    name.value = s.name;
+    email.value = s.email;
+    baseCcy.value = s.baseCcy;
+    theme.value = s.theme;
+    flags.value = {
+      twoFa: s.twoFa, biometric: s.biometric, priceAlerts: s.priceAlerts,
+      orderFills: s.orderFills, newsDigest: s.newsDigest, aiSummary: s.aiSummary,
+      compactTables: s.compactTables, ticker: s.ticker,
+    };
+  } catch {
+    // 401 handled globally; other errors leave defaults in place.
+  }
+});
+
+async function save() {
+  saving.value = true;
+  const payload: Settings = {
+    name: name.value.trim(),
+    email: email.value,
+    baseCcy: baseCcy.value,
+    theme: theme.value,
+    ...flags.value,
+  };
+  try {
+    const updated = await settingsApi.update(payload);
+    auth.patchUser({ name: updated.name });
+    stub("Settings saved", "Your preferences have been updated.", "success");
+  } catch (e) {
+    stub("Could not save", e instanceof ApiError ? e.message : "Try again.", "warn");
+  } finally {
+    saving.value = false;
+  }
+}
+
+function cancel() {
+  stub("Cancelled", "No changes were saved.");
+}
 </script>
 
 <template>
@@ -99,10 +142,8 @@ const flags = ref({
       </Accordion>
 
       <div class="mt-5 flex justify-end gap-3">
-        <Button label="Cancel" text severity="secondary"
-          @click="stub('Cancelled', 'No changes were saved.')" />
-        <Button label="Save changes" class="font-display font-semibold"
-          @click="stub('Settings saved', 'Your preferences have been updated.', 'success')" />
+        <Button label="Cancel" text severity="secondary" @click="cancel" />
+        <Button label="Save changes" class="font-display font-semibold" :loading="saving" @click="save" />
       </div>
     </div>
   </AppShell>

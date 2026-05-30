@@ -12,10 +12,21 @@ import Accordion from "primevue/accordion";
 import AccordionPanel from "primevue/accordionpanel";
 import AccordionHeader from "primevue/accordionheader";
 import AccordionContent from "primevue/accordioncontent";
-import { ACTIVE_PAIR, CANDLES, TRADE_PAIRS } from "@/data/mock";
+import { useRouter } from "vue-router";
+import { TRADE_PAIRS } from "@/data/mock";
+import { marketsApi, ordersApi, ApiError, type ActivePair } from "@/api";
+import { useApi } from "@/composables/useApi";
 import { useStub } from "@/composables/useStub";
 
+const router = useRouter();
 const stub = useStub();
+
+const emptyPair: ActivePair = {
+  pair: "—", name: "", flag: "🌍", price: 0, change: 0,
+  changeAbs: 0, high24h: 0, low24h: 0, volume24h: "",
+};
+const { data: ACTIVE_PAIR } = useApi(() => marketsApi.activePair(), emptyPair);
+const { data: candles } = useApi(() => marketsApi.candles(), []);
 
 const RATE_IN_KES: Record<string, number> = { KES: 1, NGN: 0.1524, ZAR: 6.95, GHS: 8.6, EGP: 2.6 };
 const tabs = ["Buy", "Sell", "FX", "Convert"];
@@ -33,12 +44,38 @@ const qty = ref(100);
 const limitPrice = ref(682.5);
 const estCost = computed(() => (qty.value || 0) * (orderType.value === "Market" ? 682.5 : (limitPrice.value || 0)));
 
-const closes = CANDLES.map((c) => c.close);
+const closes = computed(() => candles.value.map((c) => c.close));
 const ccyOptions = TRADE_PAIRS.map((p) => p.code);
 const fmt = (n: number) => n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
+const submitting = ref(false);
 
 function swap() { const f = from.value; from.value = to.value; to.value = f; }
+
+async function review() {
+  // FX/Convert tabs are a quote preview only — no order endpoint for conversions.
+  if (isExchange.value) {
+    stub("Conversion preview", "FX conversion settlement isn't enabled in this preview.");
+    return;
+  }
+  submitting.value = true;
+  try {
+    const order = await ordersApi.place({
+      symbol: "DANGCEM",
+      type: orderType.value as "Market" | "Limit",
+      side: tab.value as "Buy" | "Sell",
+      qty: qty.value || 0,
+      price: orderType.value === "Market" ? 682.5 : (limitPrice.value || 0),
+      currency: "NGN",
+    });
+    stub(`Order ${order.status}`, `${order.side} ${order.qty} ${order.symbol} @ ${order.price}.`, "success");
+    router.push("/orders");
+  } catch (e) {
+    stub("Order failed", e instanceof ApiError ? e.message : "Try again.", "warn");
+  } finally {
+    submitting.value = false;
+  }
+}
 </script>
 
 <template>
@@ -121,8 +158,9 @@ function swap() { const f = from.value; from.value = to.value; to.value = f; }
             <Button
               :label="isExchange ? 'Review Conversion' : `Review ${tab} Order`"
               :severity="tab === 'Sell' ? 'danger' : 'primary'"
+              :loading="submitting"
               class="mt-5 w-full font-display font-semibold" size="large"
-              @click="stub(isExchange ? 'Review Conversion' : `Review ${tab} Order`, 'Order routing isn\'t enabled in this preview.')" />
+              @click="review" />
             <p class="mt-2 text-center text-[11px] text-platinum-400">Settled in African value · Pan-African Liquidity Network</p>
           </Card>
         </div>

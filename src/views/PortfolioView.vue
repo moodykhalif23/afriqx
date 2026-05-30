@@ -5,17 +5,28 @@ import PriceChange from "@/components/ui/PriceChange.vue";
 import DonutChart from "@/components/charts/DonutChart.vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import { PORTFOLIO, PORTFOLIO_SUMMARY, POSITIONS } from "@/data/mock";
+import { computed } from "vue";
+import { portfolioApi, type Portfolio, type Position } from "@/api";
+import { useApi } from "@/composables/useApi";
 import { useStub } from "@/composables/useStub";
 
 const stub = useStub();
-const s = PORTFOLIO_SUMMARY;
-const summary = [
-  { label: "Total Value", value: s.totalValue, change: s.dayChange, suffix: "today" },
-  { label: "Total P&L", value: s.totalPnlAbs, change: s.totalPnl, accent: true },
-  { label: "Invested", value: s.invested },
-  { label: "Buying Power", value: s.buyingPower },
-];
+
+const emptyPortfolio: Portfolio = { total: "—", change: 0, changeAbs: "", allocations: [] };
+const { data: portfolio } = useApi(() => portfolioApi.overview(), emptyPortfolio);
+const { data: summaryData } = useApi(() => portfolioApi.summary(), null);
+const { data: positions } = useApi(() => portfolioApi.positions(), [] as Position[]);
+
+const summary = computed(() => {
+  const s = summaryData.value;
+  if (!s) return [];
+  return [
+    { label: "Total Value", value: s.totalValue, change: s.dayChange, suffix: "today" },
+    { label: "Total P&L", value: s.totalPnlAbs, change: s.totalPnl, accent: true },
+    { label: "Invested", value: s.invested, change: undefined, suffix: undefined, accent: false },
+    { label: "Buying Power", value: s.buyingPower, change: undefined, suffix: undefined, accent: false },
+  ];
+});
 </script>
 
 <template>
@@ -38,9 +49,9 @@ const summary = [
 
     <div class="mt-5 grid grid-cols-1 gap-5 sm:mt-7 sm:gap-7 xl:grid-cols-[360px_1fr]">
       <Card title="Allocation">
-        <DonutChart :data="PORTFOLIO.allocations" :height="180" center-label="Total Value" :center-value="PORTFOLIO.total" />
+        <DonutChart :data="portfolio.allocations" :height="180" center-label="Total Value" :center-value="portfolio.total" />
         <ul class="mt-4 space-y-2">
-          <li v-for="a in PORTFOLIO.allocations" :key="a.label" class="flex items-center gap-2 text-xs">
+          <li v-for="a in portfolio.allocations" :key="a.label" class="flex items-center gap-2 text-xs">
             <span class="h-2.5 w-2.5 rounded-sm" :style="{ backgroundColor: a.color }" />
             <span class="flex-1 text-platinum-200">{{ a.label }}</span>
             <span class="text-platinum-400">{{ a.pct }}%</span>
@@ -51,7 +62,7 @@ const summary = [
 
       <Card title="Holdings" flush>
         <template #action><button type="button" class="hover:underline" @click="stub('Export', 'Exporting holdings to CSV — coming soon.')">Export</button></template>
-        <DataTable :value="POSITIONS" dataKey="symbol" scrollable size="small" stripedRows class="p-2 sm:p-3">
+        <DataTable :value="positions" dataKey="symbol" scrollable size="small" stripedRows class="p-2 sm:p-3">
           <Column field="symbol" header="Symbol"><template #body="{ data }"><span class="font-semibold text-ivory">{{ data.symbol }}</span></template></Column>
           <Column field="name" header="Name"><template #body="{ data }"><span class="text-platinum-300">{{ data.name }}</span></template></Column>
           <Column header="Qty"><template #body="{ data }"><span class="nums text-platinum-200">{{ data.qty }}</span></template></Column>
