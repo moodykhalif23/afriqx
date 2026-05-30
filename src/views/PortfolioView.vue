@@ -66,19 +66,7 @@ const summary = computed(() => {
       </div>
     </div>
 
-    <div class="mt-5 grid grid-cols-1 gap-5 sm:mt-7 sm:gap-7 xl:grid-cols-[360px_1fr]">
-      <Card title="Allocation">
-        <DonutChart :data="portfolio.allocations" :height="180" center-label="Total Value" :center-value="portfolio.total" />
-        <ul class="mt-4 space-y-2">
-          <li v-for="a in portfolio.allocations" :key="a.label" class="flex items-center gap-2 text-xs">
-            <span class="h-2.5 w-2.5 rounded-sm" :style="{ backgroundColor: a.color }" />
-            <span class="flex-1 text-platinum-200">{{ a.label }}</span>
-            <span class="text-platinum-400">{{ a.pct }}%</span>
-            <span class="nums w-24 text-right text-ivory">{{ a.value }}</span>
-          </li>
-        </ul>
-      </Card>
-
+    <div class="mt-5 space-y-5 sm:mt-7 sm:space-y-7">
       <Card title="Holdings" flush>
         <template #action><button type="button" class="hover:underline" @click="stub('Export', 'Exporting holdings to CSV — coming soon.')">Export</button></template>
         <DataTable
@@ -123,6 +111,21 @@ const summary = computed(() => {
           </Column>
         </DataTable>
       </Card>
+
+      <Card title="Allocation">
+        <div class="grid items-center gap-6 sm:grid-cols-[240px_1fr]">
+          <DonutChart :data="portfolio.allocations" :height="200" center-label="Total Value" :center-value="portfolio.total" />
+          <ul class="space-y-2.5">
+            <li v-for="a in portfolio.allocations" :key="a.label" class="flex items-center gap-2 text-sm">
+              <span class="h-2.5 w-2.5 rounded-sm" :style="{ backgroundColor: a.color }" />
+              <span class="flex-1 text-platinum-200">{{ a.label }}</span>
+              <span class="text-platinum-400">{{ a.pct }}%</span>
+              <span class="nums w-28 text-right text-ivory">{{ a.value }}</span>
+            </li>
+          </ul>
+        </div>
+      </Card>
     </div>
   </AppShell>
 </template>
+
