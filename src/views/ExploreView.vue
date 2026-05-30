@@ -32,22 +32,6 @@ const fmt = (n: number) => n.toLocaleString("en-US", { minimumFractionDigits: 2 
       </div>
     </section>
 
-    <h2 class="mb-3 mt-8 font-display text-lg font-bold text-ivory">Product Ecosystem</h2>
-    <div class="grid grid-cols-1 gap-4 xs:grid-cols-2 lg:grid-cols-3">
-      <a v-for="p in EXPLORE_PRODUCTS" :key="p.name" href="#"
-        class="card-3d block rounded-2xl border border-obsidian-500/60 bg-obsidian-800 p-5">
-        <div class="flex items-center justify-between">
-          <span class="grid h-11 w-11 place-items-center rounded-xl bg-emerald-500/15 text-emerald-300"><i :class="NAV_ICON[p.icon]" style="font-size:1.25rem" /></span>
-          <Tag v-if="p.badge" :value="p.badge" severity="warn" />
-        </div>
-        <h3 class="mt-4 font-display text-base font-bold text-ivory">{{ p.name }}</h3>
-        <p class="mt-1 text-sm text-platinum-400">{{ p.tagline }}</p>
-        <span class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-emerald-400">Learn more <i class="pi pi-arrow-right text-[10px]" /></span>
-      </a>
-    </div>
-
-    <h2 class="mb-3 mt-8 font-display text-lg font-bold text-ivory">Trending Indexes</h2>
-    <Carousel :value="INDEXES" :numVisible="4" :numScroll="1" :responsiveOptions="idxResponsive" :showIndicators="false">
       <template #item="{ data }">
         <div class="mr-4">
           <div class="card-3d rounded-2xl border border-obsidian-500/60 bg-obsidian-800 p-4">
@@ -60,7 +44,6 @@ const fmt = (n: number) => n.toLocaleString("en-US", { minimumFractionDigits: 2 
           </div>
         </div>
       </template>
-    </Carousel>
 
     <h2 class="mb-3 mt-8 font-display text-lg font-bold text-ivory">Exchange Architecture</h2>
     <Card flush>
