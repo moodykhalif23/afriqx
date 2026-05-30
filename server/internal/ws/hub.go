@@ -1,5 +1,3 @@
-// Package ws implements a minimal WebSocket hub that fans broadcast messages
-// out to all connected clients. It is transport for the live market feed.
 package ws
 
 import (
