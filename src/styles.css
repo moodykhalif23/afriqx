@@ -150,3 +150,15 @@
     transform: translateX(-50%);
   }
 }
+
+/* Table column headers: a distinct, lighter surface + uppercase label and an
+   emerald underline, so the header row separates cleanly from the data rows. */
+.p-datatable .p-datatable-thead > tr > th {
+  background: var(--color-obsidian-700);
+  color: var(--color-platinum-300);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  border-bottom: 2px solid color-mix(in oklab, var(--color-emerald-500) 38%, transparent);
+}
