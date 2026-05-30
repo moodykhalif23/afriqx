@@ -23,22 +23,17 @@ type Config struct {
 	SeedUserName     string
 }
 
-// Load reads configuration from the environment (and a local .env if present).
-// Secrets — DATABASE_URL and JWT_SECRET — have NO hardcoded defaults and must be
-// supplied via the environment; missing ones are a startup error. Non-secret
-// operational settings fall back to sensible defaults.
 func Load() (*Config, error) {
 	_ = godotenv.Load()
 
-	jwtTTL, err := time.ParseDuration(getenv("JWT_TTL", "24h"))
+	port, err := requireEnv("PORT")
 	if err != nil {
-		return nil, fmt.Errorf("invalid JWT_TTL: %w", err)
+		return nil, err
 	}
-	tick, err := time.ParseDuration(getenv("TICK_INTERVAL", "2s"))
+	corsRaw, err := requireEnv("CORS_ORIGINS")
 	if err != nil {
-		return nil, fmt.Errorf("invalid TICK_INTERVAL: %w", err)
+		return nil, err
 	}
-
 	databaseURL, err := requireEnv("DATABASE_URL")
 	if err != nil {
 		return nil, err
@@ -47,26 +42,35 @@ func Load() (*Config, error) {
 	if err != nil {
 		return nil, err
 	}
+	jwtTTLRaw, err := requireEnv("JWT_TTL")
+	if err != nil {
+		return nil, err
+	}
+	tickRaw, err := requireEnv("TICK_INTERVAL")
+	if err != nil {
+		return nil, err
+	}
 
-	cfg := &Config{
-		Port:             getenv("PORT", "8080"),
-		CORSOrigins:      splitCSV(getenv("CORS_ORIGINS", "http://localhost:5173,http://localhost:4173")),
+	jwtTTL, err := time.ParseDuration(jwtTTLRaw)
+	if err != nil {
+		return nil, fmt.Errorf("invalid JWT_TTL: %w", err)
+	}
+	tick, err := time.ParseDuration(tickRaw)
+	if err != nil {
+		return nil, fmt.Errorf("invalid TICK_INTERVAL: %w", err)
+	}
+
+	return &Config{
+		Port:             port,
+		CORSOrigins:      splitCSV(corsRaw),
 		DatabaseURL:      databaseURL,
 		JWTSecret:        jwtSecret,
 		JWTTTL:           jwtTTL,
 		TickInterval:     tick,
 		SeedUserEmail:    strings.TrimSpace(os.Getenv("SEED_USER_EMAIL")),
 		SeedUserPassword: os.Getenv("SEED_USER_PASSWORD"),
-		SeedUserName:     getenv("SEED_USER_NAME", "Demo User"),
-	}
-	return cfg, nil
-}
-
-func getenv(key, fallback string) string {
-	if v := strings.TrimSpace(os.Getenv(key)); v != "" {
-		return v
-	}
-	return fallback
+		SeedUserName:     strings.TrimSpace(os.Getenv("SEED_USER_NAME")),
+	}, nil
 }
 
 // requireEnv returns a non-empty environment value or an actionable error.
