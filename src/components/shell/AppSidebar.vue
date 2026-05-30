@@ -12,7 +12,7 @@ const route = useRoute();
   <aside
     class="hidden h-full w-60 shrink-0 flex-col border-r border-obsidian-500/60 bg-obsidian-850 lg:flex"
   >
-    <div class="flex h-16 items-center px-5">
+    <div class="flex h-16 items-center justify-center px-5">
       <Logo variant="full" :size="40" />
     </div>
 
@@ -41,14 +41,6 @@ const route = useRoute();
       <p class="mt-1 text-xs text-platinum-400">Trade. Invest. Build Africa.</p>
       <Button label="Upgrade to Pro" size="small" severity="warn"
         class="mt-3 w-full font-display font-semibold" />
-    </div>
-
-    <div class="border-t border-obsidian-500/60 px-5 py-3">
-      <div class="flex items-center gap-2">
-        <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px] shadow-emerald-400/70" />
-        <span class="text-[11px] font-medium text-platinum-300">All Systems Operational</span>
-      </div>
-      <p class="mt-1 nums text-[10px] text-platinum-400">Connected · EAT 09:45:32</p>
     </div>
   </aside>
 </template>
