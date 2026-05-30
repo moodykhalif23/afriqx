@@ -18,7 +18,6 @@ tidy:
 test:
 	go test ./...
 
-# Postgres lifecycle (requires Docker)
 db-up:
 	docker compose up -d postgres
 
