@@ -156,9 +156,9 @@ func ProvisionUser(ctx context.Context, pool *pgxpool.Pool, userID string) error
 			userID, i, sec.label, sec.pct, sec.color)
 	}
 
-	for _, h := range holdingsCatalog {
+	for _, symbol := range defaultWatchlist {
 		b.Queue(`INSERT INTO user_watchlist (user_id, symbol) VALUES ($1,$2)
-			ON CONFLICT (user_id, symbol) DO NOTHING`, userID, h.symbol)
+			ON CONFLICT (user_id, symbol) DO NOTHING`, userID, symbol)
 	}
 
 	for _, bal := range startingBalances {

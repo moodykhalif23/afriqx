@@ -89,7 +89,7 @@ type holdingRow struct {
 	change              float64
 }
 
-// Watchlist catalog (the default WATCHLIST in the mock).
+// Full catalog of instruments that can be added to a watchlist.
 var holdingsCatalog = []holdingRow{
 	{"AIRTEL AFRIQX", "Airtel Africa", "KES 123.45", 2.35},
 	{"MTN GROUP", "MTN Group", "ZAR 1,764.00", 4.21},
@@ -99,6 +99,21 @@ var holdingsCatalog = []holdingRow{
 	{"EGX EGYPT", "Egyptian Exchange", "EGP 18.75", 2.11},
 	{"ABSA GROUP", "Absa Group", "ZAR 186.20", 1.89},
 	{"LOSSENIAM", "Losseniam Gold", "GHS 28.40", 3.42},
+	{"EQUITY GROUP", "Equity Group Holdings", "KES 44.10", 4.89},
+	{"JUMIA", "Jumia Technologies", "EGP 18.75", 5.32},
+	{"GCB BANK", "GCB Bank", "GHS 6.45", 2.05},
+	{"COMMERCIAL INTL", "Commercial Intl Bank", "EGP 84.20", -0.62},
+	{"MTN NIGERIA", "MTN Nigeria", "NGN 432.50", 4.35},
+	{"NILE BREWERIES", "Nile Breweries", "KES 4.35", 6.18},
+	{"STANBIC", "Stanbic Holdings", "KES 112.00", 1.45},
+	{"NESTLE NG", "Nestlé Nigeria", "NGN 1,420.00", 0.92},
+}
+
+// Symbols provisioned onto a new user's watchlist (a subset of the catalog, so
+// "Add instrument" always has options to add).
+var defaultWatchlist = []string{
+	"AIRTEL AFRIQX", "MTN GROUP", "NASPERS", "DANGCEM",
+	"SAFARICOM", "EGX EGYPT", "ABSA GROUP", "LOSSENIAM",
 }
 
 type heatRow struct {
