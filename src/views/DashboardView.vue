@@ -72,10 +72,11 @@ const topWatchlist = computed(() => watchlist.value.slice(0, 6));
               class="nums rounded-md px-2.5 py-1 text-xs font-medium"
               :class="tf === activeTf ? 'bg-emerald-500/20 text-emerald-300' : 'text-platinum-400 hover:bg-obsidian-700 hover:text-ivory'"
               @click="activeTf = tf">{{ tf }}</button>
-            <div class="ml-auto flex items-center gap-1 text-platinum-400">
-              <i class="pi pi-chart-bar text-xs" />
-              <i class="pi pi-window-maximize text-xs" />
-              <i class="pi pi-camera text-xs" />
+            <div class="ml-auto flex items-center gap-0.5">
+              <button v-for="ic in ['pi-chart-bar', 'pi-window-maximize', 'pi-camera']" :key="ic" type="button"
+                class="grid h-7 w-7 place-items-center rounded-md text-xs text-platinum-400 transition-colors hover:bg-obsidian-700 hover:text-ivory">
+                <i :class="`pi ${ic}`" />
+              </button>
             </div>
           </div>
           <div class="afriqx-grid bg-obsidian-900/40 px-2 py-3">
