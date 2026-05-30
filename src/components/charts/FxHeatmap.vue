@@ -8,8 +8,32 @@ import { marketsApi, type FxHeatmap } from "@/api";
 import { useApi } from "@/composables/useApi";
 import africa from "@/data/africa.geo.json";
 
-// Register the real Africa map once.
-registerMap("africa", africa as never);
+// The bundled GeoJSON mixes Polygon/MultiPolygon features with GeometryCollection
+// ones (e.g. South Africa, Tanzania, Madagascar). ECharts can't parse
+// GeometryCollection and throws "Invalid geoJson format", which blanks the entire
+// map — so flatten every feature to a MultiPolygon before registering.
+type Geom = { type: string; coordinates?: unknown; geometries?: Geom[] };
+function toMultiPolygon(geom: Geom | null | undefined): { type: "MultiPolygon"; coordinates: unknown[] } {
+  const coordinates: unknown[] = [];
+  const collect = (g?: Geom | null) => {
+    if (!g) return;
+    if (g.type === "Polygon") coordinates.push(g.coordinates);
+    else if (g.type === "MultiPolygon") coordinates.push(...(g.coordinates as unknown[]));
+    else if (g.type === "GeometryCollection") (g.geometries ?? []).forEach(collect);
+  };
+  collect(geom);
+  return { type: "MultiPolygon", coordinates };
+}
+
+const africaGeo = {
+  type: "FeatureCollection",
+  features: (africa as { features: { properties: unknown; geometry: Geom }[] }).features
+    .map((f) => ({ ...f, geometry: toMultiPolygon(f.geometry) }))
+    .filter((f) => f.geometry.coordinates.length > 0),
+};
+
+// Register the (normalized) Africa map once.
+registerMap("africa", africaGeo as never);
 
 const STRONG = "#1fae5f";
 const NEUTRAL = "#c79b3f";
