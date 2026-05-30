@@ -1,6 +1,3 @@
-// Package models defines the domain types served by the API. JSON tags mirror
-// the frontend's TypeScript interfaces in src/data/mock.ts so the SPA can
-// consume the API with minimal change.
 package models
 
 import "time"
@@ -226,6 +223,32 @@ type ExploreLayer struct {
 	N     string `json:"n"`
 	Title string `json:"title"`
 	Desc  string `json:"desc"`
+}
+
+// Currency is a tradable African currency in the FX engine.
+type Currency struct {
+	Code string `json:"code"`
+	Name string `json:"name"`
+}
+
+// FxQuote is a direct currency-conversion quote (no USD routing).
+type FxQuote struct {
+	From      string  `json:"from"`
+	To        string  `json:"to"`
+	Amount    float64 `json:"amount"`
+	Rate      float64 `json:"rate"`
+	Converted float64 `json:"converted"`
+}
+
+// Conversion is a recorded FX conversion in the ledger.
+type Conversion struct {
+	ID        string  `json:"id"`
+	Date      string  `json:"date"`
+	From      string  `json:"from"`
+	To        string  `json:"to"`
+	Amount    float64 `json:"amount"`
+	Rate      float64 `json:"rate"`
+	Converted float64 `json:"converted"`
 }
 
 // Settings holds a user's preferences.

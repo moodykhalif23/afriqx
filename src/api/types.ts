@@ -226,6 +226,29 @@ export interface Settings {
   ticker: boolean;
 }
 
+export interface Currency {
+  code: string;
+  name: string;
+}
+
+export interface FxQuote {
+  from: string;
+  to: string;
+  amount: number;
+  rate: number;
+  converted: number;
+}
+
+export interface Conversion {
+  id: string;
+  date: string;
+  from: string;
+  to: string;
+  amount: number;
+  rate: number;
+  converted: number;
+}
+
 /** Live-feed tick pushed over the WebSocket. */
 export interface LiveTick {
   type: "tick";

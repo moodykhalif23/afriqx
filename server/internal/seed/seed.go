@@ -66,6 +66,11 @@ func EnsureMarketData(ctx context.Context, pool *pgxpool.Pool) error {
 			ON CONFLICT (label) DO UPDATE SET value=EXCLUDED.value, change=EXCLUDED.change, ord=EXCLUDED.ord`,
 			r.label, r.value, r.change, i)
 	}
+	for i, r := range currencies {
+		b.Queue(`INSERT INTO fx_rates (code, name, kes_per_unit, ord) VALUES ($1,$2,$3,$4)
+			ON CONFLICT (code) DO UPDATE SET name=EXCLUDED.name, kes_per_unit=EXCLUDED.kes_per_unit, ord=EXCLUDED.ord`,
+			r.code, r.name, r.kesPerUnit, i)
+	}
 
 	b.Queue(`INSERT INTO active_pair (id, pair, name, flag, price, change, change_abs, high_24h, low_24h, volume_24h)
 		VALUES (1,$1,$2,$3,$4,$5,$6,$7,$8,$9)

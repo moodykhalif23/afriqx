@@ -128,6 +128,20 @@ var ticker = []tickerRow{
 // The headline dashboard instrument.
 const activePairName = "NGN / KES"
 
+type currencyRow struct {
+	code, name string
+	kesPerUnit float64 // value of 1 unit expressed in KES
+}
+
+// Direct African FX rates (no USD routing). Matches the Trade view's currency set.
+var currencies = []currencyRow{
+	{"KES", "Kenyan Shilling", 1},
+	{"NGN", "Nigerian Naira", 0.1524},
+	{"ZAR", "South African Rand", 6.95},
+	{"GHS", "Ghanaian Cedi", 8.6},
+	{"EGP", "Egyptian Pound", 2.6},
+}
+
 type newsRow struct {
 	title, category, time string
 }

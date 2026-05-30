@@ -69,6 +69,8 @@ func (s *Server) Handler() http.Handler {
 			r.Get("/ticker", s.handleTicker)
 			r.Get("/active-pair", s.handleActivePair)
 			r.Get("/candles", s.handleCandles)
+			r.Get("/fx/currencies", s.handleCurrencies)
+			r.Get("/fx/quote", s.handleFxQuote)
 		})
 
 		// --- Public news & explore
@@ -98,6 +100,9 @@ func (s *Server) Handler() http.Handler {
 			r.Get("/orders", s.handleGetOrders)
 			r.Post("/orders", s.handlePlaceOrder)
 			r.Delete("/orders/{id}", s.handleCancelOrder)
+
+			r.Post("/convert", s.handleConvert)
+			r.Get("/conversions", s.handleConversions)
 
 			r.Get("/analytics", s.handleGetAnalytics)
 
