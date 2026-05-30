@@ -108,7 +108,7 @@ const strip = [
             <template #action><a href="#">View all</a></template>
             <ul class="space-y-4">
               <li v-for="n in NEWS" :key="n.title" class="flex gap-3">
-                <div class="grid h-12 w-12 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-obsidian-600 to-obsidian-700 text-platinum-400"><i class="pi pi-image" /></div>
+                <div class="grid h-12 w-12 shrink-0 place-items-center rounded-lg bg-linear-to-br from-obsidian-600 to-obsidian-700 text-platinum-400"><i class="pi pi-image" /></div>
                 <div class="min-w-0">
                   <p class="line-clamp-2 text-sm font-medium leading-snug text-ivory">{{ n.title }}</p>
                   <div class="mt-1 flex items-center gap-2"><Tag :value="n.category" severity="success" /><span class="text-[11px] text-platinum-400">{{ n.time }}</span></div>
@@ -159,7 +159,7 @@ const strip = [
               <tbody class="divide-y divide-obsidian-500/40">
                 <tr v-for="o in RECENT_ORDERS" :key="o.symbol">
                   <td class="py-2 font-medium text-ivory">{{ o.symbol }}</td>
-                  <td class="py-2 font-semibold" :class="o.side === 'Buy' ? 'text-emerald-400' : 'text-[var(--color-down)]'">{{ o.side }}</td>
+                  <td class="py-2 font-semibold" :class="o.side === 'Buy' ? 'text-emerald-400' : 'text-down'">{{ o.side }}</td>
                   <td class="nums py-2 text-right text-platinum-200">{{ o.price }}</td>
                 </tr>
               </tbody>

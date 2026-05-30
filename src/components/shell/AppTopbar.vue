@@ -56,7 +56,7 @@ const items = [
         class="ml-1 flex items-center gap-2 rounded-lg border border-obsidian-500/60 bg-obsidian-800 py-1 pl-1 pr-1 hover:border-obsidian-400 sm:pr-2"
         @click="menu.toggle($event)"
       >
-        <span class="grid h-8 w-8 shrink-0 place-items-center rounded-md bg-gradient-to-br from-emerald-500 to-gold-500 text-sm font-bold text-obsidian-950">
+        <span class="grid h-8 w-8 shrink-0 place-items-center rounded-md bg-linear-to-br from-emerald-500 to-gold-500 text-sm font-bold text-obsidian-950">
           {{ initials }}
         </span>
         <span class="hidden leading-tight md:block">
