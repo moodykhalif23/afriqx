@@ -23,6 +23,10 @@ type Config struct {
 	SeedUserName     string
 }
 
+// Load reads configuration from the environment (and a local .env if present).
+// Secrets — DATABASE_URL and JWT_SECRET — have NO hardcoded defaults and must be
+// supplied via the environment; missing ones are a startup error. Non-secret
+// operational settings fall back to sensible defaults.
 func Load() (*Config, error) {
 	_ = godotenv.Load()
 
@@ -35,16 +39,25 @@ func Load() (*Config, error) {
 		return nil, fmt.Errorf("invalid TICK_INTERVAL: %w", err)
 	}
 
+	databaseURL, err := requireEnv("DATABASE_URL")
+	if err != nil {
+		return nil, err
+	}
+	jwtSecret, err := requireEnv("JWT_SECRET")
+	if err != nil {
+		return nil, err
+	}
+
 	cfg := &Config{
 		Port:             getenv("PORT", "8080"),
 		CORSOrigins:      splitCSV(getenv("CORS_ORIGINS", "http://localhost:5173,http://localhost:4173")),
-		DatabaseURL:      getenv("DATABASE_URL", "postgres://afriqx:afriqx@localhost:5432/afriqx?sslmode=disable"),
-		JWTSecret:        getenv("JWT_SECRET", "dev-secret-change-me-in-production"),
+		DatabaseURL:      databaseURL,
+		JWTSecret:        jwtSecret,
 		JWTTTL:           jwtTTL,
 		TickInterval:     tick,
-		SeedUserEmail:    getenv("SEED_USER_EMAIL", "amara@afriqx.africa"),
-		SeedUserPassword: getenv("SEED_USER_PASSWORD", "afriqx123"),
-		SeedUserName:     getenv("SEED_USER_NAME", "Amara Okafor"),
+		SeedUserEmail:    strings.TrimSpace(os.Getenv("SEED_USER_EMAIL")),
+		SeedUserPassword: os.Getenv("SEED_USER_PASSWORD"),
+		SeedUserName:     getenv("SEED_USER_NAME", "Demo User"),
 	}
 	return cfg, nil
 }
@@ -54,6 +67,14 @@ func getenv(key, fallback string) string {
 		return v
 	}
 	return fallback
+}
+
+// requireEnv returns a non-empty environment value or an actionable error.
+func requireEnv(key string) (string, error) {
+	if v := strings.TrimSpace(os.Getenv(key)); v != "" {
+		return v, nil
+	}
+	return "", fmt.Errorf("%s is required — set it in server/.env (see .env.example)", key)
 }
 
 func splitCSV(s string) []string {
