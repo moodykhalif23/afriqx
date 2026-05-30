@@ -1,8 +1,3 @@
-/**
- * Low-level HTTP client for the AFRIQX API. Owns the auth token (persisted to
- * localStorage), attaches it to requests, and surfaces a typed ApiError.
- */
-
 const BASE_URL = (import.meta.env.VITE_API_URL ?? "http://localhost:8080/api/v1").replace(/\/$/, "");
 const TOKEN_KEY = "afriqx_token";
 
@@ -65,9 +60,10 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
   const data = text ? safeParse(text) : null;
 
   if (!res.ok) {
-    const message =
-      (data && typeof data === "object" && "error" in data && String((data as { error: unknown }).error)) ||
-      `Request failed (${res.status})`;
+    let message = `Request failed (${res.status})`;
+    if (data && typeof data === "object" && "error" in data) {
+      message = String((data as { error: unknown }).error);
+    }
     throw new ApiError(res.status, message);
   }
   return data as T;
