@@ -1,5 +1,3 @@
-// Command api is the AFRIQX backend: a chi-routed HTTP + WebSocket service
-// backed by Postgres, with JWT auth and a simulated live-price engine.
 package main
 
 import (
