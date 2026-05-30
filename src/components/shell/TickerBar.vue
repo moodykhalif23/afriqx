@@ -1,13 +1,21 @@
 <script setup lang="ts">
-import Logo from "@/components/ui/Logo.vue";
+import { computed, ref, watch } from "vue";
 import PriceChange from "@/components/ui/PriceChange.vue";
-import { TICKER } from "@/data/mock";
+import { marketsApi, type TickerItem } from "@/api";
+import { useLiveFeed } from "@/composables/useLiveFeed";
 import { useStub } from "@/composables/useStub";
 
 const stub = useStub();
 
+// Seed from REST, then let the live WebSocket feed take over.
+const items = ref<TickerItem[]>([]);
+marketsApi.ticker().then((t) => { if (!items.value.length) items.value = t; }).catch(() => {});
+
+const { ticker: liveTicker } = useLiveFeed();
+watch(liveTicker, (t) => { if (t.length) items.value = t; });
+
 // Duplicate the list so the marquee loops seamlessly (−50% translate).
-const doubled = [...TICKER, ...TICKER];
+const doubled = computed(() => [...items.value, ...items.value]);
 </script>
 
 <template>

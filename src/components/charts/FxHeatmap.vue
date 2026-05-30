@@ -4,7 +4,8 @@ import { RouterLink } from "vue-router";
 import { registerMap } from "echarts/core";
 import Card from "@/components/ui/Card.vue";
 import PriceChange from "@/components/ui/PriceChange.vue";
-import { FX_HEATMAP } from "@/data/mock";
+import { marketsApi, type FxHeatmap } from "@/api";
+import { useApi } from "@/composables/useApi";
 import africa from "@/data/africa.geo.json";
 
 // Register the real Africa map once.
@@ -60,11 +61,14 @@ const option = computed(() => ({
   }],
 }));
 
-const groups = [
-  { label: "Strong", color: STRONG, items: FX_HEATMAP.strong },
-  { label: "Neutral", color: NEUTRAL, items: FX_HEATMAP.neutral },
-  { label: "Weak", color: WEAK, items: FX_HEATMAP.weak },
-];
+const emptyHeatmap: FxHeatmap = { strong: [], neutral: [], weak: [] };
+const { data: heatmap } = useApi(() => marketsApi.fxHeatmap(), emptyHeatmap);
+
+const groups = computed(() => [
+  { label: "Strong", color: STRONG, items: heatmap.value.strong },
+  { label: "Neutral", color: NEUTRAL, items: heatmap.value.neutral },
+  { label: "Weak", color: WEAK, items: heatmap.value.weak },
+]);
 </script>
 
 <template>

@@ -7,11 +7,15 @@ import Button from "primevue/button";
 import Carousel from "primevue/carousel";
 import Tag from "primevue/tag";
 import { useRouter } from "vue-router";
-import { EXPLORE_LAYERS, INDEXES } from "@/data/mock";
+import { marketsApi, exploreApi } from "@/api";
+import { useApi } from "@/composables/useApi";
 import { useStub } from "@/composables/useStub";
 
 const router = useRouter();
 const stub = useStub();
+
+const { data: indices } = useApi(() => marketsApi.indices(), []);
+const { data: layers } = useApi(() => exploreApi.layers(), []);
 
 const idxResponsive = [
   { breakpoint: "1024px", numVisible: 3, numScroll: 1 },
@@ -38,7 +42,7 @@ const fmt = (n: number) => n.toLocaleString("en-US", { minimumFractionDigits: 2 
     </section>
 
     <h2 class="mb-3 mt-8 font-display text-lg font-bold text-ivory">African Indices</h2>
-    <Carousel :value="INDEXES" :numVisible="4" :numScroll="1" :responsiveOptions="idxResponsive" :showIndicators="false">
+    <Carousel :value="indices" :numVisible="4" :numScroll="1" :responsiveOptions="idxResponsive" :showIndicators="false">
       <template #item="{ data }">
         <div class="mr-4">
           <div class="card-3d rounded-2xl border border-obsidian-500/60 bg-obsidian-800 p-4">
@@ -56,7 +60,7 @@ const fmt = (n: number) => n.toLocaleString("en-US", { minimumFractionDigits: 2 
     <h2 class="mb-3 mt-8 font-display text-lg font-bold text-ivory">Exchange Architecture</h2>
     <Card flush>
       <ul class="divide-y divide-obsidian-500/50">
-        <li v-for="l in EXPLORE_LAYERS" :key="l.n" class="flex items-start gap-4 p-4 transition-colors hover:bg-obsidian-700/40 sm:p-5">
+        <li v-for="l in layers" :key="l.n" class="flex items-start gap-4 p-4 transition-colors hover:bg-obsidian-700/40 sm:p-5">
           <span class="nums font-display text-2xl font-black text-emerald-500/40">{{ l.n }}</span>
           <div><h3 class="font-semibold text-ivory">{{ l.title }}</h3><p class="mt-0.5 text-sm text-platinum-400">{{ l.desc }}</p></div>
         </li>

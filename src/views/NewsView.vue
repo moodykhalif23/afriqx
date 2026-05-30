@@ -3,7 +3,11 @@ import AppShell from "@/components/shell/AppShell.vue";
 import Card from "@/components/ui/Card.vue";
 import Carousel from "primevue/carousel";
 import Tag from "primevue/tag";
-import { NEWS_FEATURED, NEWS_FEED } from "@/data/mock";
+import { newsApi } from "@/api";
+import { useApi } from "@/composables/useApi";
+
+const { data: featured } = useApi(() => newsApi.featured(), []);
+const { data: feed } = useApi(() => newsApi.feed(), []);
 
 const sev = (c: string) =>
   c === "Equities" || c === "Technology" ? "warn" : c === "Economy" ? "secondary" : "success";
@@ -20,7 +24,7 @@ const responsive = [
       <p class="text-sm text-platinum-400">Continental market intelligence, updated through the trading day.</p>
     </div>
 
-    <Carousel :value="NEWS_FEATURED" :numVisible="3" :numScroll="1" :responsiveOptions="responsive" :showIndicators="false">
+    <Carousel :value="featured" :numVisible="3" :numScroll="1" :responsiveOptions="responsive" :showIndicators="false">
       <template #item="{ data }">
         <div class="mr-4">
           <article class="card-3d flex h-48 flex-col justify-end overflow-hidden rounded-2xl border border-obsidian-500/60 bg-linear-to-br from-emerald-700/30 to-obsidian-800 p-5">
@@ -34,7 +38,7 @@ const responsive = [
     </Carousel>
 
     <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-      <Card v-for="item in NEWS_FEED" :key="item.title">
+      <Card v-for="item in feed" :key="item.title">
         <div class="flex gap-3">
           <div class="grid h-14 w-14 shrink-0 place-items-center rounded-lg bg-linear-to-br from-obsidian-600 to-obsidian-800 text-platinum-400"><i class="pi pi-image" /></div>
           <div class="min-w-0">

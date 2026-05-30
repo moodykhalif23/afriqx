@@ -6,25 +6,37 @@ import InputIcon from "primevue/inputicon";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import Menu from "primevue/menu";
+import { computed } from "vue";
 import Logo from "@/components/ui/Logo.vue";
-import { USER } from "@/data/mock";
+import { auth } from "@/stores/auth";
 import { useStub } from "@/composables/useStub";
 
 defineProps<{ title?: string }>();
 const router = useRouter();
 const stub = useStub();
 const menu = ref();
-const initials = USER.name.split(" ").map((n) => n[0]).join("");
 
-const items = [
-  { label: `Signed in as ${USER.name}`, disabled: true },
+const user = computed(() => auth.state.user);
+const displayName = computed(() => user.value?.name ?? "Guest");
+const tier = computed(() => user.value?.tier ?? "");
+const initials = computed(() =>
+  displayName.value.split(" ").map((n) => n[0]).join("").slice(0, 2),
+);
+
+function signOut() {
+  auth.logout();
+  router.replace("/login");
+}
+
+const items = computed(() => [
+  { label: `Signed in as ${displayName.value}`, disabled: true },
   { separator: true },
   { label: "Profile", icon: "pi pi-user", command: () => router.push("/settings") },
   { label: "Settings", icon: "pi pi-cog", command: () => router.push("/settings") },
   { label: "Upgrade plan", icon: "pi pi-star", command: () => stub("AFRIQX Pro", "Pro plans launch soon — you'll be the first to know.", "warn") },
   { separator: true },
-  { label: "Sign out", icon: "pi pi-sign-out", command: () => stub("Sign out", "Authentication isn't part of this preview.") },
-];
+  { label: "Sign out", icon: "pi pi-sign-out", command: signOut },
+]);
 </script>
 
 <template>
@@ -69,8 +81,8 @@ const items = [
           {{ initials }}
         </span>
         <span class="hidden leading-tight md:block">
-          <span class="block text-xs font-semibold text-ivory">{{ USER.name }}</span>
-          <span class="block text-[10px] text-gold-400">{{ USER.tier }}</span>
+          <span class="block text-xs font-semibold text-ivory">{{ displayName }}</span>
+          <span class="block text-[10px] text-gold-400">{{ tier }}</span>
         </span>
         <i class="pi pi-chevron-down hidden text-xs text-platinum-400 md:block" />
       </button>
