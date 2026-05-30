@@ -35,6 +35,8 @@ func writeStoreError(w http.ResponseWriter, err error) {
 		writeError(w, http.StatusConflict, "already exists")
 	case errors.Is(err, store.ErrInvalidState):
 		writeError(w, http.StatusConflict, "operation not allowed in current state")
+	case errors.Is(err, store.ErrInsufficientFunds):
+		writeError(w, http.StatusUnprocessableEntity, "insufficient funds for this conversion")
 	default:
 		slog.Error("internal error", "err", err)
 		writeError(w, http.StatusInternalServerError, "internal server error")

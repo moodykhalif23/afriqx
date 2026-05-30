@@ -55,16 +55,78 @@ func (s *Store) FxRate(ctx context.Context, from, to string) (float64, error) {
 	return fromKes / toKes, nil
 }
 
-// CreateConversion records an executed conversion and returns it. The caller
-// supplies the id; the rate and converted amount are computed authoritatively.
-func (s *Store) CreateConversion(ctx context.Context, userID string, c *models.Conversion) error {
+// ErrInsufficientFunds is returned when a conversion exceeds the source balance.
+var ErrInsufficientFunds = errors.New("insufficient funds")
+
+// Balances returns a user's per-currency cash balances in display order.
+func (s *Store) Balances(ctx context.Context, userID string) ([]models.Balance, error) {
+	rows, err := s.pool.Query(ctx, `
+		SELECT b.currency, r.name, b.amount
+		FROM cash_balances b
+		JOIN fx_rates r ON r.code = b.currency
+		WHERE b.user_id = $1
+		ORDER BY r.ord`, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	out := []models.Balance{}
+	for rows.Next() {
+		var b models.Balance
+		if err := rows.Scan(&b.Currency, &b.Name, &b.Amount); err != nil {
+			return nil, err
+		}
+		out = append(out, b)
+	}
+	return out, rows.Err()
+}
+
+// ConvertFunds atomically debits the source currency and credits the
+// destination, then records the conversion. The caller supplies the id, rate
+// and converted amount. Returns ErrInsufficientFunds if the source balance is
+// too low (or absent).
+func (s *Store) ConvertFunds(ctx context.Context, userID string, c *models.Conversion) error {
+	tx, err := s.pool.Begin(ctx)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback(ctx) //nolint:errcheck // rolled back unless committed
+
+	var bal float64
+	err = tx.QueryRow(ctx,
+		`SELECT amount FROM cash_balances WHERE user_id = $1 AND currency = $2 FOR UPDATE`,
+		userID, c.From).Scan(&bal)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return ErrInsufficientFunds
+	}
+	if err != nil {
+		return err
+	}
+	if bal < c.Amount {
+		return ErrInsufficientFunds
+	}
+
+	if _, err := tx.Exec(ctx,
+		`UPDATE cash_balances SET amount = amount - $3 WHERE user_id = $1 AND currency = $2`,
+		userID, c.From, c.Amount); err != nil {
+		return err
+	}
+	if _, err := tx.Exec(ctx, `
+		INSERT INTO cash_balances (user_id, currency, amount) VALUES ($1, $2, $3)
+		ON CONFLICT (user_id, currency) DO UPDATE SET amount = cash_balances.amount + EXCLUDED.amount`,
+		userID, c.To, c.Converted); err != nil {
+		return err
+	}
+
 	var created time.Time
-	err := s.pool.QueryRow(ctx, `
+	if err := tx.QueryRow(ctx, `
 		INSERT INTO conversions (id, user_id, from_ccy, to_ccy, amount, rate, converted)
 		VALUES ($1, $2, $3, $4, $5, $6, $7)
 		RETURNING created_at`,
-		c.ID, userID, c.From, c.To, c.Amount, c.Rate, c.Converted).Scan(&created)
-	if err != nil {
+		c.ID, userID, c.From, c.To, c.Amount, c.Rate, c.Converted).Scan(&created); err != nil {
+		return err
+	}
+	if err := tx.Commit(ctx); err != nil {
 		return err
 	}
 	c.Date = created.Format(conversionDateLayout)

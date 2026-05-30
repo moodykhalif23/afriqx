@@ -1,6 +1,14 @@
 [
   {
     "method": "GET",
+    "path": "/api/v1/docs",
+    "group": "System",
+    "auth": false,
+    "summary": "Self-describing route map (powers this reference)",
+    "response": "Route[]"
+  },
+  {
+    "method": "GET",
     "path": "/healthz",
     "group": "System",
     "auth": false,
@@ -125,6 +133,14 @@
   },
   {
     "method": "GET",
+    "path": "/api/v1/balances",
+    "group": "FX Conversion",
+    "auth": true,
+    "summary": "Per-currency cash balances",
+    "response": "Balance[]"
+  },
+  {
+    "method": "GET",
     "path": "/api/v1/conversions",
     "group": "FX Conversion",
     "auth": true,
@@ -136,7 +152,7 @@
     "path": "/api/v1/convert",
     "group": "FX Conversion",
     "auth": true,
-    "summary": "Execute \u0026 record a direct FX conversion",
+    "summary": "Execute a direct FX conversion (debits/credits balances)",
     "request": "{from,to,amount}",
     "response": "Conversion"
   },

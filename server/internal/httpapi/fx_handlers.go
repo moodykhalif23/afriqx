@@ -91,11 +91,21 @@ func (s *Server) handleConvert(w http.ResponseWriter, r *http.Request) {
 		Rate:      round6(rate),
 		Converted: round2(req.Amount * rate),
 	}
-	if err := s.store.CreateConversion(r.Context(), mustUserID(r), conv); err != nil {
+	if err := s.store.ConvertFunds(r.Context(), mustUserID(r), conv); err != nil {
 		writeStoreError(w, err)
 		return
 	}
 	writeJSON(w, http.StatusCreated, conv)
+}
+
+// handleBalances returns the authenticated user's per-currency cash balances.
+func (s *Server) handleBalances(w http.ResponseWriter, r *http.Request) {
+	data, err := s.store.Balances(r.Context(), mustUserID(r))
+	if err != nil {
+		writeStoreError(w, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, data)
 }
 
 func (s *Server) handleConversions(w http.ResponseWriter, r *http.Request) {

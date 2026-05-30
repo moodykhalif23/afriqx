@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/afriqx/server/internal/apidoc"
 	"github.com/afriqx/server/internal/auth"
 	"github.com/afriqx/server/internal/config"
 	"github.com/afriqx/server/internal/store"
@@ -21,6 +22,7 @@ type Server struct {
 	hub       *ws.Hub
 	cfg       *config.Config
 	provision func(context.Context, string) error
+	docs      []apidoc.Route
 }
 
 func NewServer(
@@ -79,6 +81,9 @@ func (s *Server) Handler() http.Handler {
 		r.Get("/explore/products", s.handleExploreProducts)
 		r.Get("/explore/layers", s.handleExploreLayers)
 
+		// --- Self-describing API docs (consumed by the in-app reference)
+		r.Get("/docs", s.handleDocs)
+
 		// --- Live feed (token optional; origin-checked)
 		r.Get("/ws", s.handleWS)
 
@@ -101,6 +106,7 @@ func (s *Server) Handler() http.Handler {
 			r.Post("/orders", s.handlePlaceOrder)
 			r.Delete("/orders/{id}", s.handleCancelOrder)
 
+			r.Get("/balances", s.handleBalances)
 			r.Post("/convert", s.handleConvert)
 			r.Get("/conversions", s.handleConversions)
 
@@ -111,7 +117,17 @@ func (s *Server) Handler() http.Handler {
 		})
 	})
 
+	// Self-describe: walk the now-complete router so /docs serves the live route map.
+	if docs, err := apidoc.Generate(r); err == nil {
+		s.docs = docs
+	}
+
 	return r
+}
+
+// handleDocs serves the machine-readable route map powering the in-app reference.
+func (s *Server) handleDocs(w http.ResponseWriter, _ *http.Request) {
+	writeJSON(w, http.StatusOK, s.docs)
 }
 
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {

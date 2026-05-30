@@ -251,6 +251,13 @@ type Conversion struct {
 	Converted float64 `json:"converted"`
 }
 
+// Balance is a user's cash holding in one currency.
+type Balance struct {
+	Currency string  `json:"currency"`
+	Name     string  `json:"name"`
+	Amount   float64 `json:"amount"`
+}
+
 // Settings holds a user's preferences.
 type Settings struct {
 	Name        string `json:"name"`

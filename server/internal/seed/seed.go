@@ -161,5 +161,10 @@ func ProvisionUser(ctx context.Context, pool *pgxpool.Pool, userID string) error
 			ON CONFLICT (user_id, symbol) DO NOTHING`, userID, h.symbol)
 	}
 
+	for _, bal := range startingBalances {
+		b.Queue(`INSERT INTO cash_balances (user_id, currency, amount) VALUES ($1,$2,$3)
+			ON CONFLICT (user_id, currency) DO NOTHING`, userID, bal.currency, bal.amount)
+	}
+
 	return pool.SendBatch(ctx, b).Close()
 }

@@ -47,6 +47,8 @@ var routeMeta = map[string]meta{
 	"GET /api/v1/markets/active-pair":   {summary: "Headline dashboard instrument", response: "ActivePair"},
 	"GET /api/v1/markets/candles":       {summary: "OHLC candle series", request: "?pair", response: "Candle[]"},
 
+	"GET /api/v1/docs": {summary: "Self-describing route map (powers this reference)", response: "Route[]"},
+
 	"GET /api/v1/news":             {summary: "News feed", response: "NewsItem[]"},
 	"GET /api/v1/news/featured":    {summary: "Featured stories", response: "FeatureNews[]"},
 	"GET /api/v1/explore/products": {summary: "AFX Explore product cards", response: "ExploreProduct[]"},
@@ -64,7 +66,8 @@ var routeMeta = map[string]meta{
 	"GET /api/v1/orders":                {auth: true, summary: "Order ledger (newest first)", response: "Order[]"},
 	"POST /api/v1/orders":               {auth: true, summary: "Place an order (Market fills, Limit/Stop rest)", request: "PlaceOrderInput", response: "Order"},
 	"DELETE /api/v1/orders/{id}":        {auth: true, summary: "Cancel a pending order", response: "Order"},
-	"POST /api/v1/convert":              {auth: true, summary: "Execute & record a direct FX conversion", request: "{from,to,amount}", response: "Conversion"},
+	"GET /api/v1/balances":              {auth: true, summary: "Per-currency cash balances", response: "Balance[]"},
+	"POST /api/v1/convert":              {auth: true, summary: "Execute a direct FX conversion (debits/credits balances)", request: "{from,to,amount}", response: "Conversion"},
 	"GET /api/v1/conversions":           {auth: true, summary: "Conversion ledger (newest first)", response: "Conversion[]"},
 	"GET /api/v1/analytics":             {auth: true, summary: "Performance, KPI stats, sector allocation", response: "Analytics"},
 	"GET /api/v1/settings":              {auth: true, summary: "Read preferences", response: "Settings"},
@@ -179,6 +182,8 @@ func groupFor(path string) string {
 		seg = rest[:i]
 	}
 	switch seg {
+	case "docs":
+		return "System"
 	case "auth":
 		return "Auth"
 	case "markets":
@@ -197,7 +202,7 @@ func groupFor(path string) string {
 		return "Portfolio"
 	case "orders":
 		return "Orders"
-	case "convert", "conversions":
+	case "convert", "conversions", "balances":
 		return "FX Conversion"
 	case "analytics":
 		return "Analytics"

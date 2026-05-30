@@ -133,13 +133,27 @@ type currencyRow struct {
 	kesPerUnit float64 // value of 1 unit expressed in KES
 }
 
-// Direct African FX rates (no USD routing). Matches the Trade view's currency set.
+// Direct African FX rates . Matches the Trade view's currency set.
 var currencies = []currencyRow{
 	{"KES", "Kenyan Shilling", 1},
 	{"NGN", "Nigerian Naira", 0.1524},
 	{"ZAR", "South African Rand", 6.95},
 	{"GHS", "Ghanaian Cedi", 8.6},
 	{"EGP", "Egyptian Pound", 2.6},
+}
+
+type balanceRow struct {
+	currency string
+	amount   float64
+}
+
+// Starting cash balances provisioned to every new account.
+var startingBalances = []balanceRow{
+	{"NGN", 50_000_000},
+	{"KES", 5_000_000},
+	{"ZAR", 200_000},
+	{"GHS", 100_000},
+	{"EGP", 300_000},
 }
 
 type newsRow struct {

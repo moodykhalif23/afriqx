@@ -2,12 +2,13 @@
 
 _Auto-generated from the chi router by `cmd/docgen`. Do not edit by hand._
 
-**36 endpoints.** 🔒 = requires `Authorization: Bearer <token>`.
+**38 endpoints.** 🔒 = requires `Authorization: Bearer <token>`.
 
 ## System
 
 | Method | Path | Auth | Summary | Request | Response |
 |--------|------|:----:|---------|---------|----------|
+| `GET` | `/api/v1/docs` |  | Self-describing route map (powers this reference) | — | `Route[]` |
 | `GET` | `/healthz` |  | Liveness probe + database ping | — | `{status}` |
 
 ## Auth
@@ -38,8 +39,9 @@ _Auto-generated from the chi router by `cmd/docgen`. Do not edit by hand._
 
 | Method | Path | Auth | Summary | Request | Response |
 |--------|------|:----:|---------|---------|----------|
+| `GET` | `/api/v1/balances` | 🔒 | Per-currency cash balances | — | `Balance[]` |
 | `GET` | `/api/v1/conversions` | 🔒 | Conversion ledger (newest first) | — | `Conversion[]` |
-| `POST` | `/api/v1/convert` | 🔒 | Execute & record a direct FX conversion | `{from,to,amount}` | `Conversion` |
+| `POST` | `/api/v1/convert` | 🔒 | Execute a direct FX conversion (debits/credits balances) | `{from,to,amount}` | `Conversion` |
 
 ## News
 
