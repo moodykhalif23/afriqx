@@ -4,7 +4,6 @@ import { RouterLink } from "vue-router";
 import AppShell from "@/components/shell/AppShell.vue";
 import Card from "@/components/ui/Card.vue";
 import PriceChange from "@/components/ui/PriceChange.vue";
-import Sparkline from "@/components/charts/Sparkline.vue";
 import CandleChart from "@/components/charts/CandleChart.vue";
 import DonutChart from "@/components/charts/DonutChart.vue";
 import FxHeatmap from "@/components/charts/FxHeatmap.vue";
@@ -88,24 +87,27 @@ const topWatchlist = computed(() => watchlist.value.slice(0, 6));
         <div class="grid grid-cols-1 gap-5 sm:gap-7 lg:grid-cols-3">
           <Card title="Market Movers">
             <template #action><span class="text-emerald-300">Top Gainers</span></template>
-            <ul class="space-y-3">
-              <li v-for="(m, i) in movers" :key="m.symbol" class="flex items-center gap-3">
-                <span class="grid h-7 w-7 shrink-0 place-items-center rounded-md bg-obsidian-600 text-[10px] font-bold text-platinum-200">{{ i + 1 }}</span>
-                <div class="min-w-0 flex-1"><div class="truncate text-sm font-medium text-ivory">{{ m.name }}</div><div class="nums text-[11px] text-platinum-400">{{ m.price }}</div></div>
-                <div class="w-14"><Sparkline :data="m.series" tone="up" :height="24" /></div>
-                <PriceChange :value="m.change" percent :arrow="false" class="w-14 justify-end text-xs" />
+            <ul class="-mx-2 space-y-0.5">
+              <li v-for="(m, i) in movers" :key="m.symbol"
+                class="flex items-center gap-3 rounded-xl px-2 py-2.5 transition-colors hover:bg-obsidian-700/40">
+                <span class="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-obsidian-600 text-xs font-bold text-platinum-200">{{ i + 1 }}</span>
+                <div class="min-w-0 flex-1">
+                  <div class="truncate text-sm font-medium text-ivory">{{ m.name }}</div>
+                  <div class="nums text-[11px] text-platinum-400">{{ m.price }}</div>
+                </div>
+                <PriceChange :value="m.change" percent :arrow="false" class="shrink-0 text-sm font-semibold" />
               </li>
             </ul>
           </Card>
 
           <Card title="News & Insights">
             <template #action><RouterLink to="/news">View all</RouterLink></template>
-            <ul class="space-y-4">
-              <li v-for="n in newsTop" :key="n.title" class="flex gap-3">
-                <div class="grid h-12 w-12 shrink-0 place-items-center rounded-lg bg-linear-to-br from-obsidian-600 to-obsidian-700 text-platinum-400"><i class="pi pi-image" /></div>
+            <ul class="space-y-5">
+              <li v-for="n in newsTop" :key="n.title" class="flex gap-3.5">
+                <div class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-linear-to-br from-obsidian-600 to-obsidian-700 text-platinum-400"><i class="pi pi-image" /></div>
                 <div class="min-w-0">
                   <p class="line-clamp-2 text-sm font-medium leading-snug text-ivory">{{ n.title }}</p>
-                  <div class="mt-1 flex items-center gap-2"><Tag :value="n.category" severity="success" /><span class="text-[11px] text-platinum-400">{{ n.time }}</span></div>
+                  <div class="mt-2 flex items-center gap-2"><Tag :value="n.category" severity="success" /><span class="text-[11px] text-platinum-400">{{ n.time }}</span></div>
                 </div>
               </li>
             </ul>
@@ -113,13 +115,14 @@ const topWatchlist = computed(() => watchlist.value.slice(0, 6));
 
           <Card title="Portfolio Overview">
             <template #action><RouterLink to="/portfolio">View full portfolio</RouterLink></template>
-            <DonutChart :data="portfolio.allocations" :height="160" center-label="Total Value" :center-value="portfolio.total">
+            <DonutChart :data="portfolio.allocations" :height="170" center-label="Total Value" :center-value="portfolio.total">
               <template #sub><PriceChange :value="portfolio.change" percent class="text-[11px]" /></template>
             </DonutChart>
-            <ul class="mt-4 space-y-3">
+            <ul class="mt-5 space-y-3.5">
               <li v-for="a in portfolio.allocations" :key="a.label" class="flex items-center gap-3">
                 <span class="h-2.5 w-2.5 shrink-0 rounded-full" :style="{ backgroundColor: a.color }" />
                 <span class="flex-1 text-sm text-platinum-200">{{ a.label }}</span>
+                <span class="text-xs text-platinum-400">{{ a.pct }}%</span>
                 <span class="nums text-sm font-medium text-ivory">{{ a.value }}</span>
               </li>
             </ul>

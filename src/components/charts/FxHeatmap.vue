@@ -43,13 +43,13 @@ const option = computed(() => ({
     aspectScale: 0.92,
     zoom: 1.15,
     itemStyle: {
-      areaColor: "#16201b",
-      borderColor: "#0a0e0c",
-      borderWidth: 0.6,
+      areaColor: "#243a30",
+      borderColor: "#3f5a4b",
+      borderWidth: 0.8,
     },
     emphasis: {
       label: { show: false },
-      itemStyle: { areaColor: "#1d2a23" },
+      itemStyle: { areaColor: "#2f4d3d" },
     },
     select: { disabled: true },
     label: { show: false },
