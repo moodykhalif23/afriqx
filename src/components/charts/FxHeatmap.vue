@@ -2,7 +2,6 @@
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
 import { registerMap } from "echarts/core";
-import Card from "@/components/ui/Card.vue";
 import PriceChange from "@/components/ui/PriceChange.vue";
 import { marketsApi, type FxHeatmap } from "@/api";
 import { useApi } from "@/composables/useApi";
@@ -96,8 +95,11 @@ const groups = computed(() => [
 </script>
 
 <template>
-  <Card title="African FX Heatmap">
-    <template #action><RouterLink to="/markets">View full map</RouterLink></template>
+  <section>
+    <header class="mb-3 flex items-center justify-between gap-4">
+      <h3 class="font-display text-sm font-semibold tracking-wide text-ivory">African FX Heatmap</h3>
+      <RouterLink to="/markets" class="text-xs text-emerald-400 hover:underline">View full map</RouterLink>
+    </header>
     <div class="flex gap-3">
       <div class="min-w-0 flex-1">
         <VChart :option="option" style="height: 200px; width: 100%" autoresize />
@@ -117,5 +119,5 @@ const groups = computed(() => [
         </div>
       </div>
     </div>
-  </Card>
+  </section>
 </template>
